@@ -1,0 +1,27 @@
+
+name: "C# Documentation Generator"
+description: "A GitHub action that generates html documentation for C# projects."
+inputs:
+  build-tasks:
+    description: The list of commands used to build the project prior to generating html documents.
+    required: false
+  cleanup-tasks:
+    description: The list of commands used to clean up any building of project after generating html documents.
+    required: false
+  binaries:
+    description: The list of binaries used to look into, must be named the same as the xml documentation.
+    required: true
+  user-name:
+    description: The name of the user who will commit.
+    required: false
+    default: "C# Document Generator"
+  user-email:
+    description: The email of the user who will commit.
+    required: false
+    default: "csharp.doc.gen@gmail.com"
+  template-json:
+    description: The json to get all the template files used to generate the documentation.
+    required: false
+runs:
+  using: "node12"
+  main: "lib/index.js"
