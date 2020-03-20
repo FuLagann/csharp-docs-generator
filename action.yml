@@ -1,42 +1,46 @@
 
 name: "C# Documentation Generator"
+author: "Paul Gonzalez-Becerra"
 description: "A GitHub action that generates html documentation for C# projects."
 inputs:
   build-tasks:
-    description: The list of commands used to build the project prior to generating html documents.
+    description: "The list of commands used to build the project prior to generating html documents."
     required: true
   cleanup-tasks:
-    description: The list of commands used to clean up any building of project after generating html documents.
+    description: "The list of commands used to clean up any building of project after generating html documents."
     required: false
   binaries:
-    description: The list of binaries used to look into, must be named the same as the xml documentation.
+    description: "The list of binaries used to look into, must be named the same as the xml documentation."
     required: true
   user-name:
-    description: The name of the user who will commit.
+    description: "The name of the user who will commit."
     required: false
     default: "C# Document Generator"
   user-email:
-    description: The email of the user who will commit.
+    description: "The email of the user who will commit."
     required: false
     default: "csharp.doc.gen@gmail.com"
   template-json:
-    description: The json to get all the template files used to generate the documentation.
+    description: "The json to get all the template files used to generate the documentation."
     required: false
   output-path:
-    description: The output path of the generated documents.
+    description: "The output path of the generated documents."
     required: false
     default: docs/api/
   branch-name:
-    description: The name of the branch that the generation will commit to (if not specified it will commit to the current branch).
+    description: "The name of the branch that the generation will commit to (if not specified it will commit to the current branch)."
     required: false
   commit-message:
-    description: The message of the commit that the generation will perform.
+    description: "The message of the commit that the generation will perform."
     required: false
     default: "Automated creation of documentation"
   amend-no-edit:
-    description: Set to true if you want the generation to append itself to the latest commit instead of creating a new commit.
+    description: "Set to true if you want the generation to append itself to the latest commit instead of creating a new commit."
     required: false
     default: false
 runs:
   using: "node12"
   main: "lib/index.js"
+branding:
+  color: "yellow"
+  icon: "book"
