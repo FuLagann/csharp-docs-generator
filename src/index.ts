@@ -23,6 +23,7 @@ async function onError(error : Error) { core.setFailed(error.message); }
 /**Catches an error when pushing to git, this will check the status and push if possible.*/
 async function onGitError(error : Error) {
 	await exec("git status").catch(onError);
+	await exec("git pull").catch(onError);
 	await exec("git push").catch(onError);
 }
 
