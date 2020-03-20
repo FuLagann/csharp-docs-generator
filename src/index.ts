@@ -80,7 +80,7 @@ async function gitPush() {
 	}
 	await exec("git", ["add", "--all"]);
 	// Commits along with previous commit instead
-	if(args.amendNoEdit) {
+	if(args.amendNoEdit == true) {
 		await exec("git", ["commit", "--amend", "--no-edit"]);
 	}
 	else {
