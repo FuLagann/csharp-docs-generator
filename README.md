@@ -42,7 +42,7 @@ jobs:
         uses: FuLagann/csharp-docs/generator
         id: generate-docs
         with:
-          build-tasks: dotnet build -c Release -r netcoreapp3.1 src/Module1/Module1.csproj, dotnet build -c Debug -r netcoreapp3.1 src/Module2/Module2.csproj
+          build-tasks: dotnet build -c Release -f netcoreapp3.1 src/Module1/Module1.csproj, dotnet build -c Debug -f netcoreapp3.1 src/Module2/Module2.csproj
           binaries: src/Module1/bin/Release/netcoreapp3.1/Module1.dll, src/Module2/bin/Release/netcoreapp3.1/Module2.dll
           output-path: docs/api/
           template-json: docs/_template
