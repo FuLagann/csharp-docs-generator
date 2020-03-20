@@ -34,24 +34,24 @@ on: [push]
 jobs:
   generate-docs:
     runs-on: ubuntu-latest
-	name: Generate Docs
-	steps:
-	  - name: Checkout
-	    uses: actions/checkout@v2
-	  - name: Buidling Docs
-	    uses: FuLagann/csharp-docs/generator
-		id: generate-docs
-		with:
-		  build-tasks: dotnet build -c Release -r netcoreapp3.1 src/Module1/Module1.csproj, dotnet build -c Debug -r netcoreapp3.1 src/Module2/Module2.csproj
-		  binaries: src/Module1/bin/Release/netcoreapp3.1/Module1.dll, src/Module2/bin/Release/netcoreapp3.1/Module2.dll
-		  output-path: docs/api/
-		  template-json: docs/_template
-		  branch-name: api-docs
-		  commit-message: Automatically generated API docs
-		  amend-no-edit: false
-		  user-email: john.doe@email.com
-		  user-name: John Doe
-		  cleanup-tasks: dotnet clean, rm -r -f src/Module1/bin
+    name: Generate Docs
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Buidling Docs
+        uses: FuLagann/csharp-docs/generator
+        id: generate-docs
+        with:
+          build-tasks: dotnet build -c Release -r netcoreapp3.1 src/Module1/Module1.csproj, dotnet build -c Debug -r netcoreapp3.1 src/Module2/Module2.csproj
+          binaries: src/Module1/bin/Release/netcoreapp3.1/Module1.dll, src/Module2/bin/Release/netcoreapp3.1/Module2.dll
+          output-path: docs/api/
+          template-json: docs/_template
+          branch-name: api-docs
+          commit-message: Automatically generated API docs
+          amend-no-edit: false
+          user-email: john.doe@email.com
+          user-name: John Doe
+          cleanup-tasks: dotnet clean, rm -r -f src/Module1/bin
 ```
 
 </p>
@@ -97,31 +97,31 @@ The template JSON that contains all the file locations (relative to the template
 
 ```json
 {
-	"baseUri": "base.hbs",
-	"cssUris": ["css/main.css", "css/api.css"],
-	"scriptUris": [],
-	"namespaceUri": "namespace.hbs",
-	"typeUri": "type.hbs",
-	"constructorUri": {
-		"compact": "constructor-compact.hbs",
-		"full": "constructor-full.hbs"
-	},
-	"fieldsUri": {
-		"compact": "field-compact.hbs",
-		"full": "field-full.hbs"
-	},
-	"propertiesUri": {
-		"compact": "property-compact.hbs",
-		"full": "property-full.hbs"
-	},
-	"eventsUri": {
-		"compact": "event-compact.hbs",
-		"full": "event-full.hbs"
-	},
-	"methodsUri": {
-		"compact": "method-compact.hbs",
-		"full": "method-full.hbs"
-	}
+    "baseUri": "base.hbs",
+    "cssUris": ["css/main.css", "css/api.css"],
+    "scriptUris": [],
+    "namespaceUri": "namespace.hbs",
+    "typeUri": "type.hbs",
+    "constructorUri": {
+        "compact": "constructor-compact.hbs",
+        "full": "constructor-full.hbs"
+    },
+    "fieldsUri": {
+        "compact": "field-compact.hbs",
+        "full": "field-full.hbs"
+    },
+    "propertiesUri": {
+        "compact": "property-compact.hbs",
+        "full": "property-full.hbs"
+    },
+    "eventsUri": {
+        "compact": "event-compact.hbs",
+        "full": "event-full.hbs"
+    },
+    "methodsUri": {
+        "compact": "method-compact.hbs",
+        "full": "method-full.hbs"
+    }
 }
 ```
 
