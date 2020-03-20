@@ -14,7 +14,7 @@ export function getInputs() : InputArguments {
 	results.cleanUpTasks = splitString(core.getInput("cleanup-tasks") ?? "", ',');
 	results.binaries = splitString(core.getInput("binaries") ?? "", ",");
 	results.branchName = core.getInput("branch-name") ?? results.branchName;
-	results.amendNoEdit = Boolean(core.getInput("amend-no-edit") ?? results.amendNoEdit);
+	results.amendNoEdit = Boolean(core.getInput("amend-no-edit") == "true" ?? results.amendNoEdit);
 	results.outputPath = core.getInput("output-path") ?? results.outputPath;
 	results.user.name = core.getInput("user-name") ?? results.user.name;
 	results.user.email = core.getInput("user-email") ?? results.user.email;
