@@ -15,6 +15,7 @@ export function getInputs() : InputArguments {
 	results.binaries = splitString(core.getInput("binaries") ?? "", ",");
 	results.branchName = core.getInput("branch-name") ?? results.branchName;
 	results.amendNoEdit = Boolean(core.getInput("amend-no-edit") ?? results.amendNoEdit);
+	results.outputPath = core.getInput("output-path") ?? results.outputPath;
 	results.user.name = core.getInput("user-name") ?? results.user.name;
 	results.user.email = core.getInput("user-email") ?? results.user.email;
 	gatherUris(results.template, core.getInput("template-json"));

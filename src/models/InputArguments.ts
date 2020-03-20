@@ -9,6 +9,7 @@ export class InputArguments {
 	branchName: string;
 	amendNoEdit: boolean;
 	template: TemplateJson;
+	outputPath: string;
 	user: {
 		name: string,
 		email: string
@@ -18,6 +19,7 @@ export class InputArguments {
 		this.cleanUpTasks = [];
 		this.binaries = [];
 		this.commitMessage = "Automated creation of documentation";
+		this.outputPath = "docs/api/";
 		this.branchName = "";
 		this.amendNoEdit = false;
 		// TODO: Add uri to the template
