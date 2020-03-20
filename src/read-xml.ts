@@ -1,7 +1,7 @@
 
 import { readFile } from "./read-file";
-import { InputArguments } from "./models/InputArguments";
 import { NameDescription } from "./models/TemplateApi";
+import { InputArguments } from "./models/InputArguments";
 import { DOMParser } from "xmldom";
 
 // Variables
@@ -12,15 +12,15 @@ const TEXT_CONTENTS : string[][] = [
 	["example", ""]
 ];
 
-/**Gathers the template api from the xml documentations generated.
- * @param args {InputArguments} - The arguments used to look into the xml documents.
- * @returns Returns a hash map used to find the data from the xml documentation.*/
-export function gatherTemplateApi(args : InputArguments) : Map<string, any> {
+/**Gathers a map of the api from the xml documents.
+ * @param args {InputArguments} - The input arguments to get the xml documents from.
+ * @returns Returns a documented map of the api.*/
+export function gatherApiMap(args : InputArguments) : Map<string, any> {
 	// Variables
 	let content : string;
-	const parser = new DOMParser();
 	let api : Map<string, any> = new Map<string, any>();
-	let xmls : string[] = getXmls(args.binaries);
+	const parser : DOMParser = new DOMParser();
+	const xmls : string[] = getXmls(args.binaries);
 	
 	for(let i = 0; i < xmls.length; i++) {
 		content = readFile(xmls[i]);
@@ -28,49 +28,6 @@ export function gatherTemplateApi(args : InputArguments) : Map<string, any> {
 	}
 	
 	return api;
-}
-
-/**Generates all the members of the xml onto the given api.
- * @param api {Map<string, any>} - The api used to generate the members.
- * @param xml {XMLDocument} - The xml document to look into.*/
-function generateMembers(api : Map<string, any>, xml : XMLDocument) {
-	if(!xml) { throw new Error("Undefined xml"); }
-	
-	// Variables
-	const members = xml.getElementsByTagName("member");
-	
-	for(let i = 0; i < members.length; i++) {
-		// Variables
-		let name = members[i].getAttribute("name");
-		
-		if(!name) { throw new Error("No name for member! XML document invalid!"); }
-		
-		// Variables
-		let methodParam = name.split('(');
-		let args = methodParam[0].split('.');
-		const type = args[0].split(':')[0];
-		let temp : Map<string, any> = api;
-		
-		args[0] = args[0].split(':')[1];
-		if(methodParam.length > 1) {
-			args[args.length - 1] += `(${ methodParam[1] }`;
-		}
-		
-		for(let mid = 0; mid < args.length; mid++) {
-			if(!temp.has(args[mid])) {
-				temp.set(args[mid], new Map<string, any>());
-			}
-			
-			temp = temp.get(args[mid]) as Map<string, any>;
-			if(mid == args.length - 1) {
-				temp.set("type", type);
-				setDataMembers(temp, members[i]);
-			}
-			else if(temp.get("type") == undefined) {
-				temp.set("type", "N");
-			}
-		}
-	}
 }
 
 /**Gets all the xml locations that are associated with the binary files.
@@ -87,69 +44,91 @@ function getXmls(binaries : string[]) : string[] {
 	return results;
 }
 
-/**Sets the data members onto the api map.
- * @param api {Map<string, any>} - The map to set the data member onto.
+/**Generates all the members from the xml document into the map.
+ * @param api {Map<string, any>} - The map used for templating and documentation generation. Will be filled in.
+ * @param xml {XMLDocument} - The xml document to look into.*/
+function generateMembers(api : Map<string, any>, xml : XMLDocument) {
+	if(!xml) { throw new Error("Undefined xml."); }
+	
+	// Variables
+	const members = xml.getElementsByTagName("member");
+	
+	for(let a = 0; a < members.length; a++) {
+		// Variables
+		let name : (string | null) = members[a].getAttribute("name");
+		
+		if(!name) { throw new Error("No name for member! XML document invalid!"); }
+		
+		// Variables
+		const methodParam = name.split('(');
+		let args = methodParam[0].split('.');
+		const type = args[0].split(':')[0];
+		let temp : Map<string, any> = api;
+		
+		args[0] = args[0].split(':')[1];
+		if(methodParam.length > 1) {
+			args[args.length - 1] += `(${ methodParam[1] }`;
+		}
+		
+		for(let b = 0; b < args.length; b++) {
+			if(!temp.has(args[b])) {
+				temp.set(args[b], new Map<string, any>());
+			}
+			
+			temp = temp.get(args[b]) as Map<string, any>;
+			if(b == args.length - 1) {
+				temp.set("type", type);
+				setDataMembers(temp, members[a]);
+			}
+			else if(temp.get("type") == undefined) {
+				temp.set("type", "N");
+			}
+		}
+	}
+}
+
+/**Sets all the data members into the map of api from the given member.
+ * @param api {Map<string, any>} - The map to place data onto.
  * @param member {Element} - The member to look into.*/
 function setDataMembers(api : Map<string, any>, member : Element) {
 	// Variables
-	const param = member.getElementsByTagName("param");
-	const exceptionTags = member.getElementsByTagName("exception");
-	const typeparam = member.getElementsByTagName("typeparam");
-	let parameters : NameDescription[] = [];
-	let exceptions : NameDescription[] = [];
-	let typeParams : NameDescription[] = [];
-	
-	for(let i = 0; i < param.length; i++) {
-		// Variables
-		const paramName = param[i].getAttribute("name");
-		const paramDesc = param[i].textContent || "No description";
-		
-		if(!paramName) { continue; }
-		
-		parameters.push({
-			name: paramName,
-			description: `${ paramDesc.trim() }.`
-		});
-	}
-	
-	for(let i = 0; i < exceptionTags.length; i++) {
-		// Variables
-		const exceptionType = exceptionTags[i].getAttribute("cref");
-		const exceptionDesc = exceptionTags[i].textContent || "No description";
-		
-		if(!exceptionType) { continue; }
-		
-		exceptions.push({
-			name: exceptionType,
-			description: `${ exceptionDesc.trim() }.`
-		});
-	}
-	
-	for(let i = 0; i < typeparam.length; i++) {
-		// Variables
-		const typeParamName = typeparam[i].getAttribute("name");
-		const typeParamDesc = typeparam[i].textContent || "No description";
-		
-		if(!typeParamName) { continue; }
-		
-		typeParams.push({
-			name: typeParamName,
-			description: `${ typeParamDesc.trim() }.`
-		});
-	}
+	const parameters : NameDescription[] = gatherNameDescriptionList(member.getElementsByTagName("param"), "name");
+	const exceptions : NameDescription[] = gatherNameDescriptionList(member.getElementsByTagName("exception"), "cref");
+	const typeParameters : NameDescription[] = gatherNameDescriptionList(member.getElementsByTagName("typeparam"), "name");
 	
 	for(let i = 0; i < TEXT_CONTENTS.length; i++) {
 		api.set(TEXT_CONTENTS[i][0], getTextContent(member, TEXT_CONTENTS[i][0], TEXT_CONTENTS[i][1]));
 	}
 	api.set("param", parameters);
 	api.set("exception", exceptions);
-	api.set("typeparam", typeParams);
+	api.set("typeparam", typeParameters);
 }
 
-/**Gets the text content of the member using a default text as a fail safe.
- * @param member {Element} - The member to look into.
- * @param id {string} - The child element name to look into.
- * @param defaultText {string} - The default text used as a fail safe.
+/**Gather the name and description for the given attribute name of the collection of elements.
+ * @param members {HTMLCollectionOf<Element>} - The list of members to look into.
+ * @param attrName {string} - The name of the attribute to look into.
+ * @returns Returns the list of names and descriptions of the attributes of the members.*/
+function gatherNameDescriptionList(members : HTMLCollectionOf<Element>, attrName : string) : NameDescription[] {
+	// Variables
+	let results : NameDescription[] = [];
+	
+	for(let i = 0; i < members.length; i++) {
+		// Variables
+		const name = members[i].getAttribute(attrName);
+		const desc = (members[i].textContent || "No description").trim() + ".";
+		
+		if(!name) { continue; }
+		
+		results.push({ name: name, description: desc });
+	}
+	
+	return results;
+}
+
+/**Gets the text content of the member with a fail safe.
+ * @param member {Element} - The element to look into.
+ * @param id {string} - The name of the tag to look into.
+ * @param defaultText {string} - The fail safe default text to go to when the tag or text was not found.
  * @returns Returns the text content of the member.*/
 function getTextContent(member : Element, id : string, defaultText : string) : string {
 	// Variables
@@ -157,5 +136,5 @@ function getTextContent(member : Element, id : string, defaultText : string) : s
 	
 	if(elems.length == 0) { return defaultText; }
 	
-	return `${ (elems[0].textContent || defaultText).trim() }.`;
+	return (elems[0].textContent || defaultText).trim() + ".";
 }
