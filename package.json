@@ -32,6 +32,7 @@
     "@actions/exec": "^1.0.3",
     "@actions/io": "^1.0.2",
     "@actions/tool-cache": "^1.3.3",
+    "@types/handlebars": "^4.1.0",
     "@types/markdown-it": "0.0.9",
     "@types/pretty": "^2.0.0",
     "@types/xmldom": "^0.1.29",
