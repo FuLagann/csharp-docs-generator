@@ -1,8 +1,10 @@
 
 import { readFile } from "./read-file";
 import { TemplateApi, TemplateApiItems, NameDescription } from "./models/TemplateApi";
+import { TemplateJson } from "./models/TemplateJson";
 import hbs = require("handlebars");
 import markdownIt = require("markdown-it");
+import pretty = require("pretty");
 
 // Variables
 const md = markdownIt();
@@ -15,12 +17,16 @@ hbs.registerHelper("renderPartial", function(partialId, options) {
 	return new hbs.SafeString(html);
 });
 
+export function compileType(filename : string, json : TemplateApi, partials : TemplateJson) : string {
+	return pretty(compileGeneral("type", filename, json, partials));
+}
+
 /**Compiles the template in general.
  * @param templateId {string} - The name of the template to look into (such as method, field, etc).
  * @param filename {string} - The name of the file to get the template from.
  * @param json {TemplateApi} - The template api used for rendering.
  * @param context {any} - The context used for anything extra.
- * @returns Returns a compiled template html.*/
+ * @returns Returns a compiled html code.*/
 function compileGeneral(templateId : string, filename : string, json : TemplateApi, context : any) : string {
 	// Variables
 	const template = compileHandlebars(filename);
