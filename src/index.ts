@@ -5,6 +5,8 @@ import io = require("@actions/io");
 import tools = require("@actions/tool-cache");
 import { InputArguments } from "./models/InputArguments";
 import { exec } from "@actions/exec";
+import { gatherApiMap } from "./read-xml";
+import { generateHtmlDocumentation } from "./generate";
 
 // Variables
 const TEMP_FOLDER = "__temp/";
@@ -21,7 +23,7 @@ export function getSharpCheckerExe() : string { return sharpCheckerExe; }
 async function onError(error : Error) { core.setFailed(error.message); }
 
 /**Catches an error when pushing to git, this will check the status and push if possible.*/
-async function onGitError(error : Error) {
+async function onGitError() {
 	await exec("git status").catch(onError);
 	await exec("git pull").catch(onError);
 	await exec("git push").catch(onError);
@@ -50,6 +52,16 @@ async function downloadTools() {
 	const unzippedLocation = await tools.extractZip(zipLocation, TEMP_FOLDER);
 	
 	sharpCheckerExe = `${ unzippedLocation }/${ SHARP_CHECKER_EXE }`;
+}
+
+/**Generates the html documentation.*/
+async function generateDocs() {
+	// Variables
+	const api : Map<string, any> = gatherApiMap(args);
+	
+	try { io.rmRF(args.outputPath); } catch(e) {}
+	try { io.mkdirP(args.outputPath); } catch(e) {}
+	await generateHtmlDocumentation(args, api);
 }
 
 /**Cleans everything up before pushing to the repository so nothing unwanted gets committed.*/
@@ -98,7 +110,7 @@ async function gitPush() {
 (async function() {
 	await executeBuildTasks();
 	await downloadTools();
-	//await generateDocs();
+	await generateDocs();
 	await cleanUp();
 	await gitPush().catch(onGitError);
 })().catch(onError)

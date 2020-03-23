@@ -1,7 +1,8 @@
 
-import { readFile } from "./read-file";
+import { TypeInfo } from "./models/SharpChecker";
 import { TemplateApi, TemplateApiItems, NameDescription } from "./models/TemplateApi";
 import { TemplateJson } from "./models/TemplateJson";
+import { readFile } from "./read-file";
 import hbs = require("handlebars");
 import markdownIt = require("markdown-it");
 import pretty = require("pretty");
@@ -17,8 +18,8 @@ hbs.registerHelper("renderPartial", function(partialId, options) {
 	return new hbs.SafeString(html);
 });
 
-export function compileType(filename : string, json : TemplateApi, partials : TemplateJson) : string {
-	return pretty(compileGeneral("type", filename, json, partials));
+export function compileType(filename : string, json : TemplateApi, details : TypeInfo, partials : TemplateJson) : string {
+	return pretty(compileGeneral("type", filename, json, details, partials));
 }
 
 /**Compiles the template in general.
@@ -27,7 +28,7 @@ export function compileType(filename : string, json : TemplateApi, partials : Te
  * @param json {TemplateApi} - The template api used for rendering.
  * @param context {any} - The context used for anything extra.
  * @returns Returns a compiled html code.*/
-function compileGeneral(templateId : string, filename : string, json : TemplateApi, context : any) : string {
+function compileGeneral(templateId : string, filename : string, json : TemplateApi, details : TypeInfo, context : any) : string {
 	// Variables
 	const template = compileHandlebars(filename);
 	const apiItems = getApiItems(json.api);
@@ -36,6 +37,7 @@ function compileGeneral(templateId : string, filename : string, json : TemplateA
 	templateJson["breadcrumbs"] = json.breadcrumbs;
 	templateJson["breadcrumbsFull"] = json.breadcrumbs.join('.');
 	templateJson[templateId] = apiItems;
+	templateJson["details"] = details;
 	
 	return template(templateJson);
 }
