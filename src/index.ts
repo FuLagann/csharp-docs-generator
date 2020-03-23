@@ -72,8 +72,8 @@ async function generateDocs() {
 	// Variables
 	const api : Map<string, any> = gatherApiMap(args);
 	
-	try { io.rmRF(args.outputPath); } catch(e) {}
-	try { io.mkdirP(args.outputPath); } catch(e) {}
+	try { await io.rmRF(args.outputPath); } catch(e) {}
+	try { await io.mkdirP(args.outputPath); } catch(e) {}
 	await generateHtmlDocumentation(args, api);
 }
 
