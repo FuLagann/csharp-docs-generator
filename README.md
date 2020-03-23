@@ -81,7 +81,7 @@ The template JSON that contains all the file locations (relative to the template
 
 **`typeUri` as (string):** The file location (local to the location of the template.json) or URL to the handlebars template view of the type that will contain links and views to it's contained members.
 
-**`constructorUri` as ([CompactFullUris](#compactfulluris)).** The file locations (local to the location of the template.json) or URLs to the handlebars template view of the constructors' compact and full view.
+**`constructorsUri` as ([CompactFullUris](#compactfulluris)).** The file locations (local to the location of the template.json) or URLs to the handlebars template view of the constructors' compact and full view.
 
 **`fieldsUri` as ([CompactFullUris](#compactfulluris)).** The file locations (local to the location of the template.json) or URLs to the handlebars template view of the fields' compact and full view.
 
@@ -102,7 +102,7 @@ The template JSON that contains all the file locations (relative to the template
     "scriptUris": [],
     "namespaceUri": "namespace.hbs",
     "typeUri": "type.hbs",
-    "constructorUri": {
+    "constructorsUri": {
         "compact": "constructor-compact.hbs",
         "full": "constructor-full.hbs"
     },
