@@ -42,14 +42,8 @@ function compileGeneral(templateId : string, filename : string, json : TemplateA
 	templateJson["breadcrumbsFull"] = json.breadcrumbs.join('.');
 	templateJson[templateId] = apiItems;
 	templateJson["details"] = details;
-	templateJson["log"] = function() {
-		return function(text : string, render : Function) : string {
-			console.log(JSON.stringify(render(text)));
-			console.log(render);
-			
-			return `<script>console.log(${ JSON.stringify(render(text)) });</script>`;
-		}
-	};
+	
+	console.log(templateJson);
 	
 	return mustache.render(
 		source,
