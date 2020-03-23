@@ -18,8 +18,8 @@ export function getInputs() : InputArguments {
 	results.outputPath = core.getInput("output-path") ?? results.outputPath;
 	results.user.name = core.getInput("user-name") ?? results.user.name;
 	results.user.email = core.getInput("user-email") ?? results.user.email;
-	gatherUris(results.template, core.getInput("template-json"));
-	console.log(results);
+	results.templatePath = core.getInput("template-json") ?? results.templatePath;
+	gatherUris(results.template, results.templatePath);
 	
 	return results;
 }

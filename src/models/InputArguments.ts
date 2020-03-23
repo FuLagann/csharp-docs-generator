@@ -8,6 +8,7 @@ export class InputArguments {
 	commitMessage: string;
 	branchName: string;
 	amendNoEdit: boolean;
+	templatePath: string;
 	template: TemplateJson;
 	outputPath: string;
 	user: {
@@ -22,6 +23,7 @@ export class InputArguments {
 		this.outputPath = "docs/api/";
 		this.branchName = "";
 		this.amendNoEdit = false;
+		this.templatePath = "./";
 		// TODO: Add uri to the template
 		this.template = {
 			baseUri: "",

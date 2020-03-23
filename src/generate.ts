@@ -2,7 +2,7 @@
 import { InputArguments } from "./models/InputArguments";
 import { TypeInfo } from "./models/SharpChecker";
 import { TemplateApi } from "./models/TemplateApi";
-import { getSharpCheckerExe } from "./index";
+import { getSharpCheckerExe, getTemplateUri } from "./index";
 import { readFile } from "./read-file";
 import { compileType } from "./template";
 import { exec } from "@actions/exec";
@@ -36,7 +36,12 @@ export async function generateHtmlDocumentation(args : InputArguments, api : Map
 						const typePath = temp.breadcrumbs.join('.').replace('`', '-');
 						const filename = args.outputPath + typePath + ".html";
 						const typeDetails = await checkType(args, typePath);
-						const html = compileType(args.template.typeUri, temp, typeDetails, args.template);
+						const html = compileType(
+							getTemplateUri(args.template.typeUri),
+							temp,
+							typeDetails,
+							args.template
+						);
 						
 						fs.writeFileSync(filename, html);
 						console.log(`Created ${ filename }!`);

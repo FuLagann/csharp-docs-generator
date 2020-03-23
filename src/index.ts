@@ -19,6 +19,18 @@ let sharpCheckerExe : string;
  * @returns Returns the path to the SharpChecker program.*/
 export function getSharpCheckerExe() : string { return sharpCheckerExe; }
 
+/**Gets the template uri using the base path of the template json.
+ * @param uri {string} - The file path relative to the template json.
+ * @returns Returns the file path of the template uri.*/
+export function getTemplateUri(uri : string) : string {
+	// Variables
+	const basePath : string = args.templatePath + (
+		args.templatePath.match(/[\\\/]$/gm) != null ? "/" : ""
+	);
+	
+	return basePath + uri;
+}
+
 /**Catches any error and reports the action as a failed aciton*/
 async function onError(error : Error) { core.setFailed(error.message); }
 
