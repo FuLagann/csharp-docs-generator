@@ -24,8 +24,9 @@ export function getSharpCheckerExe() : string { return sharpCheckerExe; }
  * @returns Returns the file path of the template uri.*/
 export function getTemplateUri(uri : string) : string {
 	// Variables
-	const basePath : string = args.templatePath + (
-		args.templatePath.match(/[\\\/]$/gm) != null ? "/" : ""
+	const basePath : string = (args.templatePath == "" || args.templatePath == "." ?
+		"./" :
+		args.templatePath.replace(/[\\\/][\w\.]+$/gm, "/")
 	);
 	
 	return basePath + uri;
