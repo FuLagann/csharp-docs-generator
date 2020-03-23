@@ -4,7 +4,7 @@ import { TypeInfo } from "./models/SharpChecker";
 import { TemplateApi } from "./models/TemplateApi";
 import { getSharpCheckerExe, getTemplateUri } from "./index";
 import { readFile } from "./read-file";
-import { compileType } from "./template";
+import { compileBase, compileType } from "./template";
 import { exec } from "@actions/exec";
 import fs = require("fs");
 
@@ -36,10 +36,14 @@ export async function generateHtmlDocumentation(args : InputArguments, api : Map
 						const typePath = temp.breadcrumbs.join('.').replace('`', '-');
 						const filename = args.outputPath + typePath + ".html";
 						const typeDetails = await checkType(args, typePath);
-						const html = compileType(
-							getTemplateUri(args.template.typeUri),
-							temp,
-							typeDetails,
+						const html = compileBase(
+							getTemplateUri(args.template.baseUri),
+							compileType(
+								getTemplateUri(args.template.typeUri),
+								temp,
+								typeDetails,
+								args.template
+							),
 							args.template
 						);
 						

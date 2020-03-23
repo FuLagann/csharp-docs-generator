@@ -11,7 +11,19 @@ import pretty = require("pretty");
 const md = markdownIt();
 
 export function compileType(filename : string, json : TemplateApi, details : TypeInfo, partials : TemplateJson) : string {
-	return pretty(compileGeneral("type", filename, json, details, partials));
+	return compileGeneral("type", filename, json, details, partials);
+}
+
+export function compileBase(filename : string, htmlCode : string, templateUris : TemplateJson) : string {
+	return pretty(mustache.render(
+		readFile(filename),
+		{
+			body: htmlCode,
+			cssUris: templateUris.cssUris,
+			scriptUris: templateUris.scriptUris
+		}),
+		{ ocd: true }
+	);
 }
 
 /**Compiles the template in general.
