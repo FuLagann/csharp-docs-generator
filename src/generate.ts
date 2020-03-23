@@ -10,14 +10,16 @@ import fs = require("fs");
 
 export async function generateHtmlDocumentation(args : InputArguments, api : Map<string, any>) {
 	// Variables
-	let stack : TemplateApi[] = [{ api: api, breadcrumbs: [] }];
+	let queue : TemplateApi[] = [{ api: api, breadcrumbs: [] }];
 	let temp : (TemplateApi | undefined);
 	let keys : IterableIterator<string>;
 	let iterator : IteratorResult<string, any>;
 	let key : string;
 	
 	console.log("Generating HTML Documentation...");
-	while(stack.length > 0) {
+	while(queue.length > 0) {
+		temp = queue.shift();
+		
 		if(temp == undefined) { break; }
 		
 		keys = temp.api.keys();
@@ -49,10 +51,11 @@ export async function generateHtmlDocumentation(args : InputArguments, api : Map
 				case "exception":
 					continue;
 				default: {
-					stack.push({
+					queue.push({
 						api: temp.api.get(key),
 						breadcrumbs: temp.breadcrumbs.concat([key])
 					});
+					console.log(`Added ${ key } into queue!`);
 				} break;
 			}
 		}
