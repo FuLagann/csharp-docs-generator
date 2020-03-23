@@ -3,20 +3,12 @@ import { TypeInfo } from "./models/SharpChecker";
 import { TemplateApi, TemplateApiItems, NameDescription } from "./models/TemplateApi";
 import { TemplateJson } from "./models/TemplateJson";
 import { readFile } from "./read-file";
-import hbs = require("handlebars");
+import mustache = require("mustache");
 import markdownIt = require("markdown-it");
 import pretty = require("pretty");
 
 // Variables
 const md = markdownIt();
-
-hbs.registerHelper("renderPartial", function(partialId, options) {
-	// Variables
-	const source = readFile(partialId);
-	const html = hbs.compile(source)(options.hash);
-	
-	return new hbs.SafeString(html);
-});
 
 export function compileType(filename : string, json : TemplateApi, details : TypeInfo, partials : TemplateJson) : string {
 	return pretty(compileGeneral("type", filename, json, details, partials));
@@ -30,7 +22,7 @@ export function compileType(filename : string, json : TemplateApi, details : Typ
  * @returns Returns a compiled html code.*/
 function compileGeneral(templateId : string, filename : string, json : TemplateApi, details : TypeInfo, context : any) : string {
 	// Variables
-	const template = compileHandlebars(filename);
+	let source : string = readFile(filename);
 	const apiItems = getApiItems(json.api);
 	let templateJson : any = context;
 	
@@ -39,17 +31,10 @@ function compileGeneral(templateId : string, filename : string, json : TemplateA
 	templateJson[templateId] = apiItems;
 	templateJson["details"] = details;
 	
-	return template(templateJson);
-}
-
-/**Compiles the handlebars file from the givne filename.
- * @param filename {string} - The filename to grab from.
- * @returns Returns a handlebars templating delegate.*/
-function compileHandlebars(filename : string) : HandlebarsTemplateDelegate<any> {
-	// Variables
-	let source : string = readFile(filename);
-	
-	return hbs.compile(source);
+	return mustache.render(
+		source,
+		templateJson
+	);
 }
 
 /**Gets all the api items from the surface level of the api.
