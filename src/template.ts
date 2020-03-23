@@ -43,11 +43,11 @@ function compileGeneral(templateId : string, filename : string, json : TemplateA
 	templateJson[templateId] = apiItems;
 	templateJson["details"] = details;
 	templateJson["log"] = function() {
-		return function(text : string, render : any) : string {
-			console.log(text);
+		return function(text : string, render : Function) : string {
+			console.log(render(text));
 			console.log(render);
 			
-			return `<script>console.log(${ text }); console.log(${ render });</script>`;
+			return `<script>console.log(${ render(text) });</script>`;
 		}
 	};
 	
