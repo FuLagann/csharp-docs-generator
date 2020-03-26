@@ -57,14 +57,12 @@ export async function generateHtmlDocumentation(args : InputArguments, api : Map
 			switch(key) {
 				case "summary": case "returns": case "remarks":
 				case "example": case "typeparam": case "param":
-				case "exception":
-					continue;
+				case "exception": continue;
 				default: {
 					queue.push({
 						api: temp.api.get(key),
 						breadcrumbs: temp.breadcrumbs.concat([key])
 					});
-					console.log(`Added ${ key } into queue!`);
 				} break;
 			}
 		}

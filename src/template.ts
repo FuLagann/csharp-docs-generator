@@ -3,7 +3,7 @@ import { TypeInfo } from "./models/SharpChecker";
 import { TemplateApi, TemplateApiItems, NameDescription } from "./models/TemplateApi";
 import { TemplateJson } from "./models/TemplateJson";
 import { readFile } from "./read-file";
-import mustache = require("mustache");
+import ejs = require("ejs");
 import markdownIt = require("markdown-it");
 import pretty = require("pretty");
 
@@ -14,16 +14,8 @@ export function compileType(filename : string, json : TemplateApi, details : Typ
 	return compileGeneral("type", filename, json, details, partials);
 }
 
-export function compileBase(filename : string, htmlCode : string, templateUris : TemplateJson) : string {
-	return pretty(mustache.render(
-		readFile(filename),
-		{
-			body: htmlCode,
-			cssUris: templateUris.cssUris,
-			scriptUris: templateUris.scriptUris
-		}),
-		{ ocd: true }
-	);
+export function compileBase(filename : string, htmlCode : string, templateApi : TemplateJson) : string {
+	return pretty(ejs.render(readFile(filename), templateApi), { ocd: true });
 }
 
 /**Compiles the template in general.
@@ -45,10 +37,7 @@ function compileGeneral(templateId : string, filename : string, json : TemplateA
 	
 	console.log(templateJson);
 	
-	return mustache.render(
-		source,
-		templateJson
-	);
+	return ejs.render(source, templateJson);
 }
 
 /**Gets all the api items from the surface level of the api.
