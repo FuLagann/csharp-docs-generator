@@ -11,40 +11,18 @@ import { BaseTemplateVars } from "./models/TemplateVariables";
 // Variables
 const md = markdownIt();
 
-export function compileType(filename : string, json : TemplateApi, details : TypeInfo, partials : TemplateJson) : string {
-	return compileGeneral("type", filename, json, details, partials);
+export function compileType(filename : string, typePath : string) : string {
+	return ejs.render(readFile(filename), {});
 }
 
-export function compileBase(filename : string, templateApi : TemplateJson, breadcrumbs : string[]) : string {
+export function compileBase(filename : string, templateApi : TemplateJson, breadcrumbs : string[], typePath : string) : string {
 	// Variables
 	let variables = new BaseTemplateVars(templateApi);
 	
 	variables.breadcrumbs = breadcrumbs;
-	variables.typePath = breadcrumbs.join('.');
+	variables.typePath = typePath;
 	
 	return pretty(ejs.render(readFile(filename), variables), { ocd: true });
-}
-
-/**Compiles the template in general.
- * @param templateId {string} - The name of the template to look into (such as method, field, etc).
- * @param filename {string} - The name of the file to get the template from.
- * @param json {TemplateApi} - The template api used for rendering.
- * @param context {any} - The context used for anything extra.
- * @returns Returns a compiled html code.*/
-function compileGeneral(templateId : string, filename : string, json : TemplateApi, details : TypeInfo, context : any) : string {
-	// Variables
-	let source : string = readFile(filename);
-	const apiItems = getApiItems(json.api);
-	let templateJson : any = context;
-	
-	templateJson["breadcrumbs"] = json.breadcrumbs;
-	templateJson["breadcrumbsFull"] = json.breadcrumbs.join('.');
-	templateJson[templateId] = apiItems;
-	templateJson["details"] = details;
-	
-	console.log(templateJson);
-	
-	return ejs.render(source, templateJson);
 }
 
 /**Gets all the api items from the surface level of the api.

@@ -1,4 +1,8 @@
+
 import { SidebarView } from "./models/TemplateVariables";
+import { readFile } from "./read-file";
+import { compileType } from "./template";
+import ejs = require("ejs");
 
 export function displaySidebar(
 	treeview : (SidebarView | SidebarView[]),
@@ -32,6 +36,15 @@ export function displaySidebar(
 	return results.join("");
 }
 
-export function createPartial(uri : string, path : string) {
-	return `${ path } ==> ${ uri }`;
+export function createPartial(type : string, uri : string, path : string, context : any = {}) {
+	switch(type) {
+		case "type": return compileType(uri, path);
+		// TODO: Add constructor
+		// TODO: Add property
+		// TODO: Add event
+		// TODO: Add field
+		// TODO: Add method
+	}
+	
+	return ejs.render(readFile(uri), context);
 }

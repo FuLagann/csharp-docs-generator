@@ -19,6 +19,8 @@ let sharpCheckerExe : string;
  * @returns Returns the path to the SharpChecker program.*/
 export function getSharpCheckerExe() : string { return sharpCheckerExe; }
 
+export function getArguments() : InputArguments { return args; }
+
 /**Gets the template uri using the base path of the template json.
  * @param uri {string} - The file path relative to the template json.
  * @returns Returns the file path of the template uri.*/

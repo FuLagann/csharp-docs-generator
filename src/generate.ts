@@ -38,7 +38,8 @@ export async function generateHtmlDocumentation(args : InputArguments, api : Map
 						const html = compileBase(
 							getTemplateUri(args.template.baseUri),
 							args.template,
-							temp.breadcrumbs
+							temp.breadcrumbs,
+							typePath
 						);
 						
 						fs.writeFileSync(filename.toLowerCase(), html);
