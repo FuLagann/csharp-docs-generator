@@ -24,6 +24,7 @@ export class SidebarView {
 
 export class BaseTemplateVars extends GeneralTemplateVars {
 	cssUris : string[];
+	scriptUris : string[];
 	breadcrumbs : string[];
 	typeUri : string;
 	typePath : string;
@@ -33,6 +34,7 @@ export class BaseTemplateVars extends GeneralTemplateVars {
 	constructor(json : TemplateJson) {
 		super();
 		this.cssUris = json.cssUris;
+		this.scriptUris = json.scriptUris;
 		this.breadcrumbs = [];
 		this.typeUri = json.typeUri;
 		this.typePath = "";
