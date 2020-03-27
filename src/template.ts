@@ -2,11 +2,11 @@
 import { TypeInfo } from "./models/SharpChecker";
 import { TemplateApi, TemplateApiItems, NameDescription } from "./models/TemplateApi";
 import { TemplateJson } from "./models/TemplateJson";
+import { BaseTemplateVars } from "./models/TemplateVariables";
 import { readFile } from "./read-file";
 import ejs = require("ejs");
 import markdownIt = require("markdown-it");
 import pretty = require("pretty");
-import { BaseTemplateVars } from "./models/TemplateVariables";
 
 // Variables
 const md = markdownIt();

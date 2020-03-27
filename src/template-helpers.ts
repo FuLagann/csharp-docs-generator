@@ -1,5 +1,6 @@
 
 import { SidebarView } from "./models/TemplateVariables";
+import { getTemplateUri } from "./index";
 import { readFile } from "./read-file";
 import { compileType } from "./template";
 import ejs = require("ejs");
@@ -38,7 +39,7 @@ export function displaySidebar(
 
 export function createPartial(type : string, uri : string, path : string, context : any = {}) {
 	switch(type) {
-		case "type": return compileType(uri, path);
+		case "type": return compileType(getTemplateUri(uri), path);
 		// TODO: Add constructor
 		// TODO: Add property
 		// TODO: Add event
