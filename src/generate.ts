@@ -44,7 +44,8 @@ export async function generateHtmlDocumentation(args : InputArguments, api : Map
 								typeDetails,
 								args.template
 							),
-							args.template
+							args.template,
+							temp.breadcrumbs
 						);
 						
 						fs.writeFileSync(filename, html);

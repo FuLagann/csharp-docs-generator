@@ -6,6 +6,7 @@ import { readFile } from "./read-file";
 import ejs = require("ejs");
 import markdownIt = require("markdown-it");
 import pretty = require("pretty");
+import { BaseTemplateVars } from "./models/TemplateVariables";
 
 // Variables
 const md = markdownIt();
@@ -14,8 +15,14 @@ export function compileType(filename : string, json : TemplateApi, details : Typ
 	return compileGeneral("type", filename, json, details, partials);
 }
 
-export function compileBase(filename : string, htmlCode : string, templateApi : TemplateJson) : string {
-	return pretty(ejs.render(readFile(filename), templateApi), { ocd: true });
+export function compileBase(filename : string, htmlCode : string, templateApi : TemplateJson, breadcrumbs : string[]) : string {
+	// Variables
+	let variables = new BaseTemplateVars(templateApi);
+	
+	variables.breadcrumbs = breadcrumbs;
+	variables.typePath = breadcrumbs.join('.');
+	
+	return pretty(ejs.render(readFile(filename), variables), { ocd: true });
 }
 
 /**Compiles the template in general.
