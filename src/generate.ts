@@ -35,20 +35,13 @@ export async function generateHtmlDocumentation(args : InputArguments, api : Map
 						// Variables
 						const typePath = temp.breadcrumbs.join('.').replace('`', '-');
 						const filename = args.outputPath + typePath + ".html";
-						const typeDetails = await checkType(args, typePath);
 						const html = compileBase(
 							getTemplateUri(args.template.baseUri),
-							compileType(
-								getTemplateUri(args.template.typeUri),
-								temp,
-								typeDetails,
-								args.template
-							),
 							args.template,
 							temp.breadcrumbs
 						);
 						
-						fs.writeFileSync(filename, html);
+						fs.writeFileSync(filename.toLowerCase(), html);
 						console.log(`Created ${ filename }!`);
 					} break;
 				}

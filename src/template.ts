@@ -15,7 +15,7 @@ export function compileType(filename : string, json : TemplateApi, details : Typ
 	return compileGeneral("type", filename, json, details, partials);
 }
 
-export function compileBase(filename : string, htmlCode : string, templateApi : TemplateJson, breadcrumbs : string[]) : string {
+export function compileBase(filename : string, templateApi : TemplateJson, breadcrumbs : string[]) : string {
 	// Variables
 	let variables = new BaseTemplateVars(templateApi);
 	
