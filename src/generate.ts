@@ -2,66 +2,34 @@
 import { InputArguments } from "./models/InputArguments";
 import { TypeInfo } from "./models/SharpChecker";
 import { TemplateApi } from "./models/TemplateApi";
+import { XmlFormat } from "./models/XmlFormat";
 import { getSharpCheckerExe, getTemplateUri } from "./index";
 import { readFile } from "./read-file";
 import { compileBase, compileType } from "./template";
 import { exec } from "@actions/exec";
 import fs = require("fs");
 
-export async function generateHtmlDocumentation(args : InputArguments, api : Map<string, any>) {
-	// Variables
-	let queue : TemplateApi[] = [{ api: api, breadcrumbs: [] }];
-	let temp : (TemplateApi | undefined);
-	let keys : IterableIterator<string>;
-	let iterator : IteratorResult<string, any>;
-	let key : string;
-	
+export async function generateHtmlDocumentation(args : InputArguments, api : Map<string, XmlFormat>) {
 	console.log("Generating HTML Documentation...");
-	while(queue.length > 0) {
-		temp = queue.shift();
-		
-		if(temp == undefined) { break; }
-		
-		keys = temp.api.keys();
-		
-		while(true) {
-			iterator = keys.next();
-			if(iterator.done) { break; }
-			key = iterator.value;
-			
-			if(key == "type") {
-				switch(temp.api.get(key)) {
-					case "T": {
-						// Variables
-						const typePath = temp.breadcrumbs.join('.').replace('`', '-');
-						const filename = args.outputPath + typePath + ".html";
-						const html = compileBase(
-							getTemplateUri(args.template.baseUri),
-							args.template,
-							temp.breadcrumbs,
-							typePath
-						);
-						
-						fs.writeFileSync(filename.toLowerCase(), html);
-						console.log(`Created ${ filename }!`);
-					} break;
-				}
-				continue;
-			}
-			
-			switch(key) {
-				case "summary": case "returns": case "remarks":
-				case "example": case "typeparam": case "param":
-				case "exception": continue;
-				default: {
-					queue.push({
-						api: temp.api.get(key),
-						breadcrumbs: temp.breadcrumbs.concat([key])
-					});
-				} break;
-			}
+	
+	api.forEach(function(val : XmlFormat, key : string) {
+		switch(val.type) {
+			case "T": {
+				// Variables
+				const typePath = key.replace('`', '-');
+				const filename = args.outputPath + typePath + ".html"; // TODO: Add customization to output file extension
+				const html = compileBase(
+					getTemplateUri(args.template.baseUri),
+					args.template,
+					[],
+					typePath
+				);
+				
+				fs.writeFileSync(filename.toLowerCase(), html);
+				console.log(`Created ${ filename }!`);
+			} break;
 		}
-	}
+	});
 	
 	console.log("Generation completed!");
 }
@@ -70,7 +38,7 @@ export async function generateHtmlDocumentation(args : InputArguments, api : Map
  * @param args {InputArguments} - The input arguments used to look into the input binaries.
  * @param typePath {string} - The path to the type to look into.
  * @returns Returns the info of the type.*/
-async function checkType(args : InputArguments, typePath : string) : Promise<TypeInfo> {
+export async function generateTypeDetails(args : InputArguments, typePath : string) : Promise<TypeInfo> {
 	// Variables
 	const sharpChecker : string = getSharpCheckerExe();
 	const outputPath : string = "__temp/type.json";

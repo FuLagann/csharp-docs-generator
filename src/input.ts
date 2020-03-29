@@ -10,15 +10,15 @@ export function getInputs() : InputArguments {
 	// Variables
 	let results : InputArguments = new InputArguments();
 	
-	results.buildTasks = splitString(core.getInput("build-tasks") ?? "", ',');
-	results.cleanUpTasks = splitString(core.getInput("cleanup-tasks") ?? "", ',');
-	results.binaries = splitString(core.getInput("binaries") ?? "", ",");
-	results.branchName = core.getInput("branch-name") ?? results.branchName;
-	results.amendNoEdit = Boolean(core.getInput("amend-no-edit") == "true" ?? results.amendNoEdit);
-	results.outputPath = core.getInput("output-path") ?? results.outputPath;
-	results.user.name = core.getInput("user-name") ?? results.user.name;
-	results.user.email = core.getInput("user-email") ?? results.user.email;
-	results.templatePath = core.getInput("template-json") ?? results.templatePath;
+	results.buildTasks = splitString(core.getInput("build-tasks") || "", ',');
+	results.cleanUpTasks = splitString(core.getInput("cleanup-tasks") || "", ',');
+	results.binaries = splitString(core.getInput("binaries") || "", ",");
+	results.branchName = core.getInput("branch-name") || results.branchName;
+	results.amendNoEdit = Boolean(core.getInput("amend-no-edit") == "true" || results.amendNoEdit);
+	results.outputPath = core.getInput("output-path") || results.outputPath;
+	results.user.name = core.getInput("user-name") || results.user.name;
+	results.user.email = core.getInput("user-email") || results.user.email;
+	results.templatePath = core.getInput("template-json") || results.templatePath;
 	gatherUris(results.template, results.templatePath);
 	
 	return results;
@@ -32,11 +32,11 @@ function gatherUris(template : TemplateJson, yamlUri : string | undefined) : Tem
 	// Variables
 	const yamlJson : TemplateJson = JSON.parse(yamlUri ? readFile(yamlUri).toString() : "{}");
 	
-	template.baseUri = yamlJson.baseUri ?? template.baseUri;
-	template.cssUris = yamlJson.cssUris ?? template.cssUris;
-	template.scriptUris = yamlJson.scriptUris ?? template.scriptUris;
-	template.namespaceUri = yamlJson.namespaceUri ?? template.namespaceUri;
-	template.typeUri = yamlJson.typeUri ?? template.typeUri;
+	template.baseUri = yamlJson.baseUri || template.baseUri;
+	template.cssUris = yamlJson.cssUris || template.cssUris;
+	template.scriptUris = yamlJson.scriptUris || template.scriptUris;
+	template.namespaceUri = yamlJson.namespaceUri || template.namespaceUri;
+	template.typeUri = yamlJson.typeUri || template.typeUri;
 	gatherCompactFullUri(template.constructorsUri, yamlJson.constructorsUri);
 	gatherCompactFullUri(template.fieldsUri, yamlJson.fieldsUri);
 	gatherCompactFullUri(template.propertiesUri, yamlJson.propertiesUri);
@@ -52,11 +52,11 @@ function gatherUris(template : TemplateJson, yamlUri : string | undefined) : Tem
  * @returns Returns the compact-full uris used for the template json*/
 function gatherCompactFullUri(templateUri : CompactFullUris, yamlUri : CompactFullUris) : CompactFullUris {
 	templateUri.compact = (yamlUri ?
-		yamlUri.compact ?? templateUri.compact :
+		yamlUri.compact || templateUri.compact :
 		templateUri.compact
 	);
 	templateUri.full = (yamlUri ?
-		yamlUri.full ?? templateUri.full :
+		yamlUri.full || templateUri.full :
 		templateUri.full
 	);
 	

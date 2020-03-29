@@ -4,6 +4,7 @@ import input = require("./input");
 import io = require("@actions/io");
 import tools = require("@actions/tool-cache");
 import { InputArguments } from "./models/InputArguments";
+import { XmlFormat } from "./models/XmlFormat";
 import { exec } from "@actions/exec";
 import { gatherApiMap } from "./read-xml";
 import { generateHtmlDocumentation } from "./generate";
@@ -14,10 +15,13 @@ const SHARP_CHECKER_URL = "https://github.com/FuLagann/sharp-checker/releases/do
 const SHARP_CHECKER_EXE = "SharpChecker-v1.0-linux-x64/SharpChecker";
 const args : InputArguments = input.getInputs();
 let sharpCheckerExe : string;
+let xmlApi : Map<string, XmlFormat>;
 
 /**Gets the path to the SharpChecker program.
  * @returns Returns the path to the SharpChecker program.*/
 export function getSharpCheckerExe() : string { return sharpCheckerExe; }
+
+export function getXmlApi() : Map<string, XmlFormat> { return xmlApi; }
 
 export function getArguments() : InputArguments { return args; }
 
@@ -71,12 +75,10 @@ async function downloadTools() {
 
 /**Generates the html documentation.*/
 async function generateDocs() {
-	// Variables
-	const api : Map<string, any> = gatherApiMap(args);
-	
+	xmlApi = gatherApiMap(args);
 	try { await io.rmRF(args.outputPath); } catch(e) {}
 	try { await io.mkdirP(args.outputPath); } catch(e) {}
-	await generateHtmlDocumentation(args, api);
+	await generateHtmlDocumentation(args, xmlApi);
 }
 
 /**Cleans everything up before pushing to the repository so nothing unwanted gets committed.*/
@@ -128,4 +130,4 @@ async function gitPush() {
 	await generateDocs();
 	await cleanUp();
 	await gitPush().catch(onGitError);
-})().catch(onError)
+})().catch(onError);

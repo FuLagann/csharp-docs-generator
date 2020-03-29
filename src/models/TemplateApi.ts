@@ -1,7 +1,9 @@
 
+import { XmlFormat } from "./XmlFormat";
+
 export interface TemplateApi {
 	breadcrumbs: string[];
-	api: Map<string, any>;
+	api: Map<string, XmlFormat>;
 }
 
 export interface NameDescription {

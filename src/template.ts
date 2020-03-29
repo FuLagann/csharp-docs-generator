@@ -1,18 +1,28 @@
 
+import { InputArguments } from "./models/InputArguments";
 import { TypeInfo } from "./models/SharpChecker";
 import { TemplateApi, TemplateApiItems, NameDescription } from "./models/TemplateApi";
 import { TemplateJson } from "./models/TemplateJson";
 import { BaseTemplateVars } from "./models/TemplateVariables";
+import { XmlFormat } from "./models/XmlFormat";
 import { readFile } from "./read-file";
+import { generateTypeDetails } from "./generate";
 import ejs = require("ejs");
 import markdownIt = require("markdown-it");
 import pretty = require("pretty");
+import { getArguments, getXmlApi } from "./index";
 
 // Variables
 const md = markdownIt();
 
-export function compileType(filename : string, typePath : string) : string {
-	return ejs.render(readFile(filename), {});
+export async function compileType(filename : string, typePath : string) : Promise<string> {
+	// Variables
+	const args : InputArguments = getArguments();
+	const api : Map<string, XmlFormat> = getXmlApi();
+	const typeJson : TypeInfo = await generateTypeDetails(args, typePath);
+	const xmlApi : TemplateApiItems = getApiItems(api.get(typePath));
+	
+	return ejs.render(readFile(filename), { details: typeJson, xmlDocs: xmlApi });
 }
 
 export function compileBase(filename : string, templateApi : TemplateJson, breadcrumbs : string[], typePath : string) : string {
@@ -26,43 +36,36 @@ export function compileBase(filename : string, templateApi : TemplateJson, bread
 }
 
 /**Gets all the api items from the surface level of the api.
- * @param api {Map<string, any>} - The api to look into.
+ * @param api {Map<string, XmlFormat>} - The api to look into.
  * @returns Returns the template items needed to fill up the api documentation.*/
-function getApiItems(api : Map<string, any>) : TemplateApiItems {
-	// Variables
-	const summary : string = api.get("summary") || "No description.";
-	const returns : string = api.get("returns");
-	const remarks : string = api.get("remarks");
-	const example : string = api.get("example");
-	const param : NameDescription[] = api.get("param");
-	const exceptions : NameDescription[] = api.get("exception");
-	const typeParams : NameDescription[] = api.get("typeparam");
+function getApiItems(format : (XmlFormat | undefined)) : TemplateApiItems {
+	if(format == undefined) { format = new XmlFormat(); }
 	
 	return {
-		summary: md.render(summary),
+		summary: md.render(format.summary),
 		returns: {
-			exists: doesItemExist(returns),
-			value: md.render(returns || "")
+			exists: doesItemExist(format.returns),
+			value: md.render(format.returns || "")
 		},
 		remarks: {
-			exists: doesItemExist(remarks),
-			value: md.render(remarks || "")
+			exists: doesItemExist(format.remarks),
+			value: md.render(format.remarks || "")
 		},
 		example: {
-			exists: doesItemExist(example),
-			value: md.render(example || "")
+			exists: doesItemExist(format.example),
+			value: md.render(format.example || "")
 		},
 		parameters: {
-			exists: doesArrayItemExist(param),
-			value: renderMarkdownForArray(param)
+			exists: doesArrayItemExist(format.parameters),
+			value: renderMarkdownForArray(format.parameters)
 		},
 		exceptions: {
-			exists: doesArrayItemExist(exceptions),
-			value: renderMarkdownForArray(exceptions)
+			exists: doesArrayItemExist(format.exceptions),
+			value: renderMarkdownForArray(format.exceptions)
 		},
 		typeParameters: {
-			exists: doesArrayItemExist(typeParams),
-			value: renderMarkdownForArray(typeParams)
+			exists: doesArrayItemExist(format.typeParameters),
+			value: renderMarkdownForArray(format.typeParameters)
 		}
 	};
 }

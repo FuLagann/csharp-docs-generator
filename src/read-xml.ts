@@ -2,6 +2,7 @@
 import { readFile } from "./read-file";
 import { NameDescription } from "./models/TemplateApi";
 import { InputArguments } from "./models/InputArguments";
+import { XmlFormat } from "./models/XmlFormat";
 import { DOMParser } from "xmldom";
 
 // Variables
@@ -15,10 +16,10 @@ const TEXT_CONTENTS : string[][] = [
 /**Gathers a map of the api from the xml documents.
  * @param args {InputArguments} - The input arguments to get the xml documents from.
  * @returns Returns a documented map of the api.*/
-export function gatherApiMap(args : InputArguments) : Map<string, any> {
+export function gatherApiMap(args : InputArguments) : Map<string, XmlFormat> {
 	// Variables
 	let content : string;
-	let api : Map<string, any> = new Map<string, any>();
+	let api : Map<string, XmlFormat> = new Map<string, XmlFormat>();
 	const parser : DOMParser = new DOMParser();
 	const xmls : string[] = getXmls(args.binaries);
 	
@@ -48,71 +49,55 @@ function getXmls(binaries : string[]) : string[] {
 	return results;
 }
 
-/**Generates all the members from the xml document into the map.
- * @param api {Map<string, any>} - The map used for templating and documentation generation. Will be filled in.
- * @param xml {XMLDocument} - The xml document to look into.*/
-function generateMembers(api : Map<string, any>, xml : XMLDocument) {
-	if(!xml) { throw new Error("Undefined xml."); }
+function generateMembers(api : Map<string, XmlFormat>, xml : XMLDocument) {
+	if(!xml) { throw new Error("Undefined xml!"); }
 	
 	// Variables
 	const members = xml.getElementsByTagName("member");
 	
-	for(let a = 0; a < members.length; a++) {
+	for(let i = 0; i < members.length; i++) {
 		// Variables
-		let name : (string | null) = members[a].getAttribute("name");
-		
+		const name : (string | null) = members[i].getAttribute("name");
 		if(!name) { throw new Error("No name for member! XML document invalid!"); }
+		const methodParam : string[] = name.split('(');
+		let typePath : string = methodParam[0];
+		let temp : string[] = typePath.split(':');
+		const type : string = temp[0];
+		let format : XmlFormat = setDataMembers(members[i]);
 		
-		// Variables
-		const methodParam = name.split('(');
-		let args = methodParam[0].split('.');
-		const type = args[0].split(':')[0];
-		let temp : Map<string, any> = api;
+		typePath = temp[1];
+		format.type = type;
 		
-		args[0] = args[0].split(':')[1];
-		if(methodParam.length > 1) {
-			args[args.length - 1] += `(${ methodParam[1] }`;
-		}
-		
-		for(let b = 0; b < args.length; b++) {
-			if(!temp.has(args[b])) {
-				temp.set(args[b], new Map<string, any>());
-			}
-			
-			temp = temp.get(args[b]) as Map<string, any>;
-			if(b == args.length - 1) {
-				temp.set("type", type);
-				setDataMembers(temp, members[a]);
-			}
-			else if(temp.get("type") == undefined) {
-				temp.set("type", "N");
-			}
-		}
+		console.log(typePath);
+		api.set(typePath, format);
 	}
 }
 
-/**Sets all the data members into the map of api from the given member.
- * @param api {Map<string, any>} - The map to place data onto.
- * @param member {Element} - The member to look into.*/
-function setDataMembers(api : Map<string, any>, member : Element) {
+function setDataMembers(member : Element) : XmlFormat {
 	// Variables
+	let format : XmlFormat = new XmlFormat();
 	const parameters : NameDescription[] = gatherNameDescriptionList(member.getElementsByTagName("param"), "name");
 	const exceptions : NameDescription[] = gatherNameDescriptionList(member.getElementsByTagName("exception"), "cref");
 	const typeParameters : NameDescription[] = gatherNameDescriptionList(member.getElementsByTagName("typeparam"), "name");
 	
 	for(let i = 0; i < TEXT_CONTENTS.length; i++) {
-		api.set(TEXT_CONTENTS[i][0], getTextContent(member, TEXT_CONTENTS[i][0], TEXT_CONTENTS[i][1]));
+		format.setTextContent(
+			TEXT_CONTENTS[i][0],
+			getTextContent(member, TEXT_CONTENTS[i][0], TEXT_CONTENTS[i][1])
+		);
 	}
-	api.set("param", parameters);
-	api.set("exception", exceptions);
-	api.set("typeparam", typeParameters);
+	format.parameters = parameters;
+	format.exceptions = exceptions;
+	format.typeParameters = typeParameters;
+	
+	return format;
 }
 
 /**Gather the name and description for the given attribute name of the collection of elements.
  * @param members {HTMLCollectionOf<Element>} - The list of members to look into.
  * @param attrName {string} - The name of the attribute to look into.
  * @returns Returns the list of names and descriptions of the attributes of the members.*/
-function gatherNameDescriptionList(members : HTMLCollectionOf<Element>, attrName : string) : NameDescription[] {
+function gatherNameDescriptionList(members : (HTMLCollectionOf<Element> | NodeListOf<Element>), attrName : string) : NameDescription[] {
 	// Variables
 	let results : NameDescription[] = [];
 	
