@@ -39,7 +39,7 @@ function getApiItems(api : Map<string, any>) : TemplateApiItems {
 	const typeParams : NameDescription[] = api.get("typeparam");
 	
 	return {
-		summary: summary,
+		summary: md.render(summary),
 		returns: {
 			exists: doesItemExist(returns),
 			value: md.render(returns || "")
