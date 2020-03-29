@@ -14,23 +14,24 @@ import { getArguments, getXmlApi } from "./index";
 
 // Variables
 const md = markdownIt();
+let generatedTypeJson : TypeInfo;
 
-export async function compileType(filename : string, typePath : string) : Promise<string> {
+export function compileType(filename : string, typePath : string) : string {
 	// Variables
-	const args : InputArguments = getArguments();
 	const api : Map<string, XmlFormat> = getXmlApi();
-	const typeJson : TypeInfo = await generateTypeDetails(args, typePath);
 	const xmlApi : TemplateApiItems = getApiItems(api.get(typePath));
 	
-	return ejs.render(readFile(filename), { details: typeJson, xmlDocs: xmlApi });
+	return ejs.render(readFile(filename), { details: generatedTypeJson, xmlDocs: xmlApi });
 }
 
-export function compileBase(filename : string, templateApi : TemplateJson, breadcrumbs : string[], typePath : string) : string {
+export async function compileBase(filename : string, templateApi : TemplateJson, breadcrumbs : string[], typePath : string) : Promise<string> {
 	// Variables
 	let variables = new BaseTemplateVars(templateApi);
+	const args : InputArguments = getArguments();
 	
 	variables.breadcrumbs = breadcrumbs;
 	variables.typePath = typePath;
+	generatedTypeJson = await generateTypeDetails(args, typePath);
 	
 	return pretty(ejs.render(readFile(filename), variables), { ocd: true });
 }

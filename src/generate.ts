@@ -12,13 +12,17 @@ import fs = require("fs");
 export async function generateHtmlDocumentation(args : InputArguments, api : Map<string, XmlFormat>) {
 	console.log("Generating HTML Documentation...");
 	
-	api.forEach(function(val : XmlFormat, key : string) {
-		switch(val.type) {
+	// Variables
+	let keys = api.keys();
+	let key = keys.next();
+	
+	while(!key.done) {
+		switch(key.value) {
 			case "T": {
 				// Variables
-				const typePath = key.replace('`', '-');
+				const typePath = key.value.replace('`', '-');
 				const filename = args.outputPath + typePath + ".html"; // TODO: Add customization to output file extension
-				const html = compileBase(
+				const html = await compileBase(
 					getTemplateUri(args.template.baseUri),
 					args.template,
 					[],
@@ -29,7 +33,9 @@ export async function generateHtmlDocumentation(args : InputArguments, api : Map
 				console.log(`Created ${ filename }!`);
 			} break;
 		}
-	});
+		
+		key = keys.next();
+	}
 	
 	console.log("Generation completed!");
 }
