@@ -47,5 +47,5 @@ export function createPartial(type : string, uri : string, path : string, contex
 		// TODO: Add method
 	}
 	
-	return ejs.render(readFile(uri), context);
+	return ejs.render(readFile(getTemplateUri(uri)), context);
 }
