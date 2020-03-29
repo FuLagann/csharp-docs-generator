@@ -7,10 +7,11 @@ import { BaseTemplateVars } from "./models/TemplateVariables";
 import { XmlFormat } from "./models/XmlFormat";
 import { readFile } from "./read-file";
 import { generateTypeDetails } from "./generate";
+import { getArguments, getXmlApi } from "./index";
+import { createPartial } from "./template-helpers";
 import ejs = require("ejs");
 import markdownIt = require("markdown-it");
 import pretty = require("pretty");
-import { getArguments, getXmlApi } from "./index";
 
 // Variables
 const md = markdownIt();
@@ -21,7 +22,7 @@ export function compileType(filename : string, typePath : string) : string {
 	const api : Map<string, XmlFormat> = getXmlApi();
 	const xmlApi : TemplateApiItems = getApiItems(api.get(typePath));
 	
-	return ejs.render(readFile(filename), { details: generatedTypeJson, xmlDocs: xmlApi });
+	return ejs.render(readFile(filename), { details: generatedTypeJson, xmlDocs: xmlApi, createPartial: createPartial });
 }
 
 export async function compileBase(filename : string, templateApi : TemplateJson, breadcrumbs : string[], typePath : string) : Promise<string> {
