@@ -19,16 +19,30 @@ let generatedTypeJson : TypeInfo;
 
 export function compileType(filename : string, typePath : string) : string {
 	// Variables
+	const args : InputArguments = getArguments();
 	const api : Map<string, XmlFormat> = getXmlApi();
 	const xmlApi : TemplateApiItems = getApiItems(api.get(typePath));
 	
-	return ejs.render(readFile(filename), { details: generatedTypeJson, xmlDocs: xmlApi, createPartial: createPartial });
+	return ejs.render(readFile(filename), {
+		details: generatedTypeJson,
+		xmlDocs: xmlApi,
+		createPartial: createPartial,
+		uris: {
+			constructors: args.template.constructorsUri,
+			fields: args.template.fieldsUri,
+			properties: args.template.propertiesUri,
+			events: args.template.eventsUri,
+			methods: args.template.methodsUri
+		}
+	});
 }
 
 export async function compileBase(filename : string, templateApi : TemplateJson, breadcrumbs : string[], typePath : string) : Promise<string> {
 	// Variables
 	let variables = new BaseTemplateVars(templateApi);
 	const args : InputArguments = getArguments();
+	
+	// TODO: Redo the template variables
 	
 	variables.breadcrumbs = breadcrumbs;
 	variables.typePath = typePath;
