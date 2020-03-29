@@ -17,7 +17,10 @@ export async function generateHtmlDocumentation(args : InputArguments, api : Map
 	let key = keys.next();
 	
 	while(!key.done) {
-		switch(key.value) {
+		// Variables
+		let value = api.get(key.value) as XmlFormat;
+		
+		switch(value.type) {
 			case "T": {
 				// Variables
 				const typePath = key.value.replace('`', '-');
