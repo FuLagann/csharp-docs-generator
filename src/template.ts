@@ -1,6 +1,6 @@
 
 import { InputArguments } from "./models/InputArguments";
-import { TypeInfo, FieldInfo } from "./models/SharpChecker";
+import { TypeInfo, FieldInfo, PropertyInfo, EventInfo, MethodInfo } from "./models/SharpChecker";
 import { TemplateApi, TemplateApiItems, NameDescription } from "./models/TemplateApi";
 import { TemplateJson } from "./models/TemplateJson";
 import { BaseTemplateVars, SidebarView } from "./models/TemplateVariables";
@@ -8,7 +8,7 @@ import { XmlFormat } from "./models/XmlFormat";
 import { readFile } from "./read-file";
 import { generateTypeDetails } from "./generate";
 import { getArguments, getXmlApi } from "./index";
-import { createPartial } from "./template-helpers";
+import { createPartial, displaySidebar } from "./template-helpers";
 import ejs = require("ejs");
 import markdownIt = require("markdown-it");
 import pretty = require("pretty");
@@ -25,6 +25,8 @@ export async function compileBase(filename : string, json : TemplateJson, typePa
 	generatedTypeJson = await generateTypeDetails(args, typePath);
 	
 	return pretty(ejs.render(readFile(filename), {
+		displaySidebar: displaySidebar,
+		createPartial: createPartial,
 		uris: {
 			css: json.cssUris,
 			scripts: json.scriptUris,
@@ -58,6 +60,42 @@ export function compileType(filename : string, typePath : string) : string {
 }
 
 export function compileField(filename : string, details : FieldInfo) {
+	// Variables
+	const api : Map<string, XmlFormat> = getXmlApi();
+	const typePath = details.implementedType.unlocalizedName.replace('`', '-') + "." + details.name;
+	const xmlApi : TemplateApiItems = getApiItems(api.get(typePath));
+	
+	return ejs.render(readFile(filename), {
+		details: details,
+		xmlDocs: xmlApi
+	});
+}
+
+export function compilePropety(filename : string, details : PropertyInfo) {
+	// Variables
+	const api : Map<string, XmlFormat> = getXmlApi();
+	const typePath = details.implementedType.unlocalizedName.replace('`', '-') + "." + details.name;
+	const xmlApi : TemplateApiItems = getApiItems(api.get(typePath));
+	
+	return ejs.render(readFile(filename), {
+		details: details,
+		xmlDocs: xmlApi
+	});
+}
+
+export function compileEvent(filename : string, details : EventInfo) {
+	// Variables
+	const api : Map<string, XmlFormat> = getXmlApi();
+	const typePath = details.implementedType.unlocalizedName.replace('`', '-') + "." + details.name;
+	const xmlApi : TemplateApiItems = getApiItems(api.get(typePath));
+	
+	return ejs.render(readFile(filename), {
+		details: details,
+		xmlDocs: xmlApi
+	});
+}
+
+export function compileMethod(filename : string, details : MethodInfo) {
 	// Variables
 	const api : Map<string, XmlFormat> = getXmlApi();
 	const typePath = details.implementedType.unlocalizedName.replace('`', '-') + "." + details.name;
