@@ -28,7 +28,6 @@ export async function generateHtmlDocumentation(args : InputArguments, api : Map
 				const html = await compileBase(
 					getTemplateUri(args.template.baseUri),
 					args.template,
-					[],
 					typePath
 				);
 				

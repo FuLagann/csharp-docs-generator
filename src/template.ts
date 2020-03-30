@@ -3,7 +3,7 @@ import { InputArguments } from "./models/InputArguments";
 import { TypeInfo, FieldInfo } from "./models/SharpChecker";
 import { TemplateApi, TemplateApiItems, NameDescription } from "./models/TemplateApi";
 import { TemplateJson } from "./models/TemplateJson";
-import { BaseTemplateVars } from "./models/TemplateVariables";
+import { BaseTemplateVars, SidebarView } from "./models/TemplateVariables";
 import { XmlFormat } from "./models/XmlFormat";
 import { readFile } from "./read-file";
 import { generateTypeDetails } from "./generate";
@@ -16,6 +16,26 @@ import pretty = require("pretty");
 // Variables
 const md = markdownIt();
 let generatedTypeJson : TypeInfo;
+
+export async function compileBase(filename : string, json : TemplateJson, typePath : string) : Promise<string> {
+	// Variables
+	const args : InputArguments = getArguments();
+	const sidebar : SidebarView = new SidebarView("$~root");
+	
+	generatedTypeJson = await generateTypeDetails(args, typePath);
+	
+	return pretty(ejs.render(readFile(filename), {
+		uris: {
+			css: json.cssUris,
+			scripts: json.scriptUris,
+			type: json.typeUri
+		},
+		isNamespace: false,
+		sidebarView: sidebar,
+		typePath: typePath,
+		breadcrumbs: [] // TODO: Figure out how to do this when compilation of namepsaces are possible
+	}), { ocd: true });
+}
 
 export function compileType(filename : string, typePath : string) : string {
 	// Variables
@@ -47,20 +67,6 @@ export function compileField(filename : string, details : FieldInfo) {
 		details: details,
 		xmlDocs: xmlApi
 	});
-}
-
-export async function compileBase(filename : string, templateApi : TemplateJson, breadcrumbs : string[], typePath : string) : Promise<string> {
-	// Variables
-	let variables = new BaseTemplateVars(templateApi);
-	const args : InputArguments = getArguments();
-	
-	// TODO: Redo the template variables
-	
-	variables.breadcrumbs = breadcrumbs;
-	variables.typePath = typePath;
-	generatedTypeJson = await generateTypeDetails(args, typePath);
-	
-	return pretty(ejs.render(readFile(filename), variables), { ocd: true });
 }
 
 /**Gets all the api items from the surface level of the api.
