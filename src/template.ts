@@ -1,6 +1,6 @@
 
 import { InputArguments } from "./models/InputArguments";
-import { TypeInfo } from "./models/SharpChecker";
+import { TypeInfo, FieldInfo } from "./models/SharpChecker";
 import { TemplateApi, TemplateApiItems, NameDescription } from "./models/TemplateApi";
 import { TemplateJson } from "./models/TemplateJson";
 import { BaseTemplateVars } from "./models/TemplateVariables";
@@ -34,6 +34,18 @@ export function compileType(filename : string, typePath : string) : string {
 			events: args.template.eventsUri,
 			methods: args.template.methodsUri
 		}
+	});
+}
+
+export function compileField(filename : string, details : FieldInfo) {
+	// Variables
+	const api : Map<string, XmlFormat> = getXmlApi();
+	const typePath = details.implementedType.unlocalizedName.replace('`', '-') + "." + details.name;
+	const xmlApi : TemplateApiItems = getApiItems(api.get(typePath));
+	
+	return ejs.render(readFile(filename), {
+		details: details,
+		xmlDocs: xmlApi
 	});
 }
 

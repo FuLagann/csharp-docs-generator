@@ -2,8 +2,9 @@
 import { SidebarView } from "./models/TemplateVariables";
 import { getTemplateUri } from "./index";
 import { readFile } from "./read-file";
-import { compileType } from "./template";
+import { compileType, compileField } from "./template";
 import ejs = require("ejs");
+import { FieldInfo } from "./models/SharpChecker";
 
 export function displaySidebar(
 	treeview : (SidebarView | SidebarView[]),
@@ -37,15 +38,18 @@ export function displaySidebar(
 	return results.join("");
 }
 
-export function createPartial(type : string, uri : string, path : string, context : any = {}) {
+export function createPartial(type : string, uri : string, context : any = {}) {
+	// Variables
+	const url = getTemplateUri(uri);
+	
 	switch(type) {
-		case "type": return compileType(getTemplateUri(uri), path);
+		case "type": return compileType(url, context as string);
+		case "field": return compileField(url, context as FieldInfo);
 		// TODO: Add constructor
 		// TODO: Add property
 		// TODO: Add event
-		// TODO: Add field
 		// TODO: Add method
 	}
 	
-	return ejs.render(readFile(getTemplateUri(uri)), context);
+	return ejs.render(readFile(url), context);
 }
