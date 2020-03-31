@@ -114,18 +114,18 @@ function getApiItems(format : (XmlFormat | undefined)) : TemplateApiItems {
 	if(format == undefined) { format = new XmlFormat(); }
 	
 	return {
-		summary: md.render(format.summary),
+		summary: md.render(format.summary.trim()),
 		returns: {
 			exists: doesItemExist(format.returns),
-			value: md.render(format.returns || "")
+			value: md.render((format.returns || "").trim())
 		},
 		remarks: {
 			exists: doesItemExist(format.remarks),
-			value: md.render(format.remarks || "")
+			value: md.render((format.remarks || "").trim())
 		},
 		example: {
 			exists: doesItemExist(format.example),
-			value: md.render(format.example || "")
+			value: md.render((format.example || "").trim())
 		},
 		parameters: {
 			exists: doesArrayItemExist(format.parameters),
@@ -162,7 +162,7 @@ function renderMarkdownForArray(list : NameDescription[]) : NameDescription[] {
 	let temp = list;
 	
 	for(let i = 0; i < temp.length; i++) {
-		temp[i].description = md.render(temp[i].description);
+		temp[i].description = md.render(temp[i].description.trim());
 	}
 	
 	return temp;
