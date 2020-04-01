@@ -112,13 +112,11 @@ export function compileMethod(filename : string, details : MethodInfo) {
  * @returns Returns the type path specific to the method.*/
 function getMethodTypePath(details : MethodInfo) : string {
 	// Variables
-	let typePath = getFriendlyTypePath(
-		details.implementedType,
-		(details.isConstructor ? "#ctor" : details.name)
-	);
+	let name = details.name;
+	if(details.isConstructor) { name = "#ctor"; }
+	if(details.isOperator && !name.startsWith("op_")) { name = "op_" + name; }
+	let typePath = getFriendlyTypePath(details.implementedType, name);
 	let parameters : string[] = [];
-	
-	console.log("Method: " + typePath);
 	
 	details.parameters.forEach(function(parameter) {
 		parameters.push(
@@ -126,6 +124,8 @@ function getMethodTypePath(details : MethodInfo) : string {
 			(parameter.modifier != "" ? "@" : "")
 		);
 	});
+	
+	console.log("Method: " + typePath + "(" + parameters.join(',') + ")");
 	
 	if(parameters.length > 0) { return `${ typePath }(${ parameters.join(',') })`; }
 	
