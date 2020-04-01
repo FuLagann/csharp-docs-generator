@@ -36,7 +36,7 @@ export async function compileBase(filename : string, json : TemplateJson, typePa
 		sidebarView: sidebar,
 		typePath: typePath,
 		breadcrumbs: [] // TODO: Figure out how to do this when compilation of namepsaces are possible
-	}), { ocd: true });
+	}));
 }
 
 export function compileType(filename : string, typePath : string) : string {
