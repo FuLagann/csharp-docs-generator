@@ -113,6 +113,7 @@ export interface MethodInfo {
 	returnType : QuickTypeInfo;
 	attributes : AttributeInfo[];
 	parameters : ParameterInfo[];
+	genericParameters : GenericParametersInfo[];
 	declaration : string;
 	parameterDeclaration : string;
 	fullDeclaration : string;
