@@ -115,6 +115,8 @@ function getMethodTypePath(details : MethodInfo) : string {
 	let typePath = getFriendlyTypePath(details.implementedType, details.name);
 	let parameters : string[] = [];
 	
+	console.log("Method: " + typePath);
+	
 	details.parameters.forEach(function(parameter) {
 		parameters.push(
 			parameter.typeInfo.unlocalizedName + 
