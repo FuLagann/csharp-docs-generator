@@ -1,6 +1,6 @@
 
 import { InputArguments } from "./models/InputArguments";
-import { TypeInfo, FieldInfo, PropertyInfo, EventInfo, MethodInfo } from "./models/SharpChecker";
+import { TypeInfo, FieldInfo, PropertyInfo, EventInfo, MethodInfo, QuickTypeInfo } from "./models/SharpChecker";
 import { TemplateApi, TemplateApiItems, NameDescription } from "./models/TemplateApi";
 import { TemplateJson } from "./models/TemplateJson";
 import { BaseTemplateVars, SidebarView } from "./models/TemplateVariables";
@@ -62,7 +62,7 @@ export function compileType(filename : string, typePath : string) : string {
 export function compileField(filename : string, details : FieldInfo) {
 	// Variables
 	const api : Map<string, XmlFormat> = getXmlApi();
-	const typePath = details.implementedType.unlocalizedName.replace('`', '-') + "." + details.name;
+	const typePath = getFriendlyTypePath(details.implementedType, details.name);
 	const xmlApi : TemplateApiItems = getApiItems(api.get(typePath));
 	
 	return ejs.render(readFile(filename), {
@@ -74,7 +74,7 @@ export function compileField(filename : string, details : FieldInfo) {
 export function compilePropety(filename : string, details : PropertyInfo) {
 	// Variables
 	const api : Map<string, XmlFormat> = getXmlApi();
-	const typePath = details.implementedType.unlocalizedName.replace('`', '-') + "." + details.name;
+	const typePath = getFriendlyTypePath(details.implementedType, details.name);
 	const xmlApi : TemplateApiItems = getApiItems(api.get(typePath));
 	
 	return ejs.render(readFile(filename), {
@@ -86,7 +86,7 @@ export function compilePropety(filename : string, details : PropertyInfo) {
 export function compileEvent(filename : string, details : EventInfo) {
 	// Variables
 	const api : Map<string, XmlFormat> = getXmlApi();
-	const typePath = details.implementedType.unlocalizedName.replace('`', '-') + "." + details.name;
+	const typePath = getFriendlyTypePath(details.implementedType, details.name);
 	const xmlApi : TemplateApiItems = getApiItems(api.get(typePath));
 	
 	return ejs.render(readFile(filename), {
@@ -98,13 +98,39 @@ export function compileEvent(filename : string, details : EventInfo) {
 export function compileMethod(filename : string, details : MethodInfo) {
 	// Variables
 	const api : Map<string, XmlFormat> = getXmlApi();
-	const typePath = details.implementedType.unlocalizedName.replace('`', '-') + "." + details.name;
+	const typePath = getMethodTypePath(details);
 	const xmlApi : TemplateApiItems = getApiItems(api.get(typePath));
 	
 	return ejs.render(readFile(filename), {
 		details: details,
 		xmlDocs: xmlApi
 	});
+}
+
+/**Gets the method's specific type path used to differentiate methods with different types of parameters.
+ * @param details {MethodInfo} - The details of the method to look into.
+ * @returns Returns the type path specific to the method.*/
+function getMethodTypePath(details : MethodInfo) : string {
+	// Variables
+	let typePath = getFriendlyTypePath(details.implementedType, details.name);
+	let parameters : string[] = [];
+	
+	details.parameters.forEach(function(parameter) {
+		parameters.push(
+			parameter.typeInfo.unlocalizedName + 
+			(parameter.modifier != "" ? "@" : "")
+		);
+	});
+	
+	return `${ typePath }(${ parameters.join(',') })`;
+}
+
+/**Gets the friendly version of the type path using the type info and member name
+ * @param typeInfo {QuickTypeInfo} - The information of the type.
+ * @param name {string} - The name of the member
+ * @returns Returns the friendly type path*/
+function getFriendlyTypePath(typeInfo : QuickTypeInfo, name : string) : string {
+	return typeInfo.unlocalizedName.replace('`', '-') + "." + name;
 }
 
 /**Gets all the api items from the surface level of the api.
