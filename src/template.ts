@@ -112,7 +112,10 @@ export function compileMethod(filename : string, details : MethodInfo) {
  * @returns Returns the type path specific to the method.*/
 function getMethodTypePath(details : MethodInfo) : string {
 	// Variables
-	let typePath = getFriendlyTypePath(details.implementedType, details.name);
+	let typePath = getFriendlyTypePath(
+		details.implementedType,
+		(details.isConstructor ? "#ctor" : details.name)
+	);
 	let parameters : string[] = [];
 	
 	console.log("Method: " + typePath);
@@ -124,7 +127,9 @@ function getMethodTypePath(details : MethodInfo) : string {
 		);
 	});
 	
-	return `${ typePath }(${ parameters.join(',') })`;
+	if(parameters.length > 0) { return `${ typePath }(${ parameters.join(',') })`; }
+	
+	return typePath;
 }
 
 /**Gets the friendly version of the type path using the type info and member name
