@@ -104,8 +104,9 @@ function gatherNameDescriptionList(members : (HTMLCollectionOf<Element> | NodeLi
 	for(let i = 0; i < members.length; i++) {
 		// Variables
 		const name = members[i].getAttribute(attrName);
-		const desc = (members[i].textContent || "No description").trim() + ".";
+		let desc = (members[i].textContent || "No description").trim() + ".";
 		
+		if(desc.endsWith("..")) { desc = desc.substring(0, desc.length - 1); }
 		if(!name) { continue; }
 		
 		results.push({ name: name, description: desc });
