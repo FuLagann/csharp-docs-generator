@@ -115,9 +115,10 @@ function getMethodTypePath(details : MethodInfo) : string {
 	let name = details.name;
 	if(details.isConstructor) { name = "#ctor"; }
 	if(details.isConversionOperator) {
-		console.log(name);
-		console.log(details.modifier);
-		console.log("=======");
+		name = (details.modifier.indexOf("implicit") == -1 ?
+			"op_Explicit" :
+			"op_Implicit"
+		);
 	}
 	else if(details.isOperator && !name.startsWith("op_")) { name = "op_" + name; }
 	let typePath = getFriendlyTypePath(details.implementedType, name);
@@ -147,7 +148,16 @@ function getMethodTypePath(details : MethodInfo) : string {
 	
 	console.log("Method: " + typePath + "(" + parameters.join(',') + ")");
 	
-	if(parameters.length > 0) { return `${ typePath }(${ parameters.join(',') })`; }
+	if(parameters.length > 0) {
+		// Variables
+		const methodPath = `${ typePath }(${ parameters.join(',') })`;
+		
+		if(details.isConversionOperator) {
+			return `${ methodPath }~${ details.returnType.unlocalizedName }`;
+		}
+		
+		return methodPath;
+	}
 	
 	return typePath;
 }

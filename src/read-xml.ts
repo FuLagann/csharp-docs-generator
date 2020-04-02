@@ -23,14 +23,10 @@ export function gatherApiMap(args : InputArguments) : Map<string, XmlFormat> {
 	const parser : DOMParser = new DOMParser();
 	const xmls : string[] = getXmls(args.binaries);
 	
-	console.log(xmls);
-	
 	for(let i = 0; i < xmls.length; i++) {
 		content = readFile(xmls[i]);
 		generateMembers(api, parser.parseFromString(content, "text/xml"));
 	}
-	
-	console.log(api);
 	
 	return api;
 }
