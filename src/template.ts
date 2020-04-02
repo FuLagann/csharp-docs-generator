@@ -114,7 +114,12 @@ function getMethodTypePath(details : MethodInfo) : string {
 	// Variables
 	let name = details.name;
 	if(details.isConstructor) { name = "#ctor"; }
-	if(details.isOperator && !name.startsWith("op_")) { name = "op_" + name; }
+	if(details.isConversionOperator) {
+		console.log(name);
+		console.log(details.modifier);
+		console.log("=======");
+	}
+	else if(details.isOperator && !name.startsWith("op_")) { name = "op_" + name; }
 	let typePath = getFriendlyTypePath(details.implementedType, name);
 	let parameters : string[] = [];
 	
