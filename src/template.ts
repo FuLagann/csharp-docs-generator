@@ -118,7 +118,21 @@ function getMethodTypePath(details : MethodInfo) : string {
 	let typePath = getFriendlyTypePath(details.implementedType, name);
 	let parameters : string[] = [];
 	
+	if(details.genericParameters.length > 0) {
+		typePath += "``" + details.genericParameters.length;
+	}
+	
 	details.parameters.forEach(function(parameter) {
+		for(let i = 0; i < details.genericParameters.length; i++) {
+			if(parameter.typeInfo.unlocalizedName == details.genericParameters[i].unlocalizedName) {
+				parameters.push(
+					"``" + i +
+					(parameter.modifier != "" ? "@" : "")
+				);
+				return;
+			}
+		}
+		
 		parameters.push(
 			parameter.typeInfo.unlocalizedName + 
 			(parameter.modifier != "" ? "@" : "")
