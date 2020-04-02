@@ -123,26 +123,21 @@ function getMethodTypePath(details : MethodInfo) : string {
 	}
 	
 	details.parameters.forEach(function(parameter) {
-		console.log("Parameter:");
-		console.log(parameter);
-		console.log(parameter.typeInfo);
-		console.log(parameter.genericParameterDeclarations);
-		console.log("==========");
+		// Variables
+		let paramResult : string = parameter.typeInfo.fullName;
 		
 		for(let i = 0; i < details.genericParameters.length; i++) {
-			if(parameter.typeInfo.unlocalizedName == details.genericParameters[i].unlocalizedName) {
-				parameters.push(
-					"``" + i +
-					(parameter.modifier != "" ? "@" : "")
-				);
-				return;
-			}
+			paramResult = paramResult.replace(
+				new RegExp(`([<,])${ details.genericParameters[i].unlocalizedName }([>,])|^${ details.genericParameters[i].unlocalizedName }$`, "gm"),
+				"$1``" + i + "$2"
+			);
 		}
 		
-		parameters.push(
-			parameter.typeInfo.unlocalizedName + 
-			(parameter.modifier != "" ? "@" : "")
-		);
+		paramResult = paramResult.replace(new RegExp("<", "gm"), "{").replace(new RegExp(">", "gm"), "}");
+		
+		if(parameter.modifier != "") { paramResult += "@"; }
+		
+		parameters.push(paramResult);
 	});
 	
 	console.log("Method: " + typePath + "(" + parameters.join(',') + ")");
