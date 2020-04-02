@@ -1,6 +1,6 @@
 
 import { InputArguments } from "./models/InputArguments";
-import { TypeInfo } from "./models/SharpChecker";
+import { TypeList, TypeInfo } from "./models/SharpChecker";
 import { TemplateApi } from "./models/TemplateApi";
 import { XmlFormat } from "./models/XmlFormat";
 import { getSharpCheckerExe, getTemplateUri } from "./index";
@@ -9,31 +9,32 @@ import { compileBase, compileType } from "./template";
 import { exec } from "@actions/exec";
 import fs = require("fs");
 
-export async function generateHtmlDocumentation(args : InputArguments, api : Map<string, XmlFormat>) {
+export async function generateHtmlDocumentation(args : InputArguments) {
 	console.log("Generating HTML Documentation...");
 	
 	// Variables
-	let keys = api.keys();
+	const list : TypeList = await generateTypeList(args);
+	let keys = list.type.keys();
 	let key = keys.next();
 	
 	while(!key.done) {
 		// Variables
-		let value = api.get(key.value) as XmlFormat;
+		let value : string[] = list.type.get(key.value) as string[];
 		
-		switch(value.type) {
-			case "T": {
-				// Variables
-				const typePath = key.value.replace('`', '-');
-				const filename = args.outputPath + typePath + ".html"; // TODO: Add customization to output file extension
-				const html = await compileBase(
-					getTemplateUri(args.template.baseUri),
-					args.template,
-					typePath
-				);
-				
-				fs.writeFileSync(filename.toLowerCase(), html);
-				console.log(`Created ${ filename }!`);
-			} break;
+		for(let i = 0; i < value.length; i++) {
+			// Variables
+			const typePath = value[i].replace("/", ".");
+			if(typePath.indexOf("<") != -1) { continue; }
+			// TODO: Add customization to output file extension
+			const filename = args.outputPath + typePath + ".hmtl";
+			const html = await compileBase(
+				getTemplateUri(args.template.baseUri),
+				args.template,
+				typePath
+			);
+			
+			fs.writeFileSync(filename.toLowerCase(), html);
+			console.log(`Created ${ filename }!`);
 		}
 		
 		key = keys.next();
@@ -54,4 +55,17 @@ export async function generateTypeDetails(args : InputArguments, typePath : stri
 	await exec(sharpChecker, ["-o", outputPath, typePath].concat(args.binaries));
 	
 	return JSON.parse(readFile(outputPath)) as TypeInfo;
+}
+
+/**Checks the list of types and returns their names.
+ * @param args {InputArguments} - The input arguments used to look into the input binaries.
+ * @returns Returns the list of the the types contained within the binaries inputted.*/
+async function generateTypeList(args : InputArguments) : Promise<TypeList> {
+	// Variables
+	const sharpChecker : string = getSharpCheckerExe();
+	const outputPath : string = "__temp/list.json";
+	
+	await exec(sharpChecker, ["-o", outputPath, "--list"].concat(args.binaries));
+	
+	return JSON.parse(readFile(outputPath)) as TypeList;
 }

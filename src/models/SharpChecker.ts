@@ -1,4 +1,8 @@
 
+export interface TypeList {
+	type : Map<string, string[]>;
+}
+
 export interface QuickTypeInfo {
 	unlocalizedName : string;
 	name : string;

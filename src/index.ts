@@ -78,7 +78,7 @@ async function generateDocs() {
 	xmlApi = gatherApiMap(args);
 	try { await io.rmRF(args.outputPath); } catch(e) {}
 	try { await io.mkdirP(args.outputPath); } catch(e) {}
-	await generateHtmlDocumentation(args, xmlApi);
+	await generateHtmlDocumentation(args);
 }
 
 /**Cleans everything up before pushing to the repository so nothing unwanted gets committed.*/
