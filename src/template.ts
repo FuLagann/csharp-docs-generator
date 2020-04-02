@@ -123,6 +123,12 @@ function getMethodTypePath(details : MethodInfo) : string {
 	}
 	
 	details.parameters.forEach(function(parameter) {
+		console.log("Parameter:");
+		console.log(parameter);
+		console.log(parameter.typeInfo);
+		console.log(parameter.genericParameterDeclarations);
+		console.log("==========");
+		
 		for(let i = 0; i < details.genericParameters.length; i++) {
 			if(parameter.typeInfo.unlocalizedName == details.genericParameters[i].unlocalizedName) {
 				parameters.push(
