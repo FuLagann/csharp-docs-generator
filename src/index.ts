@@ -67,7 +67,7 @@ async function downloadTools() {
 	try { await io.mkdirP(TEMP_FOLDER); } catch(e) {}
 	
 	// Variables
-	const zipLocation = await tools.downloadTool(SHARP_CHECKER_URL);
+	const zipLocation = await tools.downloadTool(SHARP_CHECKER_URL, TEMP_FOLDER);
 	const unzippedLocation = await tools.extractZip(zipLocation, TEMP_FOLDER);
 	
 	sharpCheckerExe = `${ unzippedLocation }/${ SHARP_CHECKER_EXE }`;
