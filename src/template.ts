@@ -101,7 +101,7 @@ export function compileField(filename : string, details : FieldInfo) {
 export function compilePropety(filename : string, details : PropertyInfo) {
 	// Variables
 	const api : Map<string, XmlFormat> = getXmlApi();
-	const typePath = getTypePath(details.implementedType, details.name);
+	const typePath = getPropertyTypePath(details);
 	const xmlApi : TemplateApiItems = getApiItems(api.get(typePath));
 	
 	return ejs.render(readFile(filename), {
@@ -135,6 +135,27 @@ export function compileMethod(filename : string, details : MethodInfo) {
 		xmlDocs: xmlApi,
 		typeInfo: generatedTypeJson.typeInfo
 	});
+}
+
+function getPropertyTypePath(details : PropertyInfo) : string {
+	// Variables
+	let typePath = getTypePath(details.implementedType, details.name);
+	
+	console.log("Property: " + typePath);
+	if(details.parameters.length) {
+		// Variables
+		let parameters : string[] = [];
+		
+		details.parameters.forEach(function(parameter) {
+			// Variables
+			let paramResult : string = parameter.typeInfo.fullName;
+			
+			parameters.push(paramResult);
+		});
+		console.log("Property (2): " + typePath + "(" + parameters.join(',') + ")");
+	}
+	
+	return typePath;
 }
 
 /**Gets the method's specific type path used to differentiate methods with different types of parameters.
@@ -175,8 +196,6 @@ function getMethodTypePath(details : MethodInfo) : string {
 		
 		parameters.push(paramResult);
 	});
-	
-	console.log("Method: " + typePath + "(" + parameters.join(',') + ")");
 	
 	if(parameters.length > 0) {
 		// Variables
