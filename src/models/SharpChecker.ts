@@ -1,6 +1,6 @@
 
 export interface TypeList {
-	types : Map<string, string[]>;
+	types : any;
 }
 
 export interface QuickTypeInfo {

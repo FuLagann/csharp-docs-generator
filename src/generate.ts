@@ -10,16 +10,13 @@ import { exec } from "@actions/exec";
 import fs = require("fs");
 
 export async function generateHtmlDocumentation(args : InputArguments) {
-	console.log("Generating HTML Documentation...");
-	
 	// Variables
 	const list : TypeList = await generateTypeList(args);
-	let keys = list.types.keys();
-	let key = keys.next();
 	
-	while(!key.done) {
+	console.log("Generating HTML Documentation...");
+	for(const key in list.types) {
 		// Variables
-		let value : string[] = list.types.get(key.value) as string[];
+		const value : string[] = list.types[key] as string[];
 		
 		for(let i = 0; i < value.length; i++) {
 			// Variables
@@ -36,10 +33,7 @@ export async function generateHtmlDocumentation(args : InputArguments) {
 			fs.writeFileSync(filename.toLowerCase(), html);
 			console.log(`Created ${ filename }!`);
 		}
-		
-		key = keys.next();
 	}
-	
 	console.log("Generation completed!");
 }
 
