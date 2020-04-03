@@ -60,6 +60,7 @@ export async function compileNamespace(args : InputArguments, namespace : string
 		sidebarView: sidebar,
 		namespaceName: namespace,
 		types: types,
+		typePath: namespace,
 		breadcrumbs: namespace.split('.')
 	}));
 }
