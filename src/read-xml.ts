@@ -21,6 +21,7 @@ export function gatherApiMap(args : InputArguments) : Map<string, XmlFormat> {
 	let content : string;
 	let api : Map<string, XmlFormat> = new Map<string, XmlFormat>();
 	const parser : DOMParser = new DOMParser();
+	// TODO: Gather default System.* inheritted methods.
 	const xmls : string[] = getXmls(args.binaries);
 	
 	for(let i = 0; i < xmls.length; i++) {
