@@ -68,9 +68,11 @@ async function downloadTools() {
 	
 	// Variables
 	const zipLocation = await tools.downloadTool(SHARP_CHECKER_URL);
-	const unzippedLocation = await tools.extractZip(zipLocation, TEMP_FOLDER);
+	console.log(`Location: ${ zipLocation }`);
+	await exec("unzip", ["-q", "-o", zipLocation, "-d", TEMP_FOLDER]);
+	//const unzippedLocation = await tools.extractZip(zipLocation, TEMP_FOLDER);
 	
-	sharpCheckerExe = `${ unzippedLocation }/${ SHARP_CHECKER_EXE }`;
+	sharpCheckerExe = `${ TEMP_FOLDER }/${ SHARP_CHECKER_EXE }`;
 }
 
 /**Generates the html documentation.*/

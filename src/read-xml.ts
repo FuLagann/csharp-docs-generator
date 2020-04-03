@@ -55,15 +55,12 @@ function generateMembers(api : Map<string, XmlFormat>, xml : XMLDocument) {
 		// Variables
 		const name : (string | null) = members[i].getAttribute("name");
 		if(!name) { throw new Error("No name for member! XML document invalid!"); }
-		const methodParam : string[] = name.split('(');
 		let temp : string[] = name.split(':');
 		const type : string = temp[0];
 		const typePath : string = temp[1];
 		let format : XmlFormat = setDataMembers(members[i]);
 		
 		format.type = type;
-		
-		console.log(typePath);
 		api.set(typePath, format);
 	}
 }
