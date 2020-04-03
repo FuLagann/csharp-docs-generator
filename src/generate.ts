@@ -5,7 +5,7 @@ import { TemplateApi } from "./models/TemplateApi";
 import { XmlFormat } from "./models/XmlFormat";
 import { TEMP_FOLDER, getSharpCheckerExe, getTemplateUri } from "./index";
 import { readFile } from "./read-file";
-import { compileBase, compileType } from "./template";
+import { compileBase, compileNamespace } from "./template";
 import { exec } from "@actions/exec";
 import fs = require("fs");
 
@@ -17,13 +17,11 @@ export async function generateHtmlDocumentation(args : InputArguments) {
 	for(const key in list.types) {
 		// Variables
 		const value : string[] = list.types[key] as string[];
+		const namespaceFilename = args.outputPath + key + args.outputExtension;
+		const html = await compileNamespace(args, key, value);
 		
-		// TODO: Generate namespace file
-		// const namespaceFilename = args.outputPath + key + args.outputExtension;
-		// const html = await compileNamespace(args, key, value);
-		
-		// fs.writeFileSync(namespaceFilename.toLowerCase(), html);
-		// console.log(`Created ${ namespaceFilename }`);
+		fs.writeFileSync(namespaceFilename.toLowerCase(), html);
+		console.log(`Created ${ namespaceFilename }`);
 		
 		for(let i = 0; i < value.length; i++) {
 			// Variables

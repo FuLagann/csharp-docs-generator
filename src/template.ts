@@ -23,6 +23,7 @@ export async function compileBase(args : InputArguments, typePath : string) : Pr
 	const sidebar : SidebarView = new SidebarView("$~root");
 	
 	generatedTypeJson = await generateTypeDetails(args, typePath);
+	// TODO: Generate sidebar
 	
 	return pretty(ejs.render(readFile(filename), {
 		displaySidebar: displaySidebar,
@@ -35,7 +36,31 @@ export async function compileBase(args : InputArguments, typePath : string) : Pr
 		isNamespace: false,
 		sidebarView: sidebar,
 		typePath: typePath,
-		breadcrumbs: [] // TODO: Figure out how to do this when compilation of namepsaces are possible
+		breadcrumbs: generatedTypeJson.typeInfo.fullName.split('.')
+	}));
+}
+
+export async function compileNamespace(args : InputArguments, namespace : string, types : string[]) : Promise<string> {
+	// Variables
+	const filename = getTemplateUri(args.template.baseUri);
+	const sidebar : SidebarView = new SidebarView("$~root");
+	
+	// TODO: Generate sidebar
+	// TODO: Figure out namespaces listed in namespace webpages
+	
+	return pretty(ejs.render(readFile(filename), {
+		displaySidebar: displaySidebar,
+		createPartial: createPartial,
+		uris: {
+			css: args.template.cssUris,
+			scripts: args.template.scriptUris,
+			type: args.template.typeUri
+		},
+		isNamespace: true,
+		sidebarView: sidebar,
+		namespaceName: namespace,
+		types: types,
+		breadcrumbs: namespace.split('.')
 	}));
 }
 
