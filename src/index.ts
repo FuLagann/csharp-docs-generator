@@ -11,6 +11,8 @@ import { generateHtmlDocumentation } from "./generate";
 
 // Variables
 export const TEMP_FOLDER = "__temp/";
+export const NETSTANDARD_XML = "netstandard.xml";
+const NETSTANDARD_API = "https://github.com/FuLagann/csharp-docs-generator/raw/paulsbranch/packages/netstandard.xml";
 const SHARP_CHECKER_URL = "https://github.com/FuLagann/sharp-checker/releases/download/v1/SharpChecker-v1.0-standalone-linux-x64.zip";
 const SHARP_CHECKER_EXE = "SharpChecker-v1.0-linux-x64/SharpChecker";
 const args : InputArguments = input.getInputs();
@@ -69,6 +71,7 @@ async function downloadTools() {
 	// Variables
 	const zipLocation = await tools.downloadTool(SHARP_CHECKER_URL);
 	
+	await tools.downloadTool(NETSTANDARD_API, TEMP_FOLDER + NETSTANDARD_XML);
 	await exec("unzip", ["-q", "-o", zipLocation, "-d", TEMP_FOLDER]);
 	sharpCheckerExe = `${ TEMP_FOLDER }/${ SHARP_CHECKER_EXE }`;
 }
