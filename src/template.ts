@@ -137,22 +137,22 @@ export function compileMethod(filename : string, details : MethodInfo) {
 	});
 }
 
+/**Gets the property's specific type path used for indices specifically.
+ * @param details {PropertyInfo} - The details of the property to look into.
+ * @returns Returns the type path specific to the property.*/
 function getPropertyTypePath(details : PropertyInfo) : string {
 	// Variables
 	let typePath = getTypePath(details.implementedType, details.name);
 	
-	console.log("Property: " + typePath);
 	if(details.parameters.length) {
 		// Variables
 		let parameters : string[] = [];
 		
 		details.parameters.forEach(function(parameter) {
-			// Variables
-			let paramResult : string = parameter.typeInfo.fullName;
-			
-			parameters.push(paramResult);
+			parameters.push(parameter.typeInfo.fullName);
 		});
-		console.log("Property (2): " + typePath + "(" + parameters.join(',') + ")");
+		
+		return `${ typePath }(${ parameters.join(',') })`;
 	}
 	
 	return typePath;
