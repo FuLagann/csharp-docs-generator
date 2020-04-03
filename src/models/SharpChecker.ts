@@ -16,9 +16,14 @@ export interface TypeInfo {
 	assemblyName : string;
 	isDelegate : boolean;
 	isNested : boolean;
+	isStatic : boolean;
+	isAbstract : boolean;
+	isSealed : boolean;
 	accessor : string;
 	modifier : string;
 	objectType : string;
+	hasDeclaringType : boolean;
+	declaringType : QuickTypeInfo;
 	declaration : string;
 	fullDeclaration : string;
 	baseType : QuickTypeInfo;
@@ -119,6 +124,7 @@ export interface MethodInfo {
 	parameters : ParameterInfo[];
 	genericParameters : GenericParametersInfo[];
 	declaration : string;
+	genericDeclaration : string;
 	parameterDeclaration : string;
 	fullDeclaration : string;
 }
