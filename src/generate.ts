@@ -23,7 +23,7 @@ export async function generateHtmlDocumentation(args : InputArguments) {
 			const typePath = value[i].replace("/", ".");
 			if(typePath.indexOf("<") != -1) { continue; }
 			// TODO: Add customization to output file extension
-			const filename = args.outputPath + typePath + ".hmtl";
+			const filename = args.outputPath + typePath + ".html";
 			const html = await compileBase(
 				getTemplateUri(args.template.baseUri),
 				args.template,
