@@ -10,7 +10,7 @@ import { gatherApiMap } from "./read-xml";
 import { generateHtmlDocumentation } from "./generate";
 
 // Variables
-const TEMP_FOLDER = "__temp/";
+export const TEMP_FOLDER = "__temp/";
 const SHARP_CHECKER_URL = "https://github.com/FuLagann/sharp-checker/releases/download/v1/SharpChecker-v1.0-standalone-linux-x64.zip";
 const SHARP_CHECKER_EXE = "SharpChecker-v1.0-linux-x64/SharpChecker";
 const args : InputArguments = input.getInputs();
