@@ -88,7 +88,7 @@ export function compileType(filename : string, typePath : string) : string {
 export function compileField(filename : string, details : FieldInfo) {
 	// Variables
 	const api : Map<string, XmlFormat> = getXmlApi();
-	const typePath = getFriendlyTypePath(details.implementedType, details.name);
+	const typePath = getTypePath(details.implementedType, details.name);
 	const xmlApi : TemplateApiItems = getApiItems(api.get(typePath));
 	
 	return ejs.render(readFile(filename), {
@@ -101,7 +101,7 @@ export function compileField(filename : string, details : FieldInfo) {
 export function compilePropety(filename : string, details : PropertyInfo) {
 	// Variables
 	const api : Map<string, XmlFormat> = getXmlApi();
-	const typePath = getFriendlyTypePath(details.implementedType, details.name);
+	const typePath = getTypePath(details.implementedType, details.name);
 	const xmlApi : TemplateApiItems = getApiItems(api.get(typePath));
 	
 	return ejs.render(readFile(filename), {
@@ -114,7 +114,7 @@ export function compilePropety(filename : string, details : PropertyInfo) {
 export function compileEvent(filename : string, details : EventInfo) {
 	// Variables
 	const api : Map<string, XmlFormat> = getXmlApi();
-	const typePath = getFriendlyTypePath(details.implementedType, details.name);
+	const typePath = getTypePath(details.implementedType, details.name);
 	const xmlApi : TemplateApiItems = getApiItems(api.get(typePath));
 	
 	return ejs.render(readFile(filename), {
@@ -151,7 +151,7 @@ function getMethodTypePath(details : MethodInfo) : string {
 		);
 	}
 	else if(details.isOperator && !name.startsWith("op_")) { name = "op_" + name; }
-	let typePath = getFriendlyTypePath(details.implementedType, name);
+	let typePath = getTypePath(details.implementedType, name);
 	let parameters : string[] = [];
 	
 	if(details.genericParameters.length > 0) {
@@ -192,12 +192,12 @@ function getMethodTypePath(details : MethodInfo) : string {
 	return typePath;
 }
 
-/**Gets the friendly version of the type path using the type info and member name
+/**Gets the type path using the type info and member name
  * @param typeInfo {QuickTypeInfo} - The information of the type.
  * @param name {string} - The name of the member
  * @returns Returns the friendly type path*/
-function getFriendlyTypePath(typeInfo : QuickTypeInfo, name : string) : string {
-	return typeInfo.unlocalizedName.replace('`', '-') + "." + name;
+function getTypePath(typeInfo : QuickTypeInfo, name : string) : string {
+	return typeInfo.unlocalizedName+ "." + name;
 }
 
 /**Gets all the api items from the surface level of the api.
