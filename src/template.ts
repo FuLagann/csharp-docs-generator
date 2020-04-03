@@ -7,7 +7,7 @@ import { BaseTemplateVars, SidebarView } from "./models/TemplateVariables";
 import { XmlFormat } from "./models/XmlFormat";
 import { readFile } from "./read-file";
 import { generateTypeDetails } from "./generate";
-import { getArguments, getXmlApi } from "./index";
+import { getArguments, getXmlApi, getTemplateUri } from "./index";
 import { createPartial, displaySidebar } from "./template-helpers";
 import ejs = require("ejs");
 import markdownIt = require("markdown-it");
@@ -17,9 +17,9 @@ import pretty = require("pretty");
 const md = markdownIt();
 let generatedTypeJson : TypeInfo;
 
-export async function compileBase(filename : string, json : TemplateJson, typePath : string) : Promise<string> {
+export async function compileBase(args : InputArguments, typePath : string) : Promise<string> {
 	// Variables
-	const args : InputArguments = getArguments();
+	const filename = getTemplateUri(args.template.baseUri);
 	const sidebar : SidebarView = new SidebarView("$~root");
 	
 	generatedTypeJson = await generateTypeDetails(args, typePath);
@@ -28,9 +28,9 @@ export async function compileBase(filename : string, json : TemplateJson, typePa
 		displaySidebar: displaySidebar,
 		createPartial: createPartial,
 		uris: {
-			css: json.cssUris,
-			scripts: json.scriptUris,
-			type: json.typeUri
+			css: args.template.cssUris,
+			scripts: args.template.scriptUris,
+			type: args.template.typeUri
 		},
 		isNamespace: false,
 		sidebarView: sidebar,

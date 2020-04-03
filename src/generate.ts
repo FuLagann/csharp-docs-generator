@@ -18,17 +18,20 @@ export async function generateHtmlDocumentation(args : InputArguments) {
 		// Variables
 		const value : string[] = list.types[key] as string[];
 		
+		// TODO: Generate namespace file
+		// const namespaceFilename = args.outputPath + key + args.outputExtension;
+		// const html = await compileNamespace(args, key, value);
+		
+		// fs.writeFileSync(namespaceFilename.toLowerCase(), html);
+		// console.log(`Created ${ namespaceFilename }`);
+		
 		for(let i = 0; i < value.length; i++) {
 			// Variables
 			const typePath = value[i].replace("/", ".");
 			if(typePath.indexOf("<") != -1) { continue; }
 			// TODO: Add customization to output file extension
-			const filename = args.outputPath + typePath + ".html";
-			const html = await compileBase(
-				getTemplateUri(args.template.baseUri),
-				args.template,
-				typePath
-			);
+			const filename = args.outputPath + typePath + args.outputExtension;
+			const html = await compileBase(args, typePath);
 			
 			fs.writeFileSync(filename.toLowerCase(), html);
 			console.log(`Created ${ filename }!`);
