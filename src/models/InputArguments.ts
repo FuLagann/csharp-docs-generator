@@ -11,6 +11,8 @@ export class InputArguments {
 	templatePath: string;
 	template: TemplateJson;
 	outputPath: string;
+	outputExtension: string;
+	includePrivate: boolean;
 	user: {
 		name: string,
 		email: string
@@ -24,6 +26,8 @@ export class InputArguments {
 		this.branchName = "";
 		this.amendNoEdit = false;
 		this.templatePath = "./";
+		this.outputExtension = ".html";
+		this.includePrivate = false;
 		// TODO: Add uri to the template
 		this.template = {
 			baseUri: "",

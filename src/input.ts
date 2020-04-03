@@ -19,6 +19,8 @@ export function getInputs() : InputArguments {
 	results.user.name = core.getInput("user-name") || results.user.name;
 	results.user.email = core.getInput("user-email") || results.user.email;
 	results.templatePath = core.getInput("template-json") || results.templatePath;
+	results.outputExtension = core.getInput("output-extension") || results.outputExtension;
+	results.includePrivate = Boolean(core.getInput("include-private") == "true" || results.includePrivate);
 	gatherUris(results.template, results.templatePath);
 	
 	return results;

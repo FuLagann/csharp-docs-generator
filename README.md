@@ -25,6 +25,10 @@ A GitHub action that generates html documentation for C# projects.
 
 **`amend-no-edit`:** Set to true if you want the generation to append itself to the latest commit instead of creating a new commit. *(Default: `false`).*
 
+**`output-extension`:** The output extension that every file built will contain. *(Default: `.html`).*
+
+**`include-private`:** Set to true to include all the privates types and members. *(Default: `false`).*
+
 <details>
 <summary>Example yml</summary>
 <p>
