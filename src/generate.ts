@@ -14,12 +14,12 @@ export async function generateHtmlDocumentation(args : InputArguments) {
 	
 	// Variables
 	const list : TypeList = await generateTypeList(args);
-	let keys = list.type.keys();
+	let keys = list.types.keys();
 	let key = keys.next();
 	
 	while(!key.done) {
 		// Variables
-		let value : string[] = list.type.get(key.value) as string[];
+		let value : string[] = list.types.get(key.value) as string[];
 		
 		for(let i = 0; i < value.length; i++) {
 			// Variables
@@ -65,7 +65,7 @@ async function generateTypeList(args : InputArguments) : Promise<TypeList> {
 	const sharpChecker : string = getSharpCheckerExe();
 	const outputPath : string = "__temp/list.json";
 	
-	await exec(sharpChecker, ["-o", outputPath, "--list"].concat(args.binaries));
+	await exec(sharpChecker, ["-o", outputPath, "-l"].concat(args.binaries));
 	
 	return JSON.parse(readFile(outputPath)) as TypeList;
 }
