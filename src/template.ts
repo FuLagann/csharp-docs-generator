@@ -67,7 +67,8 @@ export function compileField(filename : string, details : FieldInfo) {
 	
 	return ejs.render(readFile(filename), {
 		details: details,
-		xmlDocs: xmlApi
+		xmlDocs: xmlApi,
+		typeInfo: generatedTypeJson.typeInfo
 	});
 }
 
@@ -79,7 +80,8 @@ export function compilePropety(filename : string, details : PropertyInfo) {
 	
 	return ejs.render(readFile(filename), {
 		details: details,
-		xmlDocs: xmlApi
+		xmlDocs: xmlApi,
+		typeInfo: generatedTypeJson.typeInfo
 	});
 }
 
@@ -91,7 +93,8 @@ export function compileEvent(filename : string, details : EventInfo) {
 	
 	return ejs.render(readFile(filename), {
 		details: details,
-		xmlDocs: xmlApi
+		xmlDocs: xmlApi,
+		typeInfo: generatedTypeJson.typeInfo
 	});
 }
 
@@ -103,7 +106,8 @@ export function compileMethod(filename : string, details : MethodInfo) {
 	
 	return ejs.render(readFile(filename), {
 		details: details,
-		xmlDocs: xmlApi
+		xmlDocs: xmlApi,
+		typeInfo: generatedTypeJson.typeInfo
 	});
 }
 
