@@ -127,12 +127,12 @@ export function compileEvent(filename : string, details : EventInfo) {
 }
 
 export function compileMethod(filename : string, details : MethodInfo) {
+	io.mkdirP(TEMP_FOLDER + "debugging");
 	// Variables
 	const api : Map<string, XmlFormat> = getXmlApi();
 	const typePath = getMethodTypePath(details);
 	const xmlApi : TemplateApiItems = getApiItems(api.get(typePath));
 	
-	io.mkdirP(TEMP_FOLDER + "debugging");
 	fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `${ typePath }\n`);
 		
 	return ejs.render(readFile(filename), {
@@ -191,10 +191,13 @@ function getMethodTypePath(details : MethodInfo) : string {
 		
 		for(let i = 0; i < details.implementedType.genericParameters.length; i++) {
 			temp = details.implementedType.genericParameters[i].unlocalizedName;
+			fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `\tType: ${ temp }\n`);
+			fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `\tCurrent: ${ paramResult }\n`);
 			paramResult = paramResult.replace(
 				new RegExp(`([\(<,])${ temp }([\)\[>,])`, "gm"),
 				"$1`" + i + "$2"
 			);
+			fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `\tUpdated: ${ paramResult }\n`);
 		}
 		for(let i = 0; i < details.genericParameters.length; i++) {
 			temp = details.genericParameters[i].unlocalizedName;
