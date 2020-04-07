@@ -187,10 +187,19 @@ function getMethodTypePath(details : MethodInfo) : string {
 	details.parameters.forEach(function(parameter) {
 		// Variables
 		let paramResult : string = parameter.typeInfo.nonInstancedFullName;
+		let temp : string;
 		
-		for(let i = 0; i < details.genericParameters.length; i++) {
+		for(let i = 0; i < details.implementedType.genericParameters.length; i++) {
+			temp = details.implementedType.genericParameters[i].unlocalizedName;
 			paramResult = paramResult.replace(
-				new RegExp(`([<,])${ details.genericParameters[i].unlocalizedName }([>,])|^${ details.genericParameters[i].unlocalizedName }$`, "gm"),
+				new RegExp(`([\(<,])${ temp }([\)\[>,])`, "gm"),
+				"$1`" + i + "$2"
+			);
+		}
+		for(let i = 0; i < details.genericParameters.length; i++) {
+			temp = details.genericParameters[i].unlocalizedName;
+			paramResult = paramResult.replace(
+				new RegExp(`([\(<,])${ temp }([\)\[>,])`, "gm"),
 				"$1``" + i + "$2"
 			);
 		}
