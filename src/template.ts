@@ -181,7 +181,7 @@ function getMethodTypePath(details : MethodInfo) : string {
 	
 	details.parameters.forEach(function(parameter) {
 		// Variables
-		let paramResult : string = parameter.typeInfo.fullName;
+		let paramResult : string = parameter.typeInfo.nonInstancedFullName;
 		
 		for(let i = 0; i < details.genericParameters.length; i++) {
 			paramResult = paramResult.replace(
@@ -202,7 +202,7 @@ function getMethodTypePath(details : MethodInfo) : string {
 		const methodPath = `${ typePath }(${ parameters.join(',') })`;
 		
 		if(details.isConversionOperator) {
-			return `${ methodPath }~${ details.returnType.unlocalizedName }`;
+			return `${ methodPath }~${ details.returnType.nonInstancedFullName }`;
 		}
 		
 		return methodPath;

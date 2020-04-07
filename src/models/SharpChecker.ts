@@ -9,6 +9,8 @@ export interface TypeList {
 export interface QuickTypeInfo {
 	/**The name of the type as found within the library's IL code.*/
 	unlocalizedName : string;
+	/**The name of the type that is slightly localized but not generically instanced.*/
+	nonInstancedFullName : string;
 	/**The name of the type as found when looking at the code.*/
 	name : string;
 	/**The full name of the type as found when looking at the code.
