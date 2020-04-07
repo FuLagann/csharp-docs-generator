@@ -13,7 +13,7 @@ import { generateHtmlDocumentation } from "./generate";
 export const TEMP_FOLDER = "__temp/";
 export const NETSTANDARD_XML = "netstandard.xml";
 const NETSTANDARD_API = "https://github.com/FuLagann/csharp-docs-generator/raw/paulsbranch/packages/netstandard.xml";
-const SHARP_CHECKER_URL = "https://github.com/FuLagann/sharp-checker/releases/download/v1/SharpChecker-v1.0-standalone-linux-x64.7z";
+const SHARP_CHECKER_URL = "https://github.com/FuLagann/sharp-checker/releases/download/v1/SharpChecker-v1.0-standalone-win-x64.7z";
 const SHARP_CHECKER_EXE = "SharpChecker-v1.0-linux-x64/SharpChecker";
 const args : InputArguments = input.getInputs();
 let sharpCheckerExe : string;
