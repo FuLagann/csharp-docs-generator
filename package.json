@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/FuLagann/csharp-docs-generator#readme",
   "dependencies": {
+    "@actions/artifact": "^0.2.0",
     "@actions/core": "^1.2.3",
     "@actions/exec": "^1.0.3",
     "@actions/io": "^1.0.2",

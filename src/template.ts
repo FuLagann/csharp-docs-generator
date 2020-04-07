@@ -7,11 +7,12 @@ import { BaseTemplateVars, SidebarView } from "./models/TemplateVariables";
 import { XmlFormat } from "./models/XmlFormat";
 import { readFile } from "./read-file";
 import { generateTypeDetails } from "./generate";
-import { getArguments, getXmlApi, getTemplateUri } from "./index";
+import { getArguments, getXmlApi, getTemplateUri, TEMP_FOLDER } from "./index";
 import { createPartial, displaySidebar } from "./template-helpers";
 import ejs = require("ejs");
 import markdownIt = require("markdown-it");
 import pretty = require("pretty");
+import fs = require("fs");
 
 // Variables
 const md = markdownIt();
@@ -130,8 +131,8 @@ export function compileMethod(filename : string, details : MethodInfo) {
 	const typePath = getMethodTypePath(details);
 	const xmlApi : TemplateApiItems = getApiItems(api.get(typePath));
 	
-	console.log("Type PATH: " + typePath);
-	
+	fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `${ typePath }\n`);
+		
 	return ejs.render(readFile(filename), {
 		details: details,
 		xmlDocs: xmlApi,

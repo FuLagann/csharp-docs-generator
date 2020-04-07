@@ -1,4 +1,5 @@
 
+import artifact = require("@actions/artifact");
 import core = require("@actions/core");
 import input = require("./input");
 import io = require("@actions/io");
@@ -84,6 +85,18 @@ async function generateDocs() {
 	await generateHtmlDocumentation(args);
 }
 
+async function uploadArtifacts() {
+	// Variables
+	const client = artifact.create();
+	const name = "debugging-artifact.txt";
+	const files = [
+		TEMP_FOLDER + "debugging/xml-type-path.txt",
+		TEMP_FOLDER + "debugging/compiled-type-path.txt"
+	];
+	
+	await client.uploadArtifact(name, files, TEMP_FOLDER + "debugging");
+}
+
 /**Cleans everything up before pushing to the repository so nothing unwanted gets committed.*/
 async function cleanUp() {
 	try {
@@ -131,6 +144,7 @@ async function gitPush() {
 	await executeBuildTasks();
 	await downloadTools();
 	await generateDocs();
+	await uploadArtifacts();
 	await cleanUp();
 	await gitPush().catch(onGitError);
 })().catch(onError);
