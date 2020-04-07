@@ -61,6 +61,8 @@ function generateMembers(api : Map<string, XmlFormat>, xml : XMLDocument) {
 		const typePath : string = temp[1];
 		let format : XmlFormat = setDataMembers(members[i]);
 		
+		console.log("XML Type PATH: " + typePath);
+		
 		format.type = type;
 		api.set(typePath, format);
 	}

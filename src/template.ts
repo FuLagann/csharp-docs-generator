@@ -130,6 +130,8 @@ export function compileMethod(filename : string, details : MethodInfo) {
 	const typePath = getMethodTypePath(details);
 	const xmlApi : TemplateApiItems = getApiItems(api.get(typePath));
 	
+	console.log("Type PATH: " + typePath);
+	
 	return ejs.render(readFile(filename), {
 		details: details,
 		xmlDocs: xmlApi,
