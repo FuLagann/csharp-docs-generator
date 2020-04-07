@@ -73,7 +73,7 @@ async function generateTypeList(args : InputArguments) : Promise<TypeList> {
 function getSharpCheckerArguments(args : InputArguments, isList : boolean, typePath : string) : string[] {
 	// Variables
 	const includePrivate : string[] = args.includePrivate ? ["-p"] : [];
-	const outputPath : string = TEMP_FOLDER + (isList ? "list.json" : "type.json");
+	const outputPath : string = TEMP_FOLDER + "debugging/" + (isList ? "list.json" : "type.json");
 	
 	return ["-o", outputPath, typePath].concat(includePrivate).concat(args.binaries);
 }

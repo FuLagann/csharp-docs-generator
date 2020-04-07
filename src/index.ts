@@ -88,7 +88,7 @@ async function generateDocs() {
 async function uploadArtifacts() {
 	// Variables
 	const client = artifact.create();
-	const name = "debugging-artifact.txt";
+	const name = "debugging-artifacts";
 	const files = [
 		TEMP_FOLDER + "debugging/xml-type-path.txt",
 		TEMP_FOLDER + "debugging/compiled-type-path.txt",
