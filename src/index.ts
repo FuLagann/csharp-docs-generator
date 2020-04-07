@@ -91,7 +91,9 @@ async function uploadArtifacts() {
 	const name = "debugging-artifact.txt";
 	const files = [
 		TEMP_FOLDER + "debugging/xml-type-path.txt",
-		TEMP_FOLDER + "debugging/compiled-type-path.txt"
+		TEMP_FOLDER + "debugging/compiled-type-path.txt",
+		TEMP_FOLDER + "type.json",
+		TEMP_FOLDER + "list.json",
 	];
 	
 	await client.uploadArtifact(name, files, TEMP_FOLDER + "debugging");
