@@ -85,18 +85,18 @@ async function generateDocs() {
 	await generateHtmlDocumentation(args);
 }
 
+export let artifactFiles : string[] = [];
+
 async function uploadArtifacts() {
 	// Variables
 	const client = artifact.create();
 	const name = "debugging-artifacts";
 	const files = [
 		TEMP_FOLDER + "debugging/xml-type-path.txt",
-		TEMP_FOLDER + "debugging/compiled-type-path.txt",
-		TEMP_FOLDER + "debugging/type.json",
-		TEMP_FOLDER + "debugging/list.json",
+		TEMP_FOLDER + "debugging/compiled-type-path.txt"
 	];
 	
-	await client.uploadArtifact(name, files, TEMP_FOLDER + "debugging");
+	await client.uploadArtifact(name, files.concat(artifactFiles), TEMP_FOLDER + "debugging");
 }
 
 /**Cleans everything up before pushing to the repository so nothing unwanted gets committed.*/

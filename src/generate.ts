@@ -3,7 +3,7 @@ import { InputArguments } from "./models/InputArguments";
 import { TypeList, TypeInfo } from "./models/SharpChecker";
 import { TemplateApi } from "./models/TemplateApi";
 import { XmlFormat } from "./models/XmlFormat";
-import { TEMP_FOLDER, getSharpCheckerExe, getTemplateUri } from "./index";
+import { TEMP_FOLDER, getSharpCheckerExe, getTemplateUri, artifactFiles } from "./index";
 import { readFile } from "./read-file";
 import { compileBase, compileNamespace } from "./template";
 import { exec } from "@actions/exec";
@@ -73,7 +73,9 @@ async function generateTypeList(args : InputArguments) : Promise<TypeList> {
 function getSharpCheckerArguments(args : InputArguments, isList : boolean, typePath : string) : string[] {
 	// Variables
 	const includePrivate : string[] = args.includePrivate ? ["-p"] : [];
-	const outputPath : string = TEMP_FOLDER + "debugging/" + (isList ? "list.json" : "type.json");
+	const outputPath : string = TEMP_FOLDER + "debugging/" + (isList ? "list.json" : typePath + ".json");
+	
+	artifactFiles.push(outputPath);
 	
 	return ["-o", outputPath, typePath].concat(includePrivate).concat(args.binaries);
 }
