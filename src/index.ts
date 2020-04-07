@@ -13,8 +13,8 @@ import { generateHtmlDocumentation } from "./generate";
 export const TEMP_FOLDER = "__temp/";
 export const NETSTANDARD_XML = "netstandard.xml";
 const NETSTANDARD_API = "https://github.com/FuLagann/csharp-docs-generator/raw/paulsbranch/packages/netstandard.xml";
-const SHARP_CHECKER_URL = "https://github.com/FuLagann/sharp-checker/releases/download/v1/SharpChecker-v1.0-standalone-win-x64.7z";
-const SHARP_CHECKER_EXE = "SharpChecker-v1.0-linux-x64/SharpChecker";
+const SHARP_CHECKER_URL = "https://github.com/FuLagann/sharp-checker/releases/download/v1/SharpChecker-v1.0-standalone-win-x64.zip";
+const SHARP_CHECKER_EXE = "SharpChecker-v1.0-win-x64/SharpChecker";
 const args : InputArguments = input.getInputs();
 let sharpCheckerExe : string;
 let xmlApi : Map<string, XmlFormat>;
@@ -70,7 +70,7 @@ async function downloadTools() {
 	
 	// Variables
 	const zipLocation = await tools.downloadTool(SHARP_CHECKER_URL);
-	const unziplocation = await tools.extract7z(zipLocation, TEMP_FOLDER);
+	const unziplocation = await tools.extractZip(zipLocation, TEMP_FOLDER);
 	
 	await tools.downloadTool(NETSTANDARD_API, TEMP_FOLDER + NETSTANDARD_XML);
 	sharpCheckerExe = `${ unziplocation }/${ SHARP_CHECKER_EXE }`;
