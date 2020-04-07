@@ -6,6 +6,7 @@ import { InputArguments } from "./models/InputArguments";
 import { XmlFormat } from "./models/XmlFormat";
 import { DOMParser } from "xmldom";
 import fs = require("fs");
+import io = require("@actions/io");
 
 // Variables
 const TEXT_CONTENTS : string[][] = [
@@ -62,6 +63,7 @@ function generateMembers(api : Map<string, XmlFormat>, xml : XMLDocument) {
 		const typePath : string = temp[1];
 		let format : XmlFormat = setDataMembers(members[i]);
 		
+		io.mkdirP(TEMP_FOLDER + "debugging");
 		fs.appendFileSync(TEMP_FOLDER + "debugging/xml-type-path.txt", `${ typePath }\n`);
 		
 		format.type = type;

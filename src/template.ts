@@ -13,6 +13,7 @@ import ejs = require("ejs");
 import markdownIt = require("markdown-it");
 import pretty = require("pretty");
 import fs = require("fs");
+import io = require("@actions/io");
 
 // Variables
 const md = markdownIt();
@@ -131,6 +132,7 @@ export function compileMethod(filename : string, details : MethodInfo) {
 	const typePath = getMethodTypePath(details);
 	const xmlApi : TemplateApiItems = getApiItems(api.get(typePath));
 	
+	io.mkdirP(TEMP_FOLDER + "debugging");
 	fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `${ typePath }\n`);
 		
 	return ejs.render(readFile(filename), {
