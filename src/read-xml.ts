@@ -7,8 +7,10 @@ import { XmlFormat } from "./models/XmlFormat";
 import { DOMParser } from "xmldom";
 import fs = require("fs");
 import io = require("@actions/io");
+import markdownIt = require("markdown-it");
 
 // Variables
+const md = markdownIt();
 const TEXT_CONTENTS : string[][] = [
 	["summary", "No description"],
 	["returns", ""],
@@ -136,7 +138,10 @@ function getTextContentFromMember(member : Element, defaultText : string) : stri
 	if(member.hasChildNodes()) {
 		for(let i = 0; i < member.childNodes.length; i++) {
 			switch(member.childNodes[i].nodeName) {
-				case "#text": { results += member.childNodes[i].textContent; } break;
+				case "#text": {
+					results += member.childNodes[i].textContent;
+					md.render("", );
+				} break;
 				case "paramref": {
 					results += '<span class="paramref">';
 					results += (member.childNodes[i] as Element).getAttribute("name");
@@ -151,7 +156,7 @@ function getTextContentFromMember(member : Element, defaultText : string) : stri
 					}
 					else if(child.hasAttribute("cref")) {
 						// TODO: Link to webpage using the xml type path
-						results += `<a href="${ child.getAttribute("cref") }">Type</a>`;
+						results += `[Type](${ child.getAttribute("cref") })`;
 					}
 				} break;
 			}

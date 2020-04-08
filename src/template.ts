@@ -10,13 +10,9 @@ import { generateTypeDetails } from "./generate";
 import { getArguments, getXmlApi, getTemplateUri, TEMP_FOLDER } from "./index";
 import { createPartial, displaySidebar } from "./template-helpers";
 import ejs = require("ejs");
-import markdownIt = require("markdown-it");
 import pretty = require("pretty");
-import fs = require("fs");
-import io = require("@actions/io");
 
 // Variables
-const md = markdownIt();
 let generatedTypeJson : TypeInfo;
 
 export async function compileBase(args : InputArguments, typePath : string) : Promise<string> {
@@ -253,30 +249,30 @@ function getApiItems(format : (XmlFormat | undefined)) : TemplateApiItems {
 	if(format == undefined) { format = new XmlFormat(); }
 	
 	return {
-		summary: md.render(format.summary.trim()),
+		summary: format.summary,
 		returns: {
 			exists: doesItemExist(format.returns),
-			value: md.render((format.returns || "").trim())
+			value: format.returns
 		},
 		remarks: {
 			exists: doesItemExist(format.remarks),
-			value: md.render((format.remarks || "").trim())
+			value: format.remarks
 		},
 		example: {
 			exists: doesItemExist(format.example),
-			value: md.render((format.example || "").trim())
+			value: format.example
 		},
 		parameters: {
 			exists: doesArrayItemExist(format.parameters),
-			value: renderMarkdownForArray(format.parameters)
+			value: format.parameters
 		},
 		exceptions: {
 			exists: doesArrayItemExist(format.exceptions),
-			value: renderMarkdownForArray(format.exceptions)
+			value: format.exceptions
 		},
 		typeParameters: {
 			exists: doesArrayItemExist(format.typeParameters),
-			value: renderMarkdownForArray(format.typeParameters)
+			value: format.typeParameters
 		}
 	};
 }
@@ -291,18 +287,4 @@ function doesItemExist(str : string) : boolean { return (str != null && str != u
  * @returns Returns true if the list is non-empty and exists.*/
 function doesArrayItemExist(list : any[]) : boolean {
 	return (list != null && list != undefined && list.length > 0);
-}
-
-/**Goes through the array of name descriptions and renders it through markdown.
- * @param list {NameDescription} - The list of name description to render with.
- * @returns Returns a list of rendered name descriptions ready for html.*/
-function renderMarkdownForArray(list : NameDescription[]) : NameDescription[] {
-	// Variables
-	let temp = list;
-	
-	for(let i = 0; i < temp.length; i++) {
-		temp[i].description = md.render(temp[i].description.trim());
-	}
-	
-	return temp;
 }
