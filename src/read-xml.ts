@@ -63,9 +63,6 @@ function generateMembers(api : Map<string, XmlFormat>, xml : XMLDocument) {
 		const typePath : string = temp[1];
 		let format : XmlFormat = setDataMembers(members[i]);
 		
-		io.mkdirP(TEMP_FOLDER + "debugging");
-		fs.appendFileSync(TEMP_FOLDER + "debugging/xml-type-path.txt", `${ typePath }\n`);
-		
 		format.type = type;
 		api.set(typePath, format);
 	}

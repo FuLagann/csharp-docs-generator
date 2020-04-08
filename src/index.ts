@@ -146,7 +146,7 @@ async function gitPush() {
 	await executeBuildTasks();
 	await downloadTools();
 	await generateDocs();
-	await uploadArtifacts();
+	//await uploadArtifacts();
 	await cleanUp();
 	await gitPush().catch(onGitError);
 })().catch(onError);

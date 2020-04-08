@@ -127,13 +127,10 @@ export function compileEvent(filename : string, details : EventInfo) {
 }
 
 export function compileMethod(filename : string, details : MethodInfo) {
-	io.mkdirP(TEMP_FOLDER + "debugging");
 	// Variables
 	const api : Map<string, XmlFormat> = getXmlApi();
 	const typePath = getMethodTypePath(details);
 	const xmlApi : TemplateApiItems = getApiItems(api.get(typePath));
-	
-	fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `${ typePath }\n`);
 		
 	return ejs.render(readFile(filename), {
 		details: details,
@@ -184,60 +181,43 @@ function getMethodTypePath(details : MethodInfo) : string {
 		typePath += "``" + details.genericParameters.length;
 	}
 	
-	fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `${ typePath }.${ name }(${ details.parameters.join(',') })\n`);
 	details.parameters.forEach(function(parameter) {
 		// Variables
 		let paramResult : string = parameter.typeInfo.nonInstancedFullName;
 		let temp : string;
 		
-		fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `  Implemented Generics:\n`);
 		for(let i = 0; i < details.implementedType.genericParameters.length; i++) {
 			temp = details.implementedType.genericParameters[i].unlocalizedName;
-			fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `\tType: ${ temp }\n`);
 			if(paramResult == temp) {
 				paramResult = "`" + i;
 				break;
 			}
-			fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `\tCurrent: ${ paramResult }\n`);
-			fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `\t\tRegex: ([\(<,])${ temp }([\)\[>,])\n`);
 			paramResult = paramResult.replace(
 				new RegExp(`([\\(<,])${ temp }([\\)\\[>,])`, "gm"),
 				"$1`" + i + "$2"
 			);
-			fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `\tUpdate 1: ${ paramResult }\n`);
-			fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `\t\tRegex: ${ temp }((?:\[,*\])+)\n`);
 			paramResult = paramResult.replace(
 				new RegExp(`${ temp }((?:\\[,*\\])+)`, "gm"),
 				"`" + i + "$1"
 			);
-			fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `\tUpdate 2: ${ paramResult }\n`);
 		}
-		fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `  Method Generics:\n`);
 		for(let i = 0; i < details.genericParameters.length; i++) {
 			temp = details.genericParameters[i].unlocalizedName;
-			fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `\tType: ${ temp }\n`);
 			if(paramResult == temp) {
 				paramResult = "``" + i;
 				break;
 			}
-			fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `\tCurrent: ${ paramResult }\n`);
-			fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `\t\tRegex: ([\(<,])${ temp }([\)\[>,])\n`);
 			paramResult = paramResult.replace(
 				new RegExp(`([\\(<,])${ temp }([\\)\\[>,])`, "gm"),
 				"$1``" + i + "$2"
 			);
-			fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `\tUpdate 1: ${ paramResult }\n`);
-			fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `\t\tRegex: ${ temp }((?:\[,*\])+)\n`);
 			paramResult = paramResult.replace(
 				new RegExp(`${ temp }((?:\\[,*\\])+)`, "gm"),
 				"``" + i + "$1"
 			);
-			fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `\tUpdate 2: ${ paramResult }\n`);
 		}
 		
 		paramResult = paramResult.replace(new RegExp("<", "gm"), "{").replace(new RegExp(">", "gm"), "}");
-		fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `\tLast Update: ${ paramResult }\n`);
-		fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `===============================\n`);
 		
 		if(parameter.modifier != "") { paramResult += "@"; }
 		
