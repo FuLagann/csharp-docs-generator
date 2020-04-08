@@ -97,16 +97,10 @@ function gatherNameDescriptionList(members : (HTMLCollectionOf<Element> | NodeLi
 	// Variables
 	let results : NameDescription[] = [];
 	
-	io.mkdirP(TEMP_FOLDER + "debugging/");
 	for(let i = 0; i < members.length; i++) {
 		// Variables
 		const name = members[i].getAttribute(attrName);
 		let desc = (members[i].textContent || "No description").trim() + ".";
-		
-		fs.appendFileSync(TEMP_FOLDER + "debugging/debug.txt", "\tOutter: " + members[i].outerHTML + "\n");
-		for(let a = 0; a < members[i].children.length; a++) {
-			fs.appendFileSync(TEMP_FOLDER + "debugging/debug.txt", "\t\tChildren: " + members[i].children[a].outerHTML + "\n");
-		}
 		
 		if(desc.endsWith("..")) { desc = desc.substring(0, desc.length - 1); }
 		if(!name) { continue; }
@@ -133,10 +127,10 @@ function getTextContent(member : Element, id : string, defaultText : string) : s
 	
 	if(desc != "") { desc += "."; }
 	
-	fs.appendFileSync(TEMP_FOLDER + "debugging/debug.txt", "\tOutter: " + member.outerHTML + "\n");
-	for(let a = 0; a < member.children.length; a++) {
-		fs.appendFileSync(TEMP_FOLDER + "debugging/debug.txt", "\t\tChildren: " + member.children[a].outerHTML + "\n");
-	}
+	// fs.appendFileSync(TEMP_FOLDER + "debugging/debug.txt", "\tOutter: " + member.outerHTML + "\n");
+	// for(let a = 0; a < member.children.length; a++) {
+	// 	fs.appendFileSync(TEMP_FOLDER + "debugging/debug.txt", "\t\tChildren: " + member.children[a].outerHTML + "\n");
+	// }
 	
 	if(desc.endsWith("..")) { desc = desc.substring(0, desc.length - 1); }
 	
