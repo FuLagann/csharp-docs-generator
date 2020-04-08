@@ -130,10 +130,11 @@ function getTextContent(member : Element, id : string, defaultText : string) : s
 }
 
 function makeTextContentFriendly(desc : string) {
+	io.mkdirP(TEMP_FOLDER + "debugging/");
 	// Variables
+	fs.appendFileSync(TEMP_FOLDER + "debugging/debug.txt", "Full: " + desc + "\n");
 	const pattern = /<(see|paramref) (cref|name|langword)="(?:.\:)?([a-zA-Z0-9`\.~\(\)]+)"\W?\/>/gm;
 	const results = desc.replace(pattern, function(substring : string, args : any[]) : string {
-		io.mkdirP(TEMP_FOLDER + "debugging/");
 		fs.appendFileSync(TEMP_FOLDER + "debugging/debug.txt", "Text: " + substring + "\n");
 		fs.appendFileSync(TEMP_FOLDER + "debugging/debug.txt", "\t" + args[0] + "\n");
 		fs.appendFileSync(TEMP_FOLDER + "debugging/debug.txt", "\t" + args[1] + "\n");
@@ -141,6 +142,7 @@ function makeTextContentFriendly(desc : string) {
 		fs.appendFileSync(TEMP_FOLDER + "debugging/debug.txt", "\t---------------\n");
 		return substring;
 	});
+	fs.appendFileSync(TEMP_FOLDER + "debugging/debug.txt", "\t\tReplaced: " + results + "\n\n");
 	
 	return results;
 }
