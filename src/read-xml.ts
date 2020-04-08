@@ -129,8 +129,10 @@ function getTextContent(member : Element, id : string, defaultText : string) : s
 	
 	io.mkdirP(TEMP_FOLDER + "debugging/");
 	fs.appendFileSync(TEMP_FOLDER + "debugging/debug.txt", "\tOutter: " + member.outerHTML + "\n");
-	for(let a = 0; a < member.children.length; a++) {
-		fs.appendFileSync(TEMP_FOLDER + "debugging/debug.txt", "\t\tChildren: " + member.children[a].outerHTML + "\n");
+	if(member.children) {
+		for(let a = 0; a < member.children.length; a++) {
+			fs.appendFileSync(TEMP_FOLDER + "debugging/debug.txt", "\t\tChildren: " + member.children[a].outerHTML + "\n");
+		}
 	}
 	
 	if(desc.endsWith("..")) { desc = desc.substring(0, desc.length - 1); }
