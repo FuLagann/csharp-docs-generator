@@ -4,6 +4,7 @@ import core = require("@actions/core");
 import input = require("./input");
 import io = require("@actions/io");
 import tools = require("@actions/tool-cache");
+import fs = require("fs");
 import { InputArguments } from "./models/InputArguments";
 import { XmlFormat } from "./models/XmlFormat";
 import { exec } from "@actions/exec";
@@ -91,11 +92,11 @@ async function uploadArtifacts() {
 	// Variables
 	const client = artifact.create();
 	const name = "debugging-artifacts";
-	const files = [
-		TEMP_FOLDER + "debug.txt"
-	];
+	const files = fs.existsSync(TEMP_FOLDER + "debug.txt") ? [TEMP_FOLDER + "debug.txt"] : [];
 	
-	await client.uploadArtifact(name, files, TEMP_FOLDER, { continueOnError: true });
+	if(files.length > 0) {
+		await client.uploadArtifact(name, files, TEMP_FOLDER, { continueOnError: true });
+	}
 }
 
 /**Cleans everything up before pushing to the repository so nothing unwanted gets committed.*/
