@@ -92,10 +92,10 @@ async function uploadArtifacts() {
 	// Variables
 	const client = artifact.create();
 	const name = "debugging-artifacts";
-	const files = fs.existsSync(TEMP_FOLDER + "debug.txt") ? [TEMP_FOLDER + "debug.txt"] : [];
+	const files = fs.existsSync(TEMP_FOLDER + "debugging/debug.txt") ? [TEMP_FOLDER + "debugging/debug.txt"] : [];
 	
 	if(files.length > 0) {
-		await client.uploadArtifact(name, files, TEMP_FOLDER, { continueOnError: true });
+		await client.uploadArtifact(name, files, TEMP_FOLDER + "debugging/", { continueOnError: true });
 	}
 }
 
