@@ -95,7 +95,7 @@ async function uploadArtifacts() {
 		TEMP_FOLDER + "debug.txt"
 	];
 	
-	await client.uploadArtifact(name, files, TEMP_FOLDER);
+	await client.uploadArtifact(name, files, TEMP_FOLDER, { continueOnError: true });
 }
 
 /**Cleans everything up before pushing to the repository so nothing unwanted gets committed.*/
