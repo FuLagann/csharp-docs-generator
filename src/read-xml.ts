@@ -135,11 +135,31 @@ function getTextContentFromMember(member : Element, defaultText : string) : stri
 	
 	if(member.hasChildNodes()) {
 		for(let i = 0; i < member.childNodes.length; i++) {
-			results += member.childNodes[i].textContent;
+			switch(member.childNodes[i].nodeName) {
+				case "#text": { results += member.childNodes[i].textContent; } break;
+				case "paramref": {
+					results += '<span class="paramref">';
+					results += (member.childNodes[i] as Element).getAttribute("name");
+					results += "</span>";
+				} break;
+				case "see": {
+					// Variables
+					const child : Element = member.childNodes[i] as Element;
+					
+					if(child.hasAttribute("langword")) {
+						results += `<span class="langword">${ child.getAttribute("langword") }</span>`;
+					}
+					else if(child.hasAttribute("cref")) {
+						// TODO: Link to webpage using the xml type path
+						results += `<a href="${ child.getAttribute("cref") }">Type</a>`;
+					}
+				} break;
+			}
 			fs.appendFileSync(
 				TEMP_FOLDER + "debugging/debug.txt",
 				"\t\tChild: " + member.childNodes[i].textContent + "\n" +
-				"\t\t\tChild Type: " + member.childNodes[i].nodeName + "\n"
+				"\t\t\tChild Type: " + member.childNodes[i].nodeName + "\n" +
+				"\t\t\tChild Attrs: " + (member.childNodes[i] as Element).attributes
 			);
 		}
 	}
