@@ -73,7 +73,7 @@ async function generateTypeList(args : InputArguments) : Promise<TypeList> {
 function getSharpCheckerArguments(args : InputArguments, isList : boolean, typePath : string) : string[] {
 	// Variables
 	const includePrivate : string[] = args.includePrivate ? ["-p"] : [];
-	const outputPath : string = TEMP_FOLDER + "debugging/" + (isList ? "list.json" : typePath + ".json");
+	const outputPath : string = TEMP_FOLDER + (isList ? "list.json" : typePath + ".json");
 	
 	artifactFiles.push(outputPath);
 	
