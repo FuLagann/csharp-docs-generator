@@ -131,14 +131,13 @@ function getTextContent(member : Element, id : string, defaultText : string) : s
 
 function makeTextContentFriendly(desc : string) {
 	// Variables
-	console.log(desc);
 	const pattern = /<(see|paramref) (cref|name|langword)="(?:.\:)?([a-zA-Z0-9`\.~\(\)]+)"\W?\/>/gm;
 	const results = desc.replace(pattern, function(substring : string, args : any[]) : string {
-		console.log(substring);
-		console.log(args[0]);
-		console.log(args[1]);
-		console.log(args[2]);
-		console.log("----");
+		fs.appendFileSync(TEMP_FOLDER + "debug.txt", "Text: " + substring + "\n");
+		fs.appendFileSync(TEMP_FOLDER + "debug.txt", "\t" + args[0] + "\n");
+		fs.appendFileSync(TEMP_FOLDER + "debug.txt", "\t" + args[1] + "\n");
+		fs.appendFileSync(TEMP_FOLDER + "debug.txt", "\t" + args[2] + "\n");
+		fs.appendFileSync(TEMP_FOLDER + "debug.txt", "\t---------------\n");
 		return substring;
 	});
 	

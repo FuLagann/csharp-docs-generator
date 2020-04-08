@@ -92,11 +92,10 @@ async function uploadArtifacts() {
 	const client = artifact.create();
 	const name = "debugging-artifacts";
 	const files = [
-		TEMP_FOLDER + "debugging/xml-type-path.txt",
-		TEMP_FOLDER + "debugging/compiled-type-path.txt"
+		TEMP_FOLDER + "debug.txt"
 	];
 	
-	await client.uploadArtifact(name, files.concat(artifactFiles), TEMP_FOLDER + "debugging");
+	await client.uploadArtifact(name, files, TEMP_FOLDER);
 }
 
 /**Cleans everything up before pushing to the repository so nothing unwanted gets committed.*/
@@ -146,7 +145,7 @@ async function gitPush() {
 	await executeBuildTasks();
 	await downloadTools();
 	await generateDocs();
-	//await uploadArtifacts();
+	await uploadArtifacts();
 	await cleanUp();
 	await gitPush().catch(onGitError);
 })().catch(onError);
