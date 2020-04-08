@@ -104,7 +104,7 @@ function gatherNameDescriptionList(members : (HTMLCollectionOf<Element> | NodeLi
 		if(desc.endsWith("..")) { desc = desc.substring(0, desc.length - 1); }
 		if(!name) { continue; }
 		
-		results.push({ name: name, description: desc });
+		results.push({ name: name, description: makeTextContentFriendly(desc) });
 	}
 	
 	return results;
@@ -131,6 +131,7 @@ function getTextContent(member : Element, id : string, defaultText : string) : s
 
 function makeTextContentFriendly(desc : string) {
 	// Variables
+	console.log(desc);
 	const pattern = /<(see|paramref) (cref|name|langword)="(?:.\:)?([a-zA-Z0-9`\.~\(\)]+)"\W?\/>/gm;
 	const results = desc.replace(pattern, function(substring : string, args : any[]) : string {
 		console.log(substring);
