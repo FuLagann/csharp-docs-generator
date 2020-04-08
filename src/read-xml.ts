@@ -99,7 +99,7 @@ function gatherNameDescriptionList(members : (HTMLCollectionOf<Element> | NodeLi
 	for(let i = 0; i < members.length; i++) {
 		// Variables
 		const name = members[i].getAttribute(attrName);
-		let desc = (members[i].textContent || "No description").trim() + ".";
+		let desc = (members[i].innerHTML || "No description").trim() + ".";
 		
 		if(desc.endsWith("..")) { desc = desc.substring(0, desc.length - 1); }
 		if(!name) { continue; }
@@ -122,7 +122,7 @@ function getTextContent(member : Element, id : string, defaultText : string) : s
 	if(elems.length == 0) { return defaultText; }
 	
 	// Variables
-	let desc = (elems[0].textContent || defaultText).trim() + ".";
+	let desc = (elems[0].innerHTML || defaultText).trim() + ".";
 	
 	if(desc.endsWith("..")) { desc = desc.substring(0, desc.length - 1); }
 	
