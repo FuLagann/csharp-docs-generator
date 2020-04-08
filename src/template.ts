@@ -184,7 +184,7 @@ function getMethodTypePath(details : MethodInfo) : string {
 		typePath += "``" + details.genericParameters.length;
 	}
 	
-	fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `${ typePath }.${ name }(${ parameters.join(',') })`);
+	fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `${ typePath }.${ name }(${ details.parameters.join(',') })\n`);
 	details.parameters.forEach(function(parameter) {
 		// Variables
 		let paramResult : string = parameter.typeInfo.nonInstancedFullName;
@@ -201,13 +201,13 @@ function getMethodTypePath(details : MethodInfo) : string {
 			fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `\tCurrent: ${ paramResult }\n`);
 			fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `\t\tRegex: ([\(<,])${ temp }([\)\[>,])\n`);
 			paramResult = paramResult.replace(
-				new RegExp(`([\(<,])${ temp }([\)\[>,])`, "gm"),
+				new RegExp(`([\\(<,])${ temp }([\\)\\[>,])`, "gm"),
 				"$1`" + i + "$2"
 			);
 			fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `\tUpdate 1: ${ paramResult }\n`);
 			fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `\t\tRegex: ${ temp }((?:\[,*\])+)\n`);
 			paramResult = paramResult.replace(
-				new RegExp(`${ temp }((?:\[,*\])+)`, "gm"),
+				new RegExp(`${ temp }((?:\\[,*\\])+)`, "gm"),
 				"`" + i + "$1"
 			);
 			fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `\tUpdate 2: ${ paramResult }\n`);
@@ -223,13 +223,13 @@ function getMethodTypePath(details : MethodInfo) : string {
 			fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `\tCurrent: ${ paramResult }\n`);
 			fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `\t\tRegex: ([\(<,])${ temp }([\)\[>,])\n`);
 			paramResult = paramResult.replace(
-				new RegExp(`([\(<,])${ temp }([\)\[>,])`, "gm"),
+				new RegExp(`([\\(<,])${ temp }([\\)\\[>,])`, "gm"),
 				"$1``" + i + "$2"
 			);
 			fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `\tUpdate 1: ${ paramResult }\n`);
 			fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `\t\tRegex: ${ temp }((?:\[,*\])+)\n`);
 			paramResult = paramResult.replace(
-				new RegExp(`${ temp }((?:\[,*\])+)`, "gm"),
+				new RegExp(`${ temp }((?:\\[,*\\])+)`, "gm"),
 				"``" + i + "$1"
 			);
 			fs.appendFileSync(TEMP_FOLDER + "debugging/compiled-type-path.txt", `\tUpdate 2: ${ paramResult }\n`);
