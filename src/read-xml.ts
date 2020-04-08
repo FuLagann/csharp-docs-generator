@@ -69,6 +69,7 @@ function generateMembers(api : Map<string, XmlFormat>, xml : XMLDocument) {
 }
 
 function setDataMembers(member : Element) : XmlFormat {
+	io.mkdirP(TEMP_FOLDER + "debugging/");
 	// Variables
 	let format : XmlFormat = new XmlFormat();
 	const parameters : NameDescription[] = gatherNameDescriptionList(member.getElementsByTagName("param"), "name");
@@ -102,9 +103,9 @@ function gatherNameDescriptionList(members : (HTMLCollectionOf<Element> | NodeLi
 		const name = members[i].getAttribute(attrName);
 		let desc = (members[i].textContent || "No description").trim() + ".";
 		
-		fs.appendFileSync(TEMP_FOLDER + "debugging/debug.txt", "\tOutter: " + members[i].outerHTML);
+		fs.appendFileSync(TEMP_FOLDER + "debugging/debug.txt", "\tOutter: " + members[i].outerHTML + "\n");
 		for(let a = 0; a < members[i].children.length; a++) {
-			fs.appendFileSync(TEMP_FOLDER + "debugging/debug.txt", "\t\tChildren: " + members[i].children[a].outerHTML);
+			fs.appendFileSync(TEMP_FOLDER + "debugging/debug.txt", "\t\tChildren: " + members[i].children[a].outerHTML + "\n");
 		}
 		
 		if(desc.endsWith("..")) { desc = desc.substring(0, desc.length - 1); }
@@ -132,10 +133,9 @@ function getTextContent(member : Element, id : string, defaultText : string) : s
 	
 	if(desc != "") { desc += "."; }
 	
-	io.mkdirP(TEMP_FOLDER + "debugging/");
-	fs.appendFileSync(TEMP_FOLDER + "debugging/debug.txt", "\tOutter: " + member.outerHTML);
+	fs.appendFileSync(TEMP_FOLDER + "debugging/debug.txt", "\tOutter: " + member.outerHTML + "\n");
 	for(let a = 0; a < member.children.length; a++) {
-		fs.appendFileSync(TEMP_FOLDER + "debugging/debug.txt", "\t\tChildren: " + member.children[a].outerHTML);
+		fs.appendFileSync(TEMP_FOLDER + "debugging/debug.txt", "\t\tChildren: " + member.children[a].outerHTML + "\n");
 	}
 	
 	if(desc.endsWith("..")) { desc = desc.substring(0, desc.length - 1); }
