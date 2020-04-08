@@ -121,5 +121,25 @@ function getTextContent(member : Element, id : string, defaultText : string) : s
 	
 	if(elems.length == 0) { return defaultText; }
 	
-	return (elems[0].textContent || defaultText).trim() + ".";
+	// Variables
+	let desc = (elems[0].textContent || defaultText).trim() + ".";
+	
+	if(desc.endsWith("..")) { desc = desc.substring(0, desc.length - 1); }
+	
+	return makeTextContentFriendly(desc);
+}
+
+function makeTextContentFriendly(desc : string) {
+	// Variables
+	const pattern = /<(see|paramref) (cref|name|langword)="(?:.\\:)?([a-zA-Z0-9`\.~\(\)]+)"\\W?\/>/gm;
+	const results = desc.replace(pattern, function(substring : string, args : any[]) : string {
+		console.log(substring);
+		console.log(args[0]);
+		console.log(args[1]);
+		console.log(args[2]);
+		console.log("----");
+		return substring;
+	});
+	
+	return results;
 }
