@@ -6,12 +6,10 @@ import { InputArguments } from "./models/InputArguments";
 import { XmlFormat } from "./models/XmlFormat";
 import { TypeList } from "./models/SharpChecker";
 import { DOMParser } from "xmldom";
-import fs = require("fs");
-import io = require("@actions/io");
 import markdownIt = require("markdown-it");
 
 // Variables
-const md = markdownIt();
+const md = markdownIt({ html: true });
 const TEXT_CONTENTS : string[][] = [
 	["summary", "No description"],
 	["returns", ""],
@@ -77,16 +75,8 @@ function generateMemberFromTypePath(api : Map<string, XmlFormat>, xml : XMLDocum
 	
 	// Variables
 	const members = xml.getElementsByTagName("member");
-	fs.appendFileSync(
-		TEMP_FOLDER + "debugging/debug.txt",
-		"Type: " + typePath + "\n"
-	);
 	
 	for(let i = 0; i < members.length; i++) {
-		fs.appendFileSync(
-			TEMP_FOLDER + "debugging/debug.txt",
-			"\tMember Name: " + members[i].getAttribute("name") + "\n"
-		);
 		if(members[i].getAttribute("name") == typePath) {
 			// Variables
 			let temp : string[] = typePath.split(':');
@@ -124,7 +114,6 @@ function generateMembers(api : Map<string, XmlFormat>, xml : XMLDocument) {
 }
 
 function setDataMembers(member : Element) : XmlFormat {
-	io.mkdirP(TEMP_FOLDER + "debugging/");
 	// Variables
 	let format : XmlFormat = new XmlFormat();
 	const parameters : NameDescription[] = gatherNameDescriptionList(member.getElementsByTagName("param"), "name");
@@ -193,7 +182,6 @@ function getTextContentFromMember(member : Element, defaultText : string) : stri
 			switch(member.childNodes[i].nodeName) {
 				case "#text": {
 					results += member.childNodes[i].textContent;
-					md.render("", );
 				} break;
 				case "paramref": {
 					results += '<span class="paramref">';
@@ -219,23 +207,16 @@ function getTextContentFromMember(member : Element, defaultText : string) : stri
 						);
 						let name = (!typeMatches[1] ? typeMatches[0] : typeMatches[2].replace(/`+\d+/g, ""));
 						
-						// TODO: Link to webpage using the xml type path
-						results += `[${ name }](${ link })`;
+						results += `<a href="${ link }">${ name }</a>`;
 					}
 				} break;
 			}
-			fs.appendFileSync(
-				TEMP_FOLDER + "debugging/debug.txt",
-				"\t\tChild: " + member.childNodes[i].textContent + "\n" +
-				"\t\t\tChild Type: " + member.childNodes[i].nodeName + "\n" +
-				"\t\t\tChild Attrs: " + (member.childNodes[i] as Element).attributes + "\n"
-			);
 		}
 	}
 	else { results = member.textContent; }
 	
 	
-	return results;
+	return md.render(results);
 }
 
 function createSystemLink(typePath : string) : string {
@@ -253,7 +234,7 @@ function createInternalLink(typePath : string) : string {
 		
 		for(let i = 0; i < value.length; i++) {
 			if(value[i] == typePath) {
-				return typePath.replace(/[`\/]/g, ".") + args.outputExtension;
+				return typePath.replace(/`/g, '-').replace(/\//g, '.') + args.outputExtension;
 			}
 		}
 	}
