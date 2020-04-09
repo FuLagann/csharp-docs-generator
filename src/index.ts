@@ -19,7 +19,7 @@ const NETSTANDARD_API = "https://github.com/FuLagann/csharp-docs-generator/raw/p
 const SHARP_CHECKER_URL = "https://github.com/FuLagann/sharp-checker/releases/download/v1/SharpChecker-v1.0-standalone-win-x64.zip";
 const SHARP_CHECKER_EXE = "SharpChecker-v1.0-win-x64/SharpChecker";
 const args : InputArguments = input.getInputs();
-let dependencies : string[] = getXmls(args.binaries).concat(NETSTANDARD_XMLS);
+let dependencies : string[];
 let sharpCheckerExe : string;
 let xmlApi : Map<string, XmlFormat>;
 let typeList : TypeList;
@@ -92,6 +92,7 @@ async function downloadTools() {
 
 /**Generates the html documentation.*/
 async function generateDocs() {
+	dependencies = getXmls(args.binaries).concat(NETSTANDARD_XMLS);
 	typeList = await generateTypeList(args);
 	xmlApi = new Map<string, XmlFormat>();
 	try { await io.rmRF(args.outputPath); } catch(e) {}
