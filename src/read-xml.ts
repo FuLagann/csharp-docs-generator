@@ -55,7 +55,7 @@ export async function gatherApiMapFromTypePath(api : Map<string, XmlFormat>, typ
 	for(let i = 0; i < xmls.length; i++) {
 		content = readFile(xmls[i]);
 		found = await generateMemberFromTypePath(api, parser.parseFromString(content, "text/xml"), typePath);
-		if(found) { break; }
+		if(found === true) { break; }
 	}
 }
 
@@ -77,22 +77,20 @@ async function generateMemberFromTypePath(api : Map<string, XmlFormat>, xml : XM
 	if(!xml) { throw new Error("Undefined xml!"); }
 	
 	// Variables
-	const member = xml.getElementById(typePath);
+	const members = xml.getElementsByTagName("member");
 	
-	console.log(typePath);
-	
-	if(member) {
-		console.log("MEMBER: " + member.getAttribute("name"));
-		
-		// Variables
-		let temp : string[] = typePath.split(':');
-		const type : string = temp[0];
-		const ntypePath : string = temp[1];
-		let format : XmlFormat = await setDataMembers(member);
-		
-		format.type = type;
-		api.set(ntypePath, format);
-		return true;
+	for(let i = 0; i < members.length; i++) {
+		if(members[i].getAttribute("name") == typePath) {
+			// Variables
+			let temp : string[] = typePath.split(':');
+			const type : string = temp[0];
+			const ntypePath : string = temp[1];
+			let format : XmlFormat = await setDataMembers(members[i]);
+			
+			format.type = type;
+			api.set(ntypePath, format);
+			return true;
+		}
 	}
 	
 	return false;
