@@ -7,10 +7,11 @@ import { BaseTemplateVars, SidebarView } from "./models/TemplateVariables";
 import { XmlFormat } from "./models/XmlFormat";
 import { readFile } from "./read-file";
 import { generateTypeDetails } from "./generate";
-import { getArguments, getXmlApi, getTemplateUri, TEMP_FOLDER } from "./index";
+import { getArguments, getXmlApi, getTemplateUri, TEMP_FOLDER, getDependencies } from "./index";
 import { createPartial, displaySidebar } from "./template-helpers";
 import ejs = require("ejs");
 import pretty = require("pretty");
+import { gatherApiMapFromTypePath } from "./read-xml";
 
 // Variables
 let generatedTypeJson : TypeInfo;
@@ -67,6 +68,9 @@ export function compileType(filename : string, typePath : string) : string {
 	// Variables
 	const args : InputArguments = getArguments();
 	const api : Map<string, XmlFormat> = getXmlApi();
+	if(!api.has(typePath)) {
+		gatherApiMapFromTypePath(api, `T:${ typePath }`, getDependencies());
+	}
 	const xmlApi : TemplateApiItems = getApiItems(api.get(typePath));
 	
 	return ejs.render(readFile(filename), {
@@ -87,6 +91,9 @@ export function compileField(filename : string, details : FieldInfo) {
 	// Variables
 	const api : Map<string, XmlFormat> = getXmlApi();
 	const typePath = getTypePath(details.implementedType, details.name);
+	if(!api.has(typePath)) {
+		gatherApiMapFromTypePath(api, `F:${ typePath }`, getDependencies());
+	}
 	const xmlApi : TemplateApiItems = getApiItems(api.get(typePath));
 	
 	return ejs.render(readFile(filename), {
@@ -100,6 +107,9 @@ export function compilePropety(filename : string, details : PropertyInfo) {
 	// Variables
 	const api : Map<string, XmlFormat> = getXmlApi();
 	const typePath = getPropertyTypePath(details);
+	if(!api.has(typePath)) {
+		gatherApiMapFromTypePath(api, `P:${ typePath }`, getDependencies());
+	}
 	const xmlApi : TemplateApiItems = getApiItems(api.get(typePath));
 	
 	return ejs.render(readFile(filename), {
@@ -113,6 +123,9 @@ export function compileEvent(filename : string, details : EventInfo) {
 	// Variables
 	const api : Map<string, XmlFormat> = getXmlApi();
 	const typePath = getTypePath(details.implementedType, details.name);
+	if(!api.has(typePath)) {
+		gatherApiMapFromTypePath(api, `E:${ typePath }`, getDependencies());
+	}
 	const xmlApi : TemplateApiItems = getApiItems(api.get(typePath));
 	
 	return ejs.render(readFile(filename), {
@@ -126,6 +139,9 @@ export function compileMethod(filename : string, details : MethodInfo) {
 	// Variables
 	const api : Map<string, XmlFormat> = getXmlApi();
 	const typePath = getMethodTypePath(details);
+	if(!api.has(typePath)) {
+		gatherApiMapFromTypePath(api, `M:${ typePath }`, getDependencies());
+	}
 	const xmlApi : TemplateApiItems = getApiItems(api.get(typePath));
 		
 	return ejs.render(readFile(filename), {

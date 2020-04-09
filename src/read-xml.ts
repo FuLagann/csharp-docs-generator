@@ -25,10 +25,10 @@ const TEXT_CONTENTS : string[][] = [
  * @returns Returns a documented map of the api.*/
 export async function gatherApiMap(args : InputArguments) : Promise<Map<string, XmlFormat>> {
 	// Variables
-	let content : string;
-	let api : Map<string, XmlFormat> = new Map<string, XmlFormat>();
 	const parser : DOMParser = new DOMParser();
-	const xmls : string[] = getXmls(args.binaries).concat([TEMP_FOLDER + NETSTANDARD_XML]);
+	const xmls : string[] = getXmls(args.binaries);
+	let api : Map<string, XmlFormat> = new Map<string, XmlFormat>();
+	let content : string;
 	
 	for(let i = 0; i < xmls.length; i++) {
 		content = readFile(xmls[i]);
@@ -38,10 +38,31 @@ export async function gatherApiMap(args : InputArguments) : Promise<Map<string, 
 	return api;
 }
 
+// TODO: Get api map of netstandard xml
+// TODO: Get api map of dependancy xml
+// TODO: Get the specific type/member from the xmls and place that type/member data into the api.
+// While this will still be a pretty slow process, it should be faster by only getting the things
+// that are needed instead of literally everything.
+// Look into (xml as XmlDocument).getElementsByName("T:System.Collections.Generic.List`1")
+//export async function gatherApiMapFromTypePath(api : Map<string, XmlFormat>, typePath : string, xmls : string[]) : Promise<Map<string, XmlFormat>>
+
+export async function gatherApiMapFromTypePath(api : Map<string, XmlFormat>, typePath : string, xmls : string[]) {
+	// Variables
+	const parser : DOMParser = new DOMParser();
+	let content : string;
+	let found : boolean = false;
+	
+	for(let i = 0; i < xmls.length; i++) {
+		content = readFile(xmls[i]);
+		found = await generateMemberFromTypePath(api, parser.parseFromString(content, "text/xml"), typePath);
+		if(found) { break; }
+	}
+}
+
 /**Gets all the xml locations that are associated with the binary files.
  * @param binaries {string[]} - The list of binaries to search for.
  * @returns Returns the list of xml documentations.*/
-function getXmls(binaries : string[]) : string[] {
+export function getXmls(binaries : string[]) : string[] {
 	// Variables
 	let results : string[] = [];
 	
@@ -50,6 +71,27 @@ function getXmls(binaries : string[]) : string[] {
 	}
 	
 	return results;
+}
+
+async function generateMemberFromTypePath(api : Map<string, XmlFormat>, xml : XMLDocument, typePath : string) : Promise<boolean> {
+	if(!xml) { throw new Error("Undefined xml!"); }
+	
+	// Variables
+	const members = xml.getElementsByName(typePath);
+	
+	if(members.length > 0) {
+		// Variables
+		let temp : string[] = typePath.split(':');
+		const type : string = temp[0];
+		const ntypePath : string = temp[1];
+		let format : XmlFormat = await setDataMembers(members[0]);
+		
+		format.type = type;
+		api.set(ntypePath, format);
+		return true;
+	}
+	
+	return false;
 }
 
 async function generateMembers(api : Map<string, XmlFormat>, xml : XMLDocument) {

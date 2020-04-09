@@ -18,6 +18,7 @@ const NETSTANDARD_API = "https://github.com/FuLagann/csharp-docs-generator/raw/p
 const SHARP_CHECKER_URL = "https://github.com/FuLagann/sharp-checker/releases/download/v1/SharpChecker-v1.0-standalone-win-x64.zip";
 const SHARP_CHECKER_EXE = "SharpChecker-v1.0-win-x64/SharpChecker";
 const args : InputArguments = input.getInputs();
+let dependencies : string[] = [TEMP_FOLDER + NETSTANDARD_XML];
 let sharpCheckerExe : string;
 let xmlApi : Map<string, XmlFormat>;
 
@@ -28,6 +29,8 @@ export function getSharpCheckerExe() : string { return sharpCheckerExe; }
 export function getXmlApi() : Map<string, XmlFormat> { return xmlApi; }
 
 export function getArguments() : InputArguments { return args; }
+
+export function getDependencies() : string[] { return dependencies; }
 
 /**Gets the template uri using the base path of the template json.
  * @param uri {string} - The file path relative to the template json.
