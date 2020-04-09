@@ -9,7 +9,8 @@ import { InputArguments } from "./models/InputArguments";
 import { XmlFormat } from "./models/XmlFormat";
 import { exec } from "@actions/exec";
 import { gatherApiMap, getXmls } from "./read-xml";
-import { generateHtmlDocumentation } from "./generate";
+import { generateHtmlDocumentation, generateTypeList } from "./generate";
+import { TypeList } from "./models/SharpChecker";
 
 // Variables
 export const TEMP_FOLDER = "__temp/";
@@ -21,6 +22,7 @@ const args : InputArguments = input.getInputs();
 let dependencies : string[] = getXmls(args.binaries).concat(NETSTANDARD_XMLS);
 let sharpCheckerExe : string;
 let xmlApi : Map<string, XmlFormat>;
+let typeList : TypeList;
 
 for(let i = 1; i <= 32; i++) {
 	NETSTANDARD_XMLS.push(`${ TEMP_FOLDER }netstandard-p${ i }.xml`);
@@ -35,6 +37,8 @@ export function getXmlApi() : Map<string, XmlFormat> { return xmlApi; }
 export function getArguments() : InputArguments { return args; }
 
 export function getDependencies() : string[] { return dependencies; }
+
+export function getTypeList() : TypeList { return typeList; }
 
 /**Gets the template uri using the base path of the template json.
  * @param uri {string} - The file path relative to the template json.
@@ -88,8 +92,8 @@ async function downloadTools() {
 
 /**Generates the html documentation.*/
 async function generateDocs() {
+	typeList = await generateTypeList(args);
 	xmlApi = new Map<string, XmlFormat>();
-	//xmlApi = await gatherApiMap(args);
 	try { await io.rmRF(args.outputPath); } catch(e) {}
 	try { await io.mkdirP(args.outputPath); } catch(e) {}
 	await generateHtmlDocumentation(args);
