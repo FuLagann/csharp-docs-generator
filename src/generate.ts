@@ -30,7 +30,6 @@ export async function generateHtmlDocumentation(args : InputArguments) {
 			// Variables
 			const typePath = value[i].replace("/", ".");
 			if(typePath.indexOf("<") != -1) { continue; }
-			// TODO: Add customization to output file extension
 			const filename = args.outputPath + typePath + args.outputExtension;
 			const html = await compileBase(args, typePath);
 			
