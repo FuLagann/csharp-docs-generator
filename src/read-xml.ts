@@ -77,14 +77,18 @@ async function generateMemberFromTypePath(api : Map<string, XmlFormat>, xml : XM
 	if(!xml) { throw new Error("Undefined xml!"); }
 	
 	// Variables
-	const member = xml.getElementById(typePath);
+	const member = xml.getElementsByName(typePath);
 	
-	if(member) {
+	console.log(typePath);
+	
+	if(member.length > 0) {
+		console.log("MEMBER: " + member[0].getAttribute("name"));
+		
 		// Variables
 		let temp : string[] = typePath.split(':');
 		const type : string = temp[0];
 		const ntypePath : string = temp[1];
-		let format : XmlFormat = await setDataMembers(member);
+		let format : XmlFormat = await setDataMembers(member[0]);
 		
 		format.type = type;
 		api.set(ntypePath, format);
