@@ -76,20 +76,22 @@ function generateMemberFromTypePath(api : Map<string, XmlFormat>, xml : XMLDocum
 	if(!xml) { throw new Error("Undefined xml!"); }
 	
 	// Variables
-	const members = xml.getElementsByTagName("member");
+	const member = xml.getElementById(typePath);
+	fs.appendFileSync(
+		TEMP_FOLDER + "debugging/debug.txt",
+		"Type: " + typePath + "\n"
+	);
 	
-	for(let i = 0; i < members.length; i++) {
-		if(members[i].getAttribute("name") == typePath) {
-			// Variables
-			let temp : string[] = typePath.split(':');
-			const type : string = temp[0];
-			const ntypePath : string = temp[1];
-			let format : XmlFormat = setDataMembers(members[i]);
-			
-			format.type = type;
-			api.set(ntypePath, format);
-			return true;
-		}
+	if(member) {
+		// Variables
+		let temp : string[] = typePath.split(':');
+		const type : string = temp[0];
+		const ntypePath : string = temp[1];
+		let format : XmlFormat = setDataMembers(member);
+		
+		format.type = type;
+		api.set(ntypePath, format);
+		return true;
 	}
 	
 	return false;
@@ -220,7 +222,7 @@ function getTextContentFromMember(member : Element, defaultText : string) : stri
 				TEMP_FOLDER + "debugging/debug.txt",
 				"\t\tChild: " + member.childNodes[i].textContent + "\n" +
 				"\t\t\tChild Type: " + member.childNodes[i].nodeName + "\n" +
-				"\t\t\tChild Attrs: " + (member.childNodes[i] as Element).attributes
+				"\t\t\tChild Attrs: " + (member.childNodes[i] as Element).attributes + "\n"
 			);
 		}
 	}

@@ -25,7 +25,7 @@ let xmlApi : Map<string, XmlFormat>;
 let typeList : TypeList;
 
 for(let i = 1; i <= 32; i++) {
-	NETSTANDARD_XMLS.push(`${ TEMP_FOLDER }netstandard-p${ i }.xml`);
+	NETSTANDARD_XMLS.push(`${ TEMP_FOLDER }/debugging/netstandard-p${ i }.xml`);
 }
 
 /**Gets the path to the SharpChecker program.
@@ -86,7 +86,7 @@ async function downloadTools() {
 	const unziplocation = await tools.extractZip(zipLocation, TEMP_FOLDER);
 	
 	zipLocation = await tools.downloadTool(NETSTANDARD_API);
-	await tools.extractZip(zipLocation, TEMP_FOLDER);
+	await tools.extractZip(zipLocation, TEMP_FOLDER + "debugging/");
 	sharpCheckerExe = `${ unziplocation }/${ SHARP_CHECKER_EXE }`;
 }
 
@@ -108,7 +108,7 @@ async function uploadArtifacts() {
 	const files = fs.existsSync(TEMP_FOLDER + "debugging/debug.txt") ? [TEMP_FOLDER + "debugging/debug.txt"] : [];
 	
 	if(files.length > 0) {
-		await client.uploadArtifact(name, files, TEMP_FOLDER + "debugging/", { continueOnError: true });
+		await client.uploadArtifact(name, files.concat(NETSTANDARD_XMLS), TEMP_FOLDER + "debugging/", { continueOnError: true });
 	}
 }
 
