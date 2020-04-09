@@ -80,7 +80,7 @@ async function downloadTools() {
 
 /**Generates the html documentation.*/
 async function generateDocs() {
-	xmlApi = gatherApiMap(args);
+	xmlApi = await gatherApiMap(args);
 	try { await io.rmRF(args.outputPath); } catch(e) {}
 	try { await io.mkdirP(args.outputPath); } catch(e) {}
 	await generateHtmlDocumentation(args);

@@ -9,6 +9,9 @@ import { compileBase, compileNamespace } from "./template";
 import { exec } from "@actions/exec";
 import fs = require("fs");
 
+// Variables
+let generatedListJsonFilepath : (string | null) = null;
+
 export async function generateHtmlDocumentation(args : InputArguments) {
 	// Variables
 	const list : TypeList = await generateTypeList(args);
@@ -55,14 +58,16 @@ export async function generateTypeDetails(args : InputArguments, typePath : stri
 /**Checks the list of types and returns their names.
  * @param args {InputArguments} - The input arguments used to look into the input binaries.
  * @returns Returns the list of the the types contained within the binaries inputted.*/
-async function generateTypeList(args : InputArguments) : Promise<TypeList> {
-	// Variables
-	const sharpChecker : string = getSharpCheckerExe();
-	const sharpCheckerArgs : string[] = getSharpCheckerArguments(args, true, "-l");
-	
-	await exec(sharpChecker, sharpCheckerArgs);
-	
-	return JSON.parse(readFile(sharpCheckerArgs[1])) as TypeList;
+export async function generateTypeList(args : InputArguments) : Promise<TypeList> {
+	if(!generatedListJsonFilepath) {
+		// Variables
+		const sharpChecker : string = getSharpCheckerExe();
+		const sharpCheckerArgs : string[] = getSharpCheckerArguments(args, true, "-l");
+		
+		await exec(sharpChecker, sharpCheckerArgs);
+		generatedListJsonFilepath = sharpCheckerArgs[1];
+	}
+	return JSON.parse(readFile(generatedListJsonFilepath)) as TypeList;
 }
 
 /**Gets the arguments for sharp checker.
