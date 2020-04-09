@@ -8,19 +8,23 @@ import fs = require("fs");
 import { InputArguments } from "./models/InputArguments";
 import { XmlFormat } from "./models/XmlFormat";
 import { exec } from "@actions/exec";
-import { gatherApiMap } from "./read-xml";
+import { gatherApiMap, getXmls } from "./read-xml";
 import { generateHtmlDocumentation } from "./generate";
 
 // Variables
 export const TEMP_FOLDER = "__temp/";
-export const NETSTANDARD_XML = "netstandard.xml";
-const NETSTANDARD_API = "https://github.com/FuLagann/csharp-docs-generator/raw/paulsbranch/packages/netstandard.xml";
+export let NETSTANDARD_XMLS : string[]= [];
+const NETSTANDARD_API = "https://github.com/FuLagann/csharp-docs-generator/raw/paulsbranch/packages/netstandard.zip";
 const SHARP_CHECKER_URL = "https://github.com/FuLagann/sharp-checker/releases/download/v1/SharpChecker-v1.0-standalone-win-x64.zip";
 const SHARP_CHECKER_EXE = "SharpChecker-v1.0-win-x64/SharpChecker";
 const args : InputArguments = input.getInputs();
-let dependencies : string[] = [TEMP_FOLDER + NETSTANDARD_XML];
+let dependencies : string[] = getXmls(args.binaries).concat(NETSTANDARD_XMLS);
 let sharpCheckerExe : string;
 let xmlApi : Map<string, XmlFormat>;
+
+for(let i = 1; i <= 32; i++) {
+	NETSTANDARD_XMLS.push(`${ TEMP_FOLDER }netstandard-p${ i }.xml`);
+}
 
 /**Gets the path to the SharpChecker program.
  * @returns Returns the path to the SharpChecker program.*/
@@ -74,16 +78,18 @@ async function downloadTools() {
 	try { await io.mkdirP(TEMP_FOLDER); } catch(e) {}
 	
 	// Variables
-	const zipLocation = await tools.downloadTool(SHARP_CHECKER_URL);
+	let zipLocation = await tools.downloadTool(SHARP_CHECKER_URL);
 	const unziplocation = await tools.extractZip(zipLocation, TEMP_FOLDER);
 	
-	await tools.downloadTool(NETSTANDARD_API, TEMP_FOLDER + NETSTANDARD_XML);
+	zipLocation = await tools.downloadTool(NETSTANDARD_API);
+	await tools.extractZip(zipLocation, TEMP_FOLDER);
 	sharpCheckerExe = `${ unziplocation }/${ SHARP_CHECKER_EXE }`;
 }
 
 /**Generates the html documentation.*/
 async function generateDocs() {
-	xmlApi = await gatherApiMap(args);
+	xmlApi = new Map<string, XmlFormat>();
+	//xmlApi = await gatherApiMap(args);
 	try { await io.rmRF(args.outputPath); } catch(e) {}
 	try { await io.mkdirP(args.outputPath); } catch(e) {}
 	await generateHtmlDocumentation(args);

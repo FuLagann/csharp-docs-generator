@@ -1,5 +1,5 @@
 
-import { NETSTANDARD_XML, TEMP_FOLDER, getArguments } from "./index";
+import { NETSTANDARD_XMLS, TEMP_FOLDER, getArguments } from "./index";
 import { readFile } from "./read-file";
 import { generateTypeList } from "./generate";
 import { NameDescription } from "./models/TemplateApi";
@@ -77,14 +77,14 @@ async function generateMemberFromTypePath(api : Map<string, XmlFormat>, xml : XM
 	if(!xml) { throw new Error("Undefined xml!"); }
 	
 	// Variables
-	const members = xml.getElementsByName(typePath);
+	const member = xml.getElementById(typePath);
 	
-	if(members.length > 0) {
+	if(member) {
 		// Variables
 		let temp : string[] = typePath.split(':');
 		const type : string = temp[0];
 		const ntypePath : string = temp[1];
-		let format : XmlFormat = await setDataMembers(members[0]);
+		let format : XmlFormat = await setDataMembers(member);
 		
 		format.type = type;
 		api.set(ntypePath, format);
