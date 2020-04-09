@@ -76,22 +76,28 @@ function generateMemberFromTypePath(api : Map<string, XmlFormat>, xml : XMLDocum
 	if(!xml) { throw new Error("Undefined xml!"); }
 	
 	// Variables
-	const member = xml.getElementById(typePath);
+	const members = xml.getElementsByTagName("member");
 	fs.appendFileSync(
 		TEMP_FOLDER + "debugging/debug.txt",
 		"Type: " + typePath + "\n"
 	);
 	
-	if(member) {
-		// Variables
-		let temp : string[] = typePath.split(':');
-		const type : string = temp[0];
-		const ntypePath : string = temp[1];
-		let format : XmlFormat = setDataMembers(member);
-		
-		format.type = type;
-		api.set(ntypePath, format);
-		return true;
+	for(let i = 0; i < members.length; i++) {
+		fs.appendFileSync(
+			TEMP_FOLDER + "debugging/debug.txt",
+			"\tMember Name: " + members[i].getAttribute("name") + "\n"
+		);
+		if(members[i].getAttribute("name") == typePath) {
+			// Variables
+			let temp : string[] = typePath.split(':');
+			const type : string = temp[0];
+			const ntypePath : string = temp[1];
+			let format : XmlFormat = setDataMembers(members[i]);
+			
+			format.type = type;
+			api.set(ntypePath, format);
+			return true;
+		}
 	}
 	
 	return false;
