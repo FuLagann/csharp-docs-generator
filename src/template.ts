@@ -34,8 +34,8 @@ export async function compileBase(args : InputArguments, typePath : string) : Pr
 		displaySidebar: generateSidebar,
 		createPartial: createPartial,
 		uris: {
-			css: getRelativeLinks("css/", args.templateUris.localCss, args.templateUris.globalCss),
-			scripts: getRelativeLinks("js/", args.templateUris.localScripts, args.templateUris.globalScripts),
+			css: getRelativeLinks("css/", args.templateUris.localCss || [], args.templateUris.globalCss || []),
+			scripts: getRelativeLinks("js/", args.templateUris.localScripts || [], args.templateUris.globalScripts || []),
 			type: args.templateUris.type
 		},
 		isNamespace: false,
@@ -63,8 +63,8 @@ export async function compileNamespace(args : InputArguments, namespace : string
 		displaySidebar: generateSidebar,
 		createPartial: createPartial,
 		uris: {
-			css: getRelativeLinks("css/", args.templateUris.localCss, args.templateUris.globalCss),
-			scripts: getRelativeLinks("js/", args.templateUris.localScripts, args.templateUris.globalScripts),
+			css: getRelativeLinks("css/", args.templateUris.localCss || [], args.templateUris.globalCss || []),
+			scripts: getRelativeLinks("js/", args.templateUris.localScripts || [], args.templateUris.globalScripts || []),
 			type: args.templateUris.type
 		},
 		isNamespace: true,
@@ -175,9 +175,10 @@ export function compileMethod(filename : string, details : MethodInfo) {
  * @returns Returns the links of both locals and globals relative to the individual webpage.*/
 function getRelativeLinks(localBasePath : string, locals : string[], globals : string[]) : string[] {
 	// Variables
-	let list : string[] = globals.slice();
+	let list : string[] = globals ? globals.slice() : [];
 	
 	for(let i = 0; i < locals.length; i++) {
+		if(locals[i] || locals[i] == "") { continue; }
 		list.push(locals[i].replace(/.*[\\\/]([\w\.]+)$/gm, `${ localBasePath }$1`));
 	}
 	

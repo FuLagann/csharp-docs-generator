@@ -47,8 +47,8 @@ export async function generateHtmlDocumentation(args : InputArguments) {
 /**Generates the local css and javascript files used by the template.
  * @param args {InputArguments} - The input arguments to look into the local css and javascript.*/
 export function generateCssAndScriptFiles(args : InputArguments) {
-	generateSupplementaryFile(path.join(args.outputPath, "css/"), args.templateUris.localCss);
-	generateSupplementaryFile(path.join(args.outputPath, "js/"), args.templateUris.localScripts);
+	generateSupplementaryFile(path.join(args.outputPath, "css/"), args.templateUris.localCss || []);
+	generateSupplementaryFile(path.join(args.outputPath, "js/"), args.templateUris.localScripts || []);
 }
 
 /**Checks the type and returns it's info.
