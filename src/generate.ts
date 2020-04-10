@@ -9,6 +9,7 @@ import { compileBase, compileNamespace } from "./template";
 // External libraries
 import { exec } from "@actions/exec";
 import fs = require("fs");
+import path = require("path");
 
 // Variables
 let typeList : (TypeList | null) = null;
@@ -43,6 +44,13 @@ export async function generateHtmlDocumentation(args : InputArguments) {
 	console.log("Generation completed!");
 }
 
+/**Generates the local css and javascript files used by the template.
+ * @param args {InputArguments} - The input arguments to look into the local css and javascript.*/
+export function generateCssAndScriptFiles(args : InputArguments) {
+	generateSupplementaryFile(path.join(args.outputPath, "css/"), args.templateUris.localCss);
+	generateSupplementaryFile(path.join(args.outputPath, "js/"), args.templateUris.localScripts);
+}
+
 /**Checks the type and returns it's info.
  * @param args {InputArguments} - The input arguments used to look into the input binaries.
  * @param typePath {string} - The path to the type to look into.
@@ -70,6 +78,19 @@ export async function generateTypeList(args : InputArguments) : Promise<TypeList
 		typeList = JSON.parse(readFile(sharpCheckerArgs[1])) as TypeList;
 	}
 	return typeList;
+}
+
+/**Generates the supplementary files (used for creating css and js files from templates).
+ * @param basePath {string} - The base path to build to.
+ * @param files {string[]} - The files to copy from and into the base path.*/
+function generateSupplementaryFile(basePath : string, files : string[]) {
+	for(let i = 0; i < files.length; i++) {
+		// Variables
+		const filename = files[i].replace(/.*[\\\/]([\w\.]+)$/gm, "$1");
+		const content = readFile(files[i]);
+		
+		fs.writeFileSync(path.join(basePath, filename), content);
+	}
 }
 
 /**Gets the arguments for sharp checker.

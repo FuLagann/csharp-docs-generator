@@ -7,7 +7,7 @@ import { SidebarView } from "./models/TemplateApi";
 import { XmlFormat } from "./models/XmlFormat";
 // External functionality
 import { generateTypeDetails } from "./generate";
-import { getArguments, getTemplateUri, getDependencies } from "./index";
+import { getArguments, getDependencies } from "./index";
 import { readFile } from "./read-file";
 import { getApiDoc } from "./read-xml";
 import { createPartial, generateSidebar } from "./template-helpers";
@@ -24,7 +24,7 @@ let generatedTypeJson : TypeInfo;
  * @returns Returns the compiled template code.*/
 export async function compileBase(args : InputArguments, typePath : string) : Promise<string> {
 	// Variables
-	const filename = getTemplateUri(args.template.base);
+	const filename = args.templateUris.base;
 	const sidebar : SidebarView = new SidebarView("$~root");
 	
 	generatedTypeJson = await generateTypeDetails(args, typePath);
@@ -34,9 +34,9 @@ export async function compileBase(args : InputArguments, typePath : string) : Pr
 		displaySidebar: generateSidebar,
 		createPartial: createPartial,
 		uris: {
-			css: args.template.css,
-			scripts: args.template.scripts,
-			type: args.template.type
+			css: getRelativeLinks("css/", args.templateUris.localCss, args.templateUris.globalCss),
+			scripts: getRelativeLinks("js/", args.templateUris.localScripts, args.templateUris.globalScripts),
+			type: args.templateUris.type
 		},
 		isNamespace: false,
 		sidebarView: sidebar,
@@ -53,7 +53,7 @@ export async function compileBase(args : InputArguments, typePath : string) : Pr
  * @returns Returns the compiled template code.*/
 export async function compileNamespace(args : InputArguments, namespace : string, types : string[]) : Promise<string> {
 	// Variables
-	const filename = getTemplateUri(args.template.base);
+	const filename = args.templateUris.base;
 	const sidebar : SidebarView = new SidebarView("$~root");
 	
 	// TODO: Generate sidebar
@@ -63,9 +63,9 @@ export async function compileNamespace(args : InputArguments, namespace : string
 		displaySidebar: generateSidebar,
 		createPartial: createPartial,
 		uris: {
-			css: args.template.css,
-			scripts: args.template.scripts,
-			type: args.template.type
+			css: getRelativeLinks("css/", args.templateUris.localCss, args.templateUris.globalCss),
+			scripts: getRelativeLinks("js/", args.templateUris.localScripts, args.templateUris.globalScripts),
+			type: args.templateUris.type
 		},
 		isNamespace: true,
 		sidebarView: sidebar,
@@ -91,11 +91,11 @@ export function compileType(filename : string, typePath : string) : string {
 		xmlDocs: xmlApi,
 		createPartial: createPartial,
 		uris: {
-			constructors: args.template.constructors,
-			fields: args.template.fields,
-			properties: args.template.properties,
-			events: args.template.events,
-			methods: args.template.methods
+			constructors: args.templateUris.constructors,
+			fields: args.templateUris.fields,
+			properties: args.templateUris.properties,
+			events: args.templateUris.events,
+			methods: args.templateUris.methods
 		}
 	});
 }
@@ -166,6 +166,22 @@ export function compileMethod(filename : string, details : MethodInfo) {
 		xmlDocs: xmlApi,
 		typeInfo: generatedTypeJson.typeInfo
 	});
+}
+
+/**Gets the relative links for the individual webpage to reference, in relation to the webpage.
+ * @param localBasePath {string} - The local base path where the files can be found.
+ * @param locals {string[]} - The local files that the template will generate and use.
+ * @param globals {string[]} - The global files that the user already has and wants to include.
+ * @returns Returns the links of both locals and globals relative to the individual webpage.*/
+function getRelativeLinks(localBasePath : string, locals : string[], globals : string[]) : string[] {
+	// Variables
+	let list : string[] = globals.slice();
+	
+	for(let i = 0; i < locals.length; i++) {
+		list.push(locals[i].replace(/.*[\\\/]([\w\.]+)$/gm, `${ localBasePath }$1`));
+	}
+	
+	return list;
 }
 
 /**Gets the property's specific type path used for indices specifically.

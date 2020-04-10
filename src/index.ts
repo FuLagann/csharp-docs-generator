@@ -24,7 +24,7 @@ export let NETSTANDARD_XMLS : string[]= [];
 const NETSTANDARD_API = "https://github.com/FuLagann/csharp-docs-generator/raw/paulsbranch/packages/netstandard.zip";
 const SHARP_CHECKER_URL = "https://github.com/FuLagann/sharp-checker/releases/download/v1/SharpChecker-v1.0-standalone-win-x64.zip";
 const SHARP_CHECKER_EXE = "SharpChecker-v1.0-win-x64/SharpChecker";
-const args : InputArguments = getInputs();
+let args : InputArguments;
 let dependencies : string[];
 let sharpCheckerExe : string;
 let typeList : TypeList;
@@ -49,19 +49,6 @@ export function getDependencies() : string[] { return dependencies; }
  * @returns Returns the list of types to look into.*/
 export function getTypeList() : TypeList { return typeList; }
 
-/**Gets the template uri using the base path of the template json.
- * @param uri {string} - The file path relative to the template json.
- * @returns Returns the file path of the template uri.*/
-export function getTemplateUri(uri : string) : string {
-	// Variables
-	const basePath : string = (args.templatePath == "" || args.templatePath == "." ?
-		"./" :
-		args.templatePath.replace(/[\\\/][\w\.]+$/gm, "/")
-	);
-	
-	return basePath + uri;
-}
-
 /**Catches any error and reports the action as a failed aciton*/
 async function onError(error : Error) { core.setFailed(error.message); }
 
@@ -70,6 +57,12 @@ async function onGitError() {
 	await exec("git status").catch(onError);
 	await exec("git pull").catch(onError);
 	await exec("git push").catch(onError);
+}
+
+/**Initiates the program, setting things up before everything starts up.*/
+async function initiate() {
+	await io.mkdirP(TEMP_FOLDER);
+	args = await getInputs();
 }
 
 /**Executes all the build tasks needed prior to document generation.*/
@@ -164,6 +157,7 @@ async function gitPush() {
 }
 
 (async function() {
+	await initiate();
 	await executeBuildTasks();
 	await downloadTools();
 	await generateDocs();

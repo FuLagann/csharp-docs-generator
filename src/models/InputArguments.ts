@@ -1,31 +1,37 @@
 
 export interface CompactFullUris {
-	compact : string,
-	full : string
+	compact : string;
+	full : string;
 };
 
 export interface TemplateUris {
-	base : string,
-	css: string[],
-	scripts : string[]
-	namespace : string,
-	type :string,
-	constructors : CompactFullUris,
-	fields : CompactFullUris,
-	properties : CompactFullUris,
-	events : CompactFullUris,
-	methods : CompactFullUris
+	base : string;
+	includeDefaultCss : boolean;
+	includeDefaultScripts : boolean;
+	localCss : string[];
+	globalCss : string[];
+	localScripts : string[];
+	globalScripts : string[];
+	namespace : string;
+	type : string;
+	constructors : CompactFullUris;
+	fields : CompactFullUris;
+	properties : CompactFullUris;
+	events : CompactFullUris;
+	methods : CompactFullUris;
 }
 
 export class InputArguments {
 	buildTasks : string[];
 	cleanUpTasks : string[];
 	binaries : string[];
+	dependencies : string[];
 	commitMessage : string;
 	branchName : string;
 	amendNoEdit : boolean;
+	template : string;
 	templatePath : string;
-	template : TemplateUris;
+	templateUris : TemplateUris;
 	outputPath : string;
 	outputExtension : string;
 	includePrivate : boolean;
@@ -37,6 +43,7 @@ export class InputArguments {
 		this.buildTasks = [];
 		this.cleanUpTasks = [];
 		this.binaries = [];
+		this.dependencies = [];
 		this.commitMessage = "Automated creation of documentation";
 		this.outputPath = "docs/api/";
 		this.branchName = "";
@@ -44,11 +51,15 @@ export class InputArguments {
 		this.templatePath = "./";
 		this.outputExtension = ".html";
 		this.includePrivate = false;
-		// TODO: Add uri to the template
-		this.template = {
+		this.template = "default";
+		this.templateUris = {
 			base: "",
-			css: [],
-			scripts: [],
+			includeDefaultCss: true,
+			includeDefaultScripts: true,
+			globalCss: [],
+			localCss: [],
+			globalScripts: [],
+			localScripts: [],
 			namespace: "",
 			type: "",
 			constructors: {

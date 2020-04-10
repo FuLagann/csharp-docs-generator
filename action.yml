@@ -12,6 +12,9 @@ inputs:
   binaries:
     description: "The list of binaries used to look into, must be named the same as the xml documentation."
     required: true
+  dependencies:
+    description: "The list of binaries or xmls that your program uses to depend on."
+    required: false
   user-name:
     description: "The name of the user who will commit."
     required: false
@@ -20,7 +23,11 @@ inputs:
     description: "The email of the user who will commit."
     required: false
     default: "csharp.doc.gen@gmail.com"
-  template-json:
+  template:
+    description: "The name of the template to use to generate the webpages from."
+    required: false
+    default: "default"
+  template-uris-json:
     description: "The json to get all the template files used to generate the documentation."
     required: false
   output-path:

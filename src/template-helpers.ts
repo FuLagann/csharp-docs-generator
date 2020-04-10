@@ -3,7 +3,6 @@
 import { FieldInfo, PropertyInfo, EventInfo, MethodInfo } from "./models/SharpChecker";
 import { SidebarView } from "./models/TemplateApi";
 // External functionalities
-import { getTemplateUri } from "./index";
 import { readFile } from "./read-file";
 import { compileType, compileField, compilePropety, compileEvent, compileMethod } from "./template";
 // External libraries
@@ -11,13 +10,10 @@ import ejs = require("ejs");
 
 /**Creates a partial using the type and location to the template file.
  * @param type {string} - The type to create from (type, field, property, event, method).
- * @param uri {string} - The location of the template file to use.
+ * @param url {string} - The location of the template file to use.
  * @param context {any} - The context used to pass over to the next template.
  * @returns Returns the compiled template code.*/
-export function createPartial(type : string, uri : string, context : any = {}) : string {
-	// Variables
-	const url = getTemplateUri(uri);
-	
+export function createPartial(type : string, url : string, context : any = {}) : string {
 	switch(type) {
 		case "type": return compileType(url, context as string);
 		case "field": return compileField(url, context as FieldInfo);

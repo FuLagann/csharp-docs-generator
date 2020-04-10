@@ -2,13 +2,16 @@
 // Models
 import { CompactFullUris, InputArguments, TemplateUris } from "./models/InputArguments";
 // External functionalities
+import { TEMP_FOLDER } from "./index";
 import { readFile } from "./read-file";
 // External libraries
 import core = require("@actions/core");
+import tools = require("@actions/tool-cache");
+import path = require("path");
 
 /**Gets all the inputs from the action.yml file.
  * @returns Returns the input arguments from the action.yml file*/
-export function getInputs() : InputArguments {
+export async function getInputs() : Promise<InputArguments> {
 	// Variables
 	let results : InputArguments = new InputArguments();
 	
@@ -20,47 +23,185 @@ export function getInputs() : InputArguments {
 	results.outputPath = core.getInput("output-path") || results.outputPath;
 	results.user.name = core.getInput("user-name") || results.user.name;
 	results.user.email = core.getInput("user-email") || results.user.email;
-	results.templatePath = core.getInput("template-json") || results.templatePath;
+	results.templatePath = core.getInput("template-uris-json") || results.templatePath;
 	results.outputExtension = core.getInput("output-extension") || results.outputExtension;
 	results.includePrivate = Boolean(core.getInput("include-private") == "true" || results.includePrivate);
-	gatherUris(results.template, results.templatePath);
+	results.template = core.getInput("template") || results.template;
+	results.templateUris = await getTemplate(results.template);
+	results.templateUris = gatherUris(results.templatePath, results.templateUris, results.templatePath);
 	
 	return results;
+}
+
+/**Downloads the template data and returns the files that the template uses.
+ * @param templateID {string} - The name of the template to look up.
+ * @returns Returns the template files used for templating.*/
+async function getTemplate(templateID : string) : Promise<TemplateUris> {
+	try {
+		// Variables
+		const toolLocation : string = getTemplateToolLocation(templateID);
+		const zipLocation : string = await tools.downloadTool(toolLocation);
+		const unzipLocation : string = await tools.extractZip(zipLocation, TEMP_FOLDER);
+		let template : TemplateUris = JSON.parse(readFile(`${ unzipLocation }/template.json`)) as TemplateUris;
+		
+		template.base = path.join(TEMP_FOLDER, template.base);
+		template.namespace = path.join(TEMP_FOLDER, template.namespace);
+		template.type = path.join(TEMP_FOLDER, template.type);
+		template.constructors = updatePath(TEMP_FOLDER, template.constructors);
+		template.fields = updatePath(TEMP_FOLDER, template.fields);
+		template.properties = updatePath(TEMP_FOLDER, template.properties);
+		template.events = updatePath(TEMP_FOLDER, template.events);
+		template.methods = updatePath(TEMP_FOLDER, template.methods);
+		template.localCss = updatePathForArray(TEMP_FOLDER, template.localCss);
+		template.localScripts = updatePathForArray(TEMP_FOLDER, template.localScripts);
+		template.globalCss = updatePathForArray(TEMP_FOLDER, template.globalCss);
+		template.globalScripts = updatePathForArray(TEMP_FOLDER, template.globalScripts);
+		
+		return template;
+	} catch {
+		if(templateID == "default") { return JSON.parse("{}") as TemplateUris; }
+		return await getTemplate("default");
+	}
+}
+
+/**Updates the path of the given compact-full uris.
+ * @param basePath {string} - The base path to where it is found.
+ * @param uri {CompactFullUris} - The compact-full uris to update.
+ * @returns Returns the compact-ful uris with updated paths.*/
+function updatePath(basePath : string, uri : CompactFullUris) : CompactFullUris {
+	uri.compact = path.join(basePath, uri.compact);
+	uri.full = path.join(basePath, uri.full);
+	
+	return uri;
+}
+
+/**Updates the path for an entire array.
+ * @param basePath {string} - The base path of where the files should be found.
+ * @param list {string[]} - The list of files to update.
+ * @returns Returns the list of files with updated paths*/
+function updatePathForArray(basePath : string, list : string[]) : string[] {
+	for(let i = 0; i < list.length; i++) {
+		list[i] = path.join(basePath, list[i]);
+	}
+	
+	return list;
+}
+
+/**Gets the location of where to download the template data.
+ * @param templateID {string} - The indentifying name of the template, found within the repository's
+ * packages directory. Alternatively, providing a link will just return the link.
+ * @returns Returns the location of where to download the template data.*/
+function getTemplateToolLocation(templateID : string) : string {
+	if(templateID.startsWith("https://") || templateID.startsWith("http://")) {
+		return templateID;
+	}
+	
+	// Variables
+	const index : number = templateID.indexOf('@');
+	let templateZip : string = templateID.trim();
+	let branch : string = "master";
+	
+	if(index != -1) {
+		templateZip = templateZip.substring(0, index);
+		branch = templateID.substring(index + 1);
+	}
+	
+	if(!templateID.endsWith(".zip")) { templateZip = templateID + ".zip"; }
+	
+	// TODO: Check whether or not this even exists. If it doesn't then resort to a default.
+	return `https://github.com/FuLagann/csharp-docs-generator/raw/${ branch }/packages/${ templateZip }`;
 }
 
 /**Gathers all the uris needed for templating the documentation.
  * @param template {TemplateUris} - The template json to fill up.
  * @param yamlUri {string | undefined} - The yaml uri to look into.
  * @returns Returns all the uris needed for templating the documention.*/
-function gatherUris(template : TemplateUris, yamlUri : string | undefined) : TemplateUris {
+function gatherUris(templatePath : string, template : TemplateUris, yamlUri : string | undefined) : TemplateUris {
 	// Variables
 	const yamlJson : TemplateUris = JSON.parse(yamlUri ? readFile(yamlUri).toString() : "{}");
+	const basePath : string = (templatePath == "" || templatePath == "." ?
+		"./" :
+		templatePath.replace(/[\\\/][\w\.]+$/gm, "/")
+	);
 	
-	template.base = yamlJson.base || template.base;
-	template.css = yamlJson.css || template.css;
-	template.scripts = yamlJson.scripts || template.scripts;
-	template.namespace = yamlJson.namespace || template.namespace;
-	template.type = yamlJson.type || template.type;
-	gatherCompactFullUri(template.constructors, yamlJson.constructors);
-	gatherCompactFullUri(template.fields, yamlJson.fields);
-	gatherCompactFullUri(template.properties, yamlJson.properties);
-	gatherCompactFullUri(template.events, yamlJson.events);
-	gatherCompactFullUri(template.methods, yamlJson.methods);
+	template.base = getFilename(basePath, yamlJson.base, template.base);
+	template.includeDefaultCss = yamlJson.includeDefaultCss || template.includeDefaultCss;
+	template.includeDefaultScripts = yamlJson.includeDefaultScripts || template.includeDefaultScripts;
+	template.localCss = getFilenames(
+		template.includeDefaultCss,
+		basePath,
+		yamlJson.localCss,
+		template.localCss
+	);
+	template.localScripts = getFilenames(
+		template.includeDefaultScripts,
+		basePath,
+		yamlJson.localScripts,
+		template.localScripts
+	);
+	template.globalCss = yamlJson.globalCss || [];
+	template.globalScripts = yamlJson.globalScripts || [];
+	template.namespace = getFilename(basePath, yamlJson.namespace, template.namespace);
+	template.type = getFilename(basePath, yamlJson.type, template.type);
+	gatherCompactFullUri(basePath, template.constructors, yamlJson.constructors);
+	gatherCompactFullUri(basePath, template.fields, yamlJson.fields);
+	gatherCompactFullUri(basePath, template.properties, yamlJson.properties);
+	gatherCompactFullUri(basePath, template.events, yamlJson.events);
+	gatherCompactFullUri(basePath, template.methods, yamlJson.methods);
 	
 	return template;
+}
+
+/**Gets the file name.
+ * @param basePath {string} - The base path of where the template uri json the user has defined.
+ * @param yaml {string | undefined} - The user defined location of the file.
+ * @param template {string} - The location of the file that the template uses.
+ * @returns Returns the filename that is either user defined or template defined.*/
+function getFilename(basePath : string, yaml : (string | undefined), template : string) : string {
+	if(yaml && yaml != "") {
+		return path.join(basePath, yaml);
+	}
+	return template;
+}
+
+/**Gets the file names of the given local files.
+ * @param includeTemplates {boolean} - Set to true to include the template's internal files.
+ * @param basePath {string} - The base path of the template uri json the user has provided.
+ * @param yamls {string[] | undefined} - The list of local files that the user can
+ * define and is used by their personal template.
+ * @param templates {string[]} - The list of local files that the template has.
+ * @returns Returns the list of file names of the local files.*/
+function getFilenames(
+	includeTemplates : boolean, basePath : string,
+	yamls : (string[] | undefined), templates : string[]
+) : string[] {
+	// Variables
+	let list : string[] = [];
+	
+	if(yamls && yamls.length > 0) {
+		for(let i = 0; i < yamls.length; i++) {
+			if(yamls[i] == "") { continue; }
+			list.push(path.join(basePath, yamls[i]));
+		}
+	}
+	if(includeTemplates || !yamls) {
+		list = list.concat(templates);
+	}
+	
+	return list;
 }
 
 /**Gathers the compact-full uris used for the template json.
  * @param templateUri {CompactFullUris} - The template uri to fill up.
  * @param yamlUri {CompactFullUris} - The uri coming from the action.yml.
  * @returns Returns the compact-full uris used for the template json*/
-function gatherCompactFullUri(templateUri : CompactFullUris, yamlUri : CompactFullUris) : CompactFullUris {
+function gatherCompactFullUri(basePath : string, templateUri : CompactFullUris, yamlUri : CompactFullUris) : CompactFullUris {
 	templateUri.compact = (yamlUri ?
-		yamlUri.compact || templateUri.compact :
+		getFilename(basePath, yamlUri.compact, templateUri.compact) :
 		templateUri.compact
 	);
 	templateUri.full = (yamlUri ?
-		yamlUri.full || templateUri.full :
+		getFilename(basePath, yamlUri.full, templateUri.full) :
 		templateUri.full
 	);
 	
