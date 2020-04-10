@@ -43,17 +43,19 @@ export async function gatherApiMap(args : InputArguments) : Promise<Map<string, 
 // Look into (xml as XmlDocument).getElementsByName("T:System.Collections.Generic.List`1")
 //export async function gatherApiMapFromTypePath(api : Map<string, XmlFormat>, typePath : string, xmls : string[]) : Promise<Map<string, XmlFormat>>
 
-export function gatherApiMapFromTypePath(api : Map<string, XmlFormat>, typePath : string, xmls : string[]) {
+export function getApiDoc(typePath : string, xmls : string[]) : XmlFormat {
 	// Variables
 	const parser : DOMParser = new DOMParser();
 	let content : string;
-	let found : boolean = false;
+	let format : (XmlFormat | null) = null;
 	
 	for(let i = 0; i < xmls.length; i++) {
 		content = readFile(xmls[i]);
-		found = generateMemberFromTypePath(api, parser.parseFromString(content, "text/xml"), typePath);
-		if(found === true) { break; }
+		format = generateMemberFromTypePath(parser.parseFromString(content, "text/xml"), typePath);
+		if(format) { break; }
 	}
+	
+	return format || new XmlFormat();
 }
 
 /**Gets all the xml locations that are associated with the binary files.
@@ -70,7 +72,7 @@ export function getXmls(binaries : string[]) : string[] {
 	return results;
 }
 
-function generateMemberFromTypePath(api : Map<string, XmlFormat>, xml : XMLDocument, typePath : string) : boolean {
+function generateMemberFromTypePath(xml : XMLDocument, typePath : string) : (XmlFormat | null) {
 	if(!xml) { throw new Error("Undefined xml!"); }
 	
 	// Variables
@@ -79,18 +81,14 @@ function generateMemberFromTypePath(api : Map<string, XmlFormat>, xml : XMLDocum
 	for(let i = 0; i < members.length; i++) {
 		if(members[i].getAttribute("name") == typePath) {
 			// Variables
-			let temp : string[] = typePath.split(':');
-			const type : string = temp[0];
-			const ntypePath : string = temp[1];
 			let format : XmlFormat = setDataMembers(members[i]);
 			
-			format.type = type;
-			api.set(ntypePath, format);
-			return true;
+			format.type = typePath.split(':')[0];
+			return format;
 		}
 	}
 	
-	return false;
+	return null;
 }
 
 function generateMembers(api : Map<string, XmlFormat>, xml : XMLDocument) {
@@ -239,5 +237,5 @@ function createInternalLink(typePath : string) : string {
 		}
 	}
 	
-	return `https://www.google.com/search?q=${ typePath.replace(/[`\/]/g, ".") }`;
+	return `https://www.google.com/search?q=${ typePath.replace(/`/g, '-').replace(/\//g, ".") }`;
 }
