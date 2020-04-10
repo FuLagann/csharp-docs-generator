@@ -196,12 +196,15 @@ function getFilenames(
  * @param templateUri {CompactFullUris} - The template uri to fill up.
  * @param yamlUri {CompactFullUris} - The uri coming from the action.yml.
  * @returns Returns the compact-full uris used for the template json*/
-function gatherCompactFullUri(basePath : string, templateUri : CompactFullUris, yamlUri : CompactFullUris) : CompactFullUris {
-	templateUri.compact = (yamlUri && yamlUri.compact ?
+function gatherCompactFullUri(basePath : string, templateUri : CompactFullUris, yamlUri : (CompactFullUris | undefined)) : CompactFullUris {
+	if(templateUri == undefined) {
+		templateUri = { compact: "", full: "" };
+	}
+	templateUri.compact = (yamlUri ?
 		getFilename(basePath, yamlUri.compact, templateUri.compact) :
 		templateUri.compact
 	);
-	templateUri.full = (yamlUri && yamlUri.full ?
+	templateUri.full = (yamlUri ?
 		getFilename(basePath, yamlUri.full, templateUri.full) :
 		templateUri.full
 	);
