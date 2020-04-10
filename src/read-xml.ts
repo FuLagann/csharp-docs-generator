@@ -145,9 +145,9 @@ function gatherNameDescriptionList(members : (HTMLCollectionOf<Element> | NodeLi
 		if(!name) { continue; }
 		let desc = (getTextContentFromMember(members[i], "No description")).trim();
 		
-		if(desc != "" && !desc.endsWith(".")) { desc += "."; }
+		if(desc != "" && !(desc.endsWith(".") || desc.endsWith('!') || desc.endsWith('?'))) { desc += "."; }
 		
-		results.push({ name: name, description: desc });
+		results.push({ name: name, description: md.render(desc) });
 	}
 	
 	return results;
@@ -164,9 +164,9 @@ function getTextContent(member : Element, id : string, defaultText : string) : s
 	if(elems.length == 0) { return defaultText; }
 	let desc = (getTextContentFromMember(elems[0], defaultText)).trim();
 	
-	if(desc != "" && !desc.endsWith(".")) { desc += "."; }
+	if(desc != "" && !(desc.endsWith(".") || desc.endsWith('!') || desc.endsWith('?'))) { desc += "."; }
 	
-	return desc;
+	return md.render(desc);
 }
 
 function getTextContentFromMember(member : Element, defaultText : string) : string {
@@ -200,8 +200,8 @@ function getTextContentFromMember(member : Element, defaultText : string) : stri
 						const typeMatches = matches[2].match(/((?:[a-zA-Z0-9`]+[\.\/]?)*)[\.\/](.*)|([a-zA-Z0-9`]+)/);
 						if(!typeMatches) { break; }
 						let link = (typeMatches[1].startsWith("System") ?
-							createSystemLink(matches[2].replace(/[`\/]/g, ".")) :
-							createInternalLink(typeMatches[1])
+							createSystemLink(matches[2].replace(/`/g, '-').replace(/\//g, '.')) :
+							createInternalLink(typeMatches[matches[1] == "T" ? 0 : 1])
 						);
 						let name = (!typeMatches[1] ? typeMatches[0] : typeMatches[2].replace(/`+\d+/g, ""));
 						
@@ -214,7 +214,7 @@ function getTextContentFromMember(member : Element, defaultText : string) : stri
 	else { results = member.textContent; }
 	
 	
-	return md.render(results);
+	return results;
 }
 
 function createSystemLink(typePath : string) : string {
