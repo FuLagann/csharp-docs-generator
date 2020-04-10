@@ -1,11 +1,13 @@
 
-import { NETSTANDARD_XMLS, TEMP_FOLDER, getArguments, getTypeList } from "./index";
-import { readFile } from "./read-file";
-import { generateTypeList } from "./generate";
-import { NameDescription } from "./models/TemplateApi";
-import { InputArguments } from "./models/InputArguments";
-import { XmlFormat } from "./models/XmlFormat";
+// Models
 import { TypeList } from "./models/SharpChecker";
+import { InputArguments } from "./models/InputArguments";
+import { NameDescription } from "./models/TemplateApi";
+import { XmlFormat } from "./models/XmlFormat";
+// External functionalities
+import { getArguments, getTypeList } from "./index";
+import { readFile } from "./read-file";
+// External libraries
 import { DOMParser } from "xmldom";
 import markdownIt = require("markdown-it");
 
@@ -18,32 +20,10 @@ const TEXT_CONTENTS : string[][] = [
 	["example", ""]
 ];
 
-/**Gathers a map of the api from the xml documents.
- * @param args {InputArguments} - The input arguments to get the xml documents from.
- * @returns Returns a documented map of the api.*/
-export async function gatherApiMap(args : InputArguments) : Promise<Map<string, XmlFormat>> {
-	// Variables
-	const parser : DOMParser = new DOMParser();
-	const xmls : string[] = getXmls(args.binaries);
-	let api : Map<string, XmlFormat> = new Map<string, XmlFormat>();
-	let content : string;
-	
-	for(let i = 0; i < xmls.length; i++) {
-		content = readFile(xmls[i]);
-		await generateMembers(api, parser.parseFromString(content, "text/xml"));
-	}
-	
-	return api;
-}
-
-// TODO: Get api map of netstandard xml
-// TODO: Get api map of dependancy xml
-// TODO: Get the specific type/member from the xmls and place that type/member data into the api.
-// While this will still be a pretty slow process, it should be faster by only getting the things
-// that are needed instead of literally everything.
-// Look into (xml as XmlDocument).getElementsByName("T:System.Collections.Generic.List`1")
-//export async function gatherApiMapFromTypePath(api : Map<string, XmlFormat>, typePath : string, xmls : string[]) : Promise<Map<string, XmlFormat>>
-
+/**Gets the api documentation using the type path.
+ * @param typePath {string} - The path to the type to look into.
+ * @param xmls {string[]} - The list of xmls files to look into.
+ * @return Returns a xml format to use for documentation.*/
 export function getApiDoc(typePath : string, xmls : string[]) : XmlFormat {
 	// Variables
 	const parser : DOMParser = new DOMParser();
@@ -52,7 +32,7 @@ export function getApiDoc(typePath : string, xmls : string[]) : XmlFormat {
 	
 	for(let i = 0; i < xmls.length; i++) {
 		content = readFile(xmls[i]);
-		format = generateMemberFromTypePath(parser.parseFromString(content, "text/xml"), typePath);
+		format = generateMember(parser.parseFromString(content, "text/xml"), typePath);
 		if(format) { break; }
 	}
 	
@@ -73,7 +53,11 @@ export function getXmls(binaries : string[]) : string[] {
 	return results;
 }
 
-function generateMemberFromTypePath(xml : XMLDocument, typePath : string) : (XmlFormat | null) {
+/**Generates the documentation member from the given type path.
+ * @param xml {XMLDocument} - The xml document to look into.
+ * @param typePath {string} - The type path to look up.
+ * @returns Returns the xml format to use for documentation. Returns null if the member was not found.*/
+function generateMember(xml : XMLDocument, typePath : string) : (XmlFormat | null) {
 	if(!xml) { throw new Error("Undefined xml!"); }
 	
 	// Variables
@@ -82,7 +66,7 @@ function generateMemberFromTypePath(xml : XMLDocument, typePath : string) : (Xml
 	for(let i = 0; i < members.length; i++) {
 		if(members[i].getAttribute("name") == typePath) {
 			// Variables
-			let format : XmlFormat = setDataMembers(members[i]);
+			let format : XmlFormat = generateXmlFormat(members[i]);
 			
 			format.type = typePath.split(':')[0];
 			return format;
@@ -92,27 +76,10 @@ function generateMemberFromTypePath(xml : XMLDocument, typePath : string) : (Xml
 	return null;
 }
 
-function generateMembers(api : Map<string, XmlFormat>, xml : XMLDocument) {
-	if(!xml) { throw new Error("Undefined xml!"); }
-	
-	// Variables
-	const members = xml.getElementsByTagName("member");
-	
-	for(let i = 0; i < members.length; i++) {
-		// Variables
-		const name : (string | null) = members[i].getAttribute("name");
-		if(!name) { throw new Error("No name for member! XML document invalid!"); }
-		let temp : string[] = name.split(':');
-		const type : string = temp[0];
-		const typePath : string = temp[1];
-		let format : XmlFormat = setDataMembers(members[i]);
-		
-		format.type = type;
-		api.set(typePath, format);
-	}
-}
-
-function setDataMembers(member : Element) : XmlFormat {
+/**Creates the xml format from the given member.
+ * @param member {Element} - The element to look into.
+ * @returns Returns the xml format used to create documentation out of.*/
+function generateXmlFormat(member : Element) : XmlFormat {
 	// Variables
 	let format : XmlFormat = new XmlFormat();
 	const parameters : NameDescription[] = gatherNameDescriptionList(member.getElementsByTagName("param"), "name");
@@ -122,7 +89,7 @@ function setDataMembers(member : Element) : XmlFormat {
 	for(let i = 0; i < TEXT_CONTENTS.length; i++) {
 		format.setTextContent(
 			TEXT_CONTENTS[i][0],
-			getTextContent(member, TEXT_CONTENTS[i][0], TEXT_CONTENTS[i][1])
+			getMarkdownTextContent(member, TEXT_CONTENTS[i][0], TEXT_CONTENTS[i][1])
 		);
 	}
 	format.parameters = parameters;
@@ -135,7 +102,7 @@ function setDataMembers(member : Element) : XmlFormat {
 /**Gather the name and description for the given attribute name of the collection of elements.
  * @param members {HTMLCollectionOf<Element>} - The list of members to look into.
  * @param attrName {string} - The name of the attribute to look into.
- * @returns Returns the list of names and descriptions of the attributes of the members.*/
+ * @returns Returns the list of names and rendered markdown descriptions of the attributes of the members.*/
 function gatherNameDescriptionList(members : (HTMLCollectionOf<Element> | NodeListOf<Element>), attrName : string) : NameDescription[] {
 	// Variables
 	let results : NameDescription[] = [];
@@ -144,7 +111,7 @@ function gatherNameDescriptionList(members : (HTMLCollectionOf<Element> | NodeLi
 		// Variables
 		const name = members[i].getAttribute(attrName);
 		if(!name) { continue; }
-		let desc = (getTextContentFromMember(members[i], "No description")).trim();
+		let desc = (getTextContent(members[i], "No description")).trim();
 		
 		if(desc != "" && !(desc.endsWith(".") || desc.endsWith('!') || desc.endsWith('?'))) { desc += "."; }
 		
@@ -158,19 +125,23 @@ function gatherNameDescriptionList(members : (HTMLCollectionOf<Element> | NodeLi
  * @param member {Element} - The element to look into.
  * @param id {string} - The name of the tag to look into.
  * @param defaultText {string} - The fail safe default text to go to when the tag or text was not found.
- * @returns Returns the text content of the member.*/
-function getTextContent(member : Element, id : string, defaultText : string) : string {
+ * @returns Returns rendered markdown text content of the member.*/
+function getMarkdownTextContent(member : Element, id : string, defaultText : string) : string {
 	// Variables
 	const elems = member.getElementsByTagName(id);
 	if(elems.length == 0) { return defaultText; }
-	let desc = (getTextContentFromMember(elems[0], defaultText)).trim();
+	let desc = (getTextContent(elems[0], defaultText)).trim();
 	
 	if(desc != "" && !(desc.endsWith(".") || desc.endsWith('!') || desc.endsWith('?'))) { desc += "."; }
 	
 	return md.render(desc);
 }
 
-function getTextContentFromMember(member : Element, defaultText : string) : string {
+/**Gets the text content from the given member.
+ * @param member {Element} - The member to look into.
+ * @param defaultText {string} - The default text to use when the member has nothing to begin with.
+ * @returns Returns the text content from the given member.*/
+function getTextContent(member : Element, defaultText : string) : string {
 	if(!member.textContent) { return defaultText; }
 	
 	// Variables
@@ -218,10 +189,17 @@ function getTextContentFromMember(member : Element, defaultText : string) : stri
 	return results;
 }
 
+/**Creates a external link to the C# MSDN Library documentation of the given type.
+ * @param typePath {string} - The type path to create the link with.
+ * @returns Returns a link to the type found within the C# MSDN Library.*/
 function createSystemLink(typePath : string) : string {
 	return `https://docs.microsoft.com/en-us/dotnet/api/${ typePath.toLowerCase() }`;
 }
 
+/**Creates an internal link to the given type.
+ * @param typePath {string} - The type path to create the link with.
+ * @return Returns a link to the type. If it's a dependent, then it will give a link to google,
+ * look up the type. It's not the best thing to do, but it's a viable option.*/
 function createInternalLink(typePath : string) : string {
 	// Variables
 	const args : InputArguments = getArguments();

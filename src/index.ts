@@ -1,32 +1,33 @@
 
+// Models
+import { InputArguments } from "./models/InputArguments";
+import { TypeList } from "./models/SharpChecker";
+// External functionality
+import { generateHtmlDocumentation, generateTypeList } from "./generate";
+import { getInputs } from "./input";
+import { getXmls } from "./read-xml";
+// External libraries
+import { exec } from "@actions/exec";
 import artifact = require("@actions/artifact");
 import core = require("@actions/core");
-import input = require("./input");
 import io = require("@actions/io");
 import tools = require("@actions/tool-cache");
 import fs = require("fs");
-import { InputArguments } from "./models/InputArguments";
-import { XmlFormat } from "./models/XmlFormat";
-import { exec } from "@actions/exec";
-import { gatherApiMap, getXmls } from "./read-xml";
-import { generateHtmlDocumentation, generateTypeList } from "./generate";
-import { TypeList } from "./models/SharpChecker";
 
 // Variables
+/**The list of files to artifact.*/
+export let artifactFiles : string[] = [];
+/**The temp folder where everything tool related will be placed (this is get completed deleted once completed)*/
 export const TEMP_FOLDER = "__temp/";
+/**The list of xmls used for netstandard documentation (it's chopped up into parts because it's such a huge file).*/
 export let NETSTANDARD_XMLS : string[]= [];
 const NETSTANDARD_API = "https://github.com/FuLagann/csharp-docs-generator/raw/paulsbranch/packages/netstandard.zip";
 const SHARP_CHECKER_URL = "https://github.com/FuLagann/sharp-checker/releases/download/v1/SharpChecker-v1.0-standalone-win-x64.zip";
 const SHARP_CHECKER_EXE = "SharpChecker-v1.0-win-x64/SharpChecker";
-const args : InputArguments = input.getInputs();
+const args : InputArguments = getInputs();
 let dependencies : string[];
 let sharpCheckerExe : string;
-let xmlApi : Map<string, XmlFormat>;
 let typeList : TypeList;
-
-for(let i = 1; i <= 32; i++) {
-	NETSTANDARD_XMLS.push(`${ TEMP_FOLDER }/debugging/netstandard-p${ i }.xml`);
-}
 
 for(let i = 1; i <= 32; i++) {
 	NETSTANDARD_XMLS.push(`${ TEMP_FOLDER }netstandard-p${ i }.xml`);
@@ -36,12 +37,16 @@ for(let i = 1; i <= 32; i++) {
  * @returns Returns the path to the SharpChecker program.*/
 export function getSharpCheckerExe() : string { return sharpCheckerExe; }
 
-export function getXmlApi() : Map<string, XmlFormat> { return xmlApi; }
-
+/**Gets the input arguments.
+ * @returns Returns the input arguments.*/
 export function getArguments() : InputArguments { return args; }
 
+/**Gets all the xml dependencies to look into for documentation.
+ * @returns Returns the list of xml dependencies to look into for documentation.*/
 export function getDependencies() : string[] { return dependencies; }
 
+/**Gets the list of types to look into.
+ * @returns Returns the list of types to look into.*/
 export function getTypeList() : TypeList { return typeList; }
 
 /**Gets the template uri using the base path of the template json.
@@ -98,14 +103,12 @@ async function downloadTools() {
 async function generateDocs() {
 	dependencies = getXmls(args.binaries).concat(NETSTANDARD_XMLS);
 	typeList = await generateTypeList(args);
-	xmlApi = new Map<string, XmlFormat>();
 	try { await io.rmRF(args.outputPath); } catch(e) {}
 	try { await io.mkdirP(args.outputPath); } catch(e) {}
 	await generateHtmlDocumentation(args);
 }
 
-export let artifactFiles : string[] = [];
-
+/**Uploads all the artifacts used for debugging*/
 async function uploadArtifacts() {
 	// Variables
 	const client = artifact.create();

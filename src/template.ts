@@ -1,36 +1,42 @@
 
+// Models
 import { InputArguments } from "./models/InputArguments";
 import { TypeInfo, FieldInfo, PropertyInfo, EventInfo, MethodInfo, QuickTypeInfo } from "./models/SharpChecker";
-import { TemplateApi, TemplateApiItems, NameDescription } from "./models/TemplateApi";
-import { TemplateJson } from "./models/TemplateJson";
-import { BaseTemplateVars, SidebarView } from "./models/TemplateVariables";
+import { TemplateApiItems } from "./models/TemplateApi";
+import { SidebarView } from "./models/TemplateApi";
 import { XmlFormat } from "./models/XmlFormat";
-import { readFile } from "./read-file";
+// External functionality
 import { generateTypeDetails } from "./generate";
-import { getArguments, getXmlApi, getTemplateUri, TEMP_FOLDER, getDependencies } from "./index";
-import { createPartial, displaySidebar } from "./template-helpers";
+import { getArguments, getTemplateUri, getDependencies } from "./index";
+import { readFile } from "./read-file";
+import { getApiDoc } from "./read-xml";
+import { createPartial, generateSidebar } from "./template-helpers";
+// External libraries
 import ejs = require("ejs");
 import pretty = require("pretty");
-import { getApiDoc } from "./read-xml";
 
 // Variables
 let generatedTypeJson : TypeInfo;
 
+/**Compiles the base template.
+ * @param args {InputArguments} - The input arguments to look into.
+ * @param typePath {string} - The path to the type to generate the documentation for.
+ * @returns Returns the compiled template code.*/
 export async function compileBase(args : InputArguments, typePath : string) : Promise<string> {
 	// Variables
-	const filename = getTemplateUri(args.template.baseUri);
+	const filename = getTemplateUri(args.template.base);
 	const sidebar : SidebarView = new SidebarView("$~root");
 	
 	generatedTypeJson = await generateTypeDetails(args, typePath);
 	// TODO: Generate sidebar
 	
 	return pretty(ejs.render(readFile(filename), {
-		displaySidebar: displaySidebar,
+		displaySidebar: generateSidebar,
 		createPartial: createPartial,
 		uris: {
-			css: args.template.cssUris,
-			scripts: args.template.scriptUris,
-			type: args.template.typeUri
+			css: args.template.css,
+			scripts: args.template.scripts,
+			type: args.template.type
 		},
 		isNamespace: false,
 		sidebarView: sidebar,
@@ -39,21 +45,27 @@ export async function compileBase(args : InputArguments, typePath : string) : Pr
 	}));
 }
 
+// TODO: Complete this
+/**Compiles the namespace template, listing all the types.
+ * @param args {InputArguments} - The input arguments to look into.
+ * @param namespace {string} - The name of the namespace.
+ * @param types {string[]} - The list of types witihn the namespace.
+ * @returns Returns the compiled template code.*/
 export async function compileNamespace(args : InputArguments, namespace : string, types : string[]) : Promise<string> {
 	// Variables
-	const filename = getTemplateUri(args.template.baseUri);
+	const filename = getTemplateUri(args.template.base);
 	const sidebar : SidebarView = new SidebarView("$~root");
 	
 	// TODO: Generate sidebar
 	// TODO: Figure out namespaces listed in namespace webpages
 	
 	return pretty(ejs.render(readFile(filename), {
-		displaySidebar: displaySidebar,
+		displaySidebar: generateSidebar,
 		createPartial: createPartial,
 		uris: {
-			css: args.template.cssUris,
-			scripts: args.template.scriptUris,
-			type: args.template.typeUri
+			css: args.template.css,
+			scripts: args.template.scripts,
+			type: args.template.type
 		},
 		isNamespace: true,
 		sidebarView: sidebar,
@@ -64,6 +76,10 @@ export async function compileNamespace(args : InputArguments, namespace : string
 	}));
 }
 
+/**Compiles the type template.
+ * @param filename {string} - The filename of the template file.
+ * @param typePath {string} - The path to the type to look into and generate from.
+ * @returns Returns the compiled template code.*/
 export function compileType(filename : string, typePath : string) : string {
 	// Variables
 	const args : InputArguments = getArguments();
@@ -75,15 +91,19 @@ export function compileType(filename : string, typePath : string) : string {
 		xmlDocs: xmlApi,
 		createPartial: createPartial,
 		uris: {
-			constructors: args.template.constructorsUri,
-			fields: args.template.fieldsUri,
-			properties: args.template.propertiesUri,
-			events: args.template.eventsUri,
-			methods: args.template.methodsUri
+			constructors: args.template.constructors,
+			fields: args.template.fields,
+			properties: args.template.properties,
+			events: args.template.events,
+			methods: args.template.methods
 		}
 	});
 }
 
+/**Compiles the field template.
+ * @param filename {string} - The filename of the template file.
+ * @param details {FieldInfo} - The details of the field to look into.
+ * @returns Returns the compiled template code.*/
 export function compileField(filename : string, details : FieldInfo) {
 	// Variables
 	const typePath = getTypePath(details.implementedType, details.name);
@@ -97,6 +117,10 @@ export function compileField(filename : string, details : FieldInfo) {
 	});
 }
 
+/**Compiles the property template.
+ * @param filename {string} - The filename of the template file.
+ * @param details {PropertyInfo} - The details of the property to look into.
+ * @returns Returns the compiled template code.*/
 export function compilePropety(filename : string, details : PropertyInfo) {
 	// Variables
 	const typePath = getPropertyTypePath(details);
@@ -110,6 +134,10 @@ export function compilePropety(filename : string, details : PropertyInfo) {
 	});
 }
 
+/**Compiles the event template.
+ * @param filename {string} - The filename of the template file.
+ * @param details {EventInfo} - The details of the event to look into.
+ * @returns Returns the compiled template code.*/
 export function compileEvent(filename : string, details : EventInfo) {
 	// Variables
 	const typePath = getTypePath(details.implementedType, details.name);
@@ -123,6 +151,10 @@ export function compileEvent(filename : string, details : EventInfo) {
 	});
 }
 
+/**Compiles the method template.
+ * @param filename {string} - The filename of the template file.
+ * @param details {MethodInfo} - The details of the method to look into.
+ * @returns Returns the compiled template code.*/
 export function compileMethod(filename : string, details : MethodInfo) {
 	// Variables
 	const typePath = getMethodTypePath(details);
@@ -243,9 +275,9 @@ function getTypePath(typeInfo : QuickTypeInfo, name : string) : string {
 	return typeInfo.unlocalizedName+ "." + name;
 }
 
-/**Gets all the api items from the surface level of the api.
- * @param api {Map<string, XmlFormat>} - The api to look into.
- * @returns Returns the template items needed to fill up the api documentation.*/
+/**Gets the api documentation items to be used by the template.
+ * @param format {XmlFormat|undefined} - The format used to get the documentation from.
+ * @return Returns the api documentation items.*/
 function getApiItems(format : (XmlFormat | undefined)) : TemplateApiItems {
 	if(format == undefined) { format = new XmlFormat(); }
 	

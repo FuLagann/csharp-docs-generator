@@ -1,17 +1,20 @@
 
+// Models
 import { InputArguments } from "./models/InputArguments";
-import { TypeList, TypeInfo } from "./models/SharpChecker";
-import { TemplateApi } from "./models/TemplateApi";
-import { XmlFormat } from "./models/XmlFormat";
-import { TEMP_FOLDER, getSharpCheckerExe, getTemplateUri, artifactFiles } from "./index";
+import { TypeInfo, TypeList } from "./models/SharpChecker";
+// External functionalities
+import { TEMP_FOLDER, getSharpCheckerExe } from "./index";
 import { readFile } from "./read-file";
 import { compileBase, compileNamespace } from "./template";
+// External libraries
 import { exec } from "@actions/exec";
 import fs = require("fs");
 
 // Variables
 let typeList : (TypeList | null) = null;
 
+/**Generates the hmtl documentation, with the input arguments.
+ * @param args {InputArguments} - The input arguments used for html documentation.*/
 export async function generateHtmlDocumentation(args : InputArguments) {
 	// Variables
 	const list : TypeList = await generateTypeList(args);
@@ -78,8 +81,6 @@ function getSharpCheckerArguments(args : InputArguments, isList : boolean, typeP
 	// Variables
 	const includePrivate : string[] = args.includePrivate ? ["-p"] : [];
 	const outputPath : string = TEMP_FOLDER + (isList ? "list.json" : typePath + ".json");
-	
-	artifactFiles.push(outputPath);
 	
 	return ["-o", outputPath, typePath].concat(includePrivate).concat(args.binaries);
 }

@@ -1,21 +1,37 @@
 
-import { TemplateJson } from "./TemplateJson";
+export interface CompactFullUris {
+	compact : string,
+	full : string
+};
+
+export interface TemplateUris {
+	base : string,
+	css: string[],
+	scripts : string[]
+	namespace : string,
+	type :string,
+	constructors : CompactFullUris,
+	fields : CompactFullUris,
+	properties : CompactFullUris,
+	events : CompactFullUris,
+	methods : CompactFullUris
+}
 
 export class InputArguments {
-	buildTasks: string[];
-	cleanUpTasks: string[];
-	binaries: string[];
-	commitMessage: string;
-	branchName: string;
-	amendNoEdit: boolean;
-	templatePath: string;
-	template: TemplateJson;
-	outputPath: string;
-	outputExtension: string;
-	includePrivate: boolean;
-	user: {
-		name: string,
-		email: string
+	buildTasks : string[];
+	cleanUpTasks : string[];
+	binaries : string[];
+	commitMessage : string;
+	branchName : string;
+	amendNoEdit : boolean;
+	templatePath : string;
+	template : TemplateUris;
+	outputPath : string;
+	outputExtension : string;
+	includePrivate : boolean;
+	user : {
+		name : string,
+		email : string
 	};
 	constructor() {
 		this.buildTasks = [];
@@ -30,36 +46,35 @@ export class InputArguments {
 		this.includePrivate = false;
 		// TODO: Add uri to the template
 		this.template = {
-			baseUri: "",
-			cssUris: [],
-			scriptUris: [],
-			namespaceUri: "",
-			typeUri: "",
-			constructorsUri: {
+			base: "",
+			css: [],
+			scripts: [],
+			namespace: "",
+			type: "",
+			constructors: {
 				compact: "",
 				full: ""
 			},
-			fieldsUri: {
+			fields: {
 				compact: "",
 				full: ""
 			},
-			propertiesUri: {
+			properties: {
 				compact: "",
 				full: ""
 			},
-			eventsUri: {
+			events: {
 				compact: "",
 				full: ""
 			},
-			methodsUri: {
+			methods: {
 				compact: "",
 				full: ""
 			}
 		};
-		// TODO: Add content to user info
 		this.user = {
-			name: "",
-			email: ""
+			name: "C# Document Generator",
+			email: "csharp.doc.gen@gmail.com"
 		};
 	}
 }

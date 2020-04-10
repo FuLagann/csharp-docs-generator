@@ -1,8 +1,10 @@
 
-import core = require("@actions/core");
+// Models
+import { CompactFullUris, InputArguments, TemplateUris } from "./models/InputArguments";
+// External functionalities
 import { readFile } from "./read-file";
-import { InputArguments } from "./models/InputArguments";
-import { CompactFullUris, TemplateJson } from "./models/TemplateJson";
+// External libraries
+import core = require("@actions/core");
 
 /**Gets all the inputs from the action.yml file.
  * @returns Returns the input arguments from the action.yml file*/
@@ -27,23 +29,23 @@ export function getInputs() : InputArguments {
 }
 
 /**Gathers all the uris needed for templating the documentation.
- * @param template {TemplateJson} - The template json to fill up.
+ * @param template {TemplateUris} - The template json to fill up.
  * @param yamlUri {string | undefined} - The yaml uri to look into.
  * @returns Returns all the uris needed for templating the documention.*/
-function gatherUris(template : TemplateJson, yamlUri : string | undefined) : TemplateJson {
+function gatherUris(template : TemplateUris, yamlUri : string | undefined) : TemplateUris {
 	// Variables
-	const yamlJson : TemplateJson = JSON.parse(yamlUri ? readFile(yamlUri).toString() : "{}");
+	const yamlJson : TemplateUris = JSON.parse(yamlUri ? readFile(yamlUri).toString() : "{}");
 	
-	template.baseUri = yamlJson.baseUri || template.baseUri;
-	template.cssUris = yamlJson.cssUris || template.cssUris;
-	template.scriptUris = yamlJson.scriptUris || template.scriptUris;
-	template.namespaceUri = yamlJson.namespaceUri || template.namespaceUri;
-	template.typeUri = yamlJson.typeUri || template.typeUri;
-	gatherCompactFullUri(template.constructorsUri, yamlJson.constructorsUri);
-	gatherCompactFullUri(template.fieldsUri, yamlJson.fieldsUri);
-	gatherCompactFullUri(template.propertiesUri, yamlJson.propertiesUri);
-	gatherCompactFullUri(template.eventsUri, yamlJson.eventsUri);
-	gatherCompactFullUri(template.methodsUri, yamlJson.methodsUri);
+	template.base = yamlJson.base || template.base;
+	template.css = yamlJson.css || template.css;
+	template.scripts = yamlJson.scripts || template.scripts;
+	template.namespace = yamlJson.namespace || template.namespace;
+	template.type = yamlJson.type || template.type;
+	gatherCompactFullUri(template.constructors, yamlJson.constructors);
+	gatherCompactFullUri(template.fields, yamlJson.fields);
+	gatherCompactFullUri(template.properties, yamlJson.properties);
+	gatherCompactFullUri(template.events, yamlJson.events);
+	gatherCompactFullUri(template.methods, yamlJson.methods);
 	
 	return template;
 }

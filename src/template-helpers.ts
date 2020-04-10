@@ -1,12 +1,37 @@
 
-import { SidebarView } from "./models/TemplateVariables";
+// Models
+import { FieldInfo, PropertyInfo, EventInfo, MethodInfo } from "./models/SharpChecker";
+import { SidebarView } from "./models/TemplateApi";
+// External functionalities
 import { getTemplateUri } from "./index";
 import { readFile } from "./read-file";
 import { compileType, compileField, compilePropety, compileEvent, compileMethod } from "./template";
+// External libraries
 import ejs = require("ejs");
-import { FieldInfo, PropertyInfo, EventInfo, MethodInfo } from "./models/SharpChecker";
 
-export function displaySidebar(
+/**Creates a partial using the type and location to the template file.
+ * @param type {string} - The type to create from (type, field, property, event, method).
+ * @param uri {string} - The location of the template file to use.
+ * @param context {any} - The context used to pass over to the next template.
+ * @returns Returns the compiled template code.*/
+export function createPartial(type : string, uri : string, context : any = {}) : string {
+	// Variables
+	const url = getTemplateUri(uri);
+	
+	switch(type) {
+		case "type": return compileType(url, context as string);
+		case "field": return compileField(url, context as FieldInfo);
+		case "property": return compilePropety(url, context as PropertyInfo);
+		case "event": return compileEvent(url, context as EventInfo);
+		case "method": return compileMethod(url, context as MethodInfo);
+	}
+	
+	return ejs.render(readFile(url), context);
+}
+
+/**Generates the html code for the sidebar tree view.
+ * @returns Returns the html code for the sidebar tree view*/
+export function generateSidebar(
 	treeview : (SidebarView | SidebarView[]),
 	treeviewClass : string = "treeview",
 	nestedviewClass : string = "nested"
@@ -14,7 +39,7 @@ export function displaySidebar(
 	if(treeview instanceof SidebarView && treeview.name == "$~root") {
 		return (
 			`<ul class="${ treeviewClass }">` +
-			`${ displaySidebar(treeview.children, treeviewClass, nestedviewClass) }</ul>`
+			`${ generateSidebar(treeview.children, treeviewClass, nestedviewClass) }</ul>`
 		);
 	}
 	
@@ -28,7 +53,7 @@ export function displaySidebar(
 		if(views[i].children.length > 0) {
 			results[i] += (
 				`<ul class="${ nestedviewClass }">` +
-				`${ displaySidebar(views[i].children, treeviewClass, nestedviewClass) }</ul>`
+				`${ generateSidebar(views[i].children, treeviewClass, nestedviewClass) }</ul>`
 			)
 		}
 		
@@ -36,19 +61,4 @@ export function displaySidebar(
 	}
 	
 	return results.join("");
-}
-
-export function createPartial(type : string, uri : string, context : any = {}) {
-	// Variables
-	const url = getTemplateUri(uri);
-	
-	switch(type) {
-		case "type": return compileType(url, context as string);
-		case "field": return compileField(url, context as FieldInfo);
-		case "property": return compilePropety(url, context as PropertyInfo);
-		case "event": return compileEvent(url, context as EventInfo);
-		case "method": return compileMethod(url, context as MethodInfo);
-	}
-	
-	return ejs.render(readFile(url), context);
 }
