@@ -1,5 +1,5 @@
 
-import { NETSTANDARD_XMLS, TEMP_FOLDER, getArguments } from "./index";
+import { NETSTANDARD_XMLS, TEMP_FOLDER, getArguments, getTypeList } from "./index";
 import { readFile } from "./read-file";
 import { generateTypeList } from "./generate";
 import { NameDescription } from "./models/TemplateApi";
@@ -7,12 +7,10 @@ import { InputArguments } from "./models/InputArguments";
 import { XmlFormat } from "./models/XmlFormat";
 import { TypeList } from "./models/SharpChecker";
 import { DOMParser } from "xmldom";
-import fs = require("fs");
-import io = require("@actions/io");
 import markdownIt = require("markdown-it");
 
 // Variables
-const md = markdownIt();
+const md = markdownIt({ html: true });
 const TEXT_CONTENTS : string[][] = [
 	["summary", "No description"],
 	["returns", ""],
@@ -46,17 +44,19 @@ export async function gatherApiMap(args : InputArguments) : Promise<Map<string, 
 // Look into (xml as XmlDocument).getElementsByName("T:System.Collections.Generic.List`1")
 //export async function gatherApiMapFromTypePath(api : Map<string, XmlFormat>, typePath : string, xmls : string[]) : Promise<Map<string, XmlFormat>>
 
-export async function gatherApiMapFromTypePath(api : Map<string, XmlFormat>, typePath : string, xmls : string[]) {
+export function getApiDoc(typePath : string, xmls : string[]) : XmlFormat {
 	// Variables
 	const parser : DOMParser = new DOMParser();
 	let content : string;
-	let found : boolean = false;
+	let format : (XmlFormat | null) = null;
 	
 	for(let i = 0; i < xmls.length; i++) {
 		content = readFile(xmls[i]);
-		found = await generateMemberFromTypePath(api, parser.parseFromString(content, "text/xml"), typePath);
-		if(found) { break; }
+		format = generateMemberFromTypePath(parser.parseFromString(content, "text/xml"), typePath);
+		if(format) { break; }
 	}
+	
+	return format || new XmlFormat();
 }
 
 /**Gets all the xml locations that are associated with the binary files.
@@ -73,28 +73,26 @@ export function getXmls(binaries : string[]) : string[] {
 	return results;
 }
 
-async function generateMemberFromTypePath(api : Map<string, XmlFormat>, xml : XMLDocument, typePath : string) : Promise<boolean> {
+function generateMemberFromTypePath(xml : XMLDocument, typePath : string) : (XmlFormat | null) {
 	if(!xml) { throw new Error("Undefined xml!"); }
 	
 	// Variables
-	const member = xml.getElementById(typePath);
+	const members = xml.getElementsByTagName("member");
 	
-	if(member) {
-		// Variables
-		let temp : string[] = typePath.split(':');
-		const type : string = temp[0];
-		const ntypePath : string = temp[1];
-		let format : XmlFormat = await setDataMembers(member);
-		
-		format.type = type;
-		api.set(ntypePath, format);
-		return true;
+	for(let i = 0; i < members.length; i++) {
+		if(members[i].getAttribute("name") == typePath) {
+			// Variables
+			let format : XmlFormat = setDataMembers(members[i]);
+			
+			format.type = typePath.split(':')[0];
+			return format;
+		}
 	}
 	
-	return false;
+	return null;
 }
 
-async function generateMembers(api : Map<string, XmlFormat>, xml : XMLDocument) {
+function generateMembers(api : Map<string, XmlFormat>, xml : XMLDocument) {
 	if(!xml) { throw new Error("Undefined xml!"); }
 	
 	// Variables
@@ -107,25 +105,24 @@ async function generateMembers(api : Map<string, XmlFormat>, xml : XMLDocument) 
 		let temp : string[] = name.split(':');
 		const type : string = temp[0];
 		const typePath : string = temp[1];
-		let format : XmlFormat = await setDataMembers(members[i]);
+		let format : XmlFormat = setDataMembers(members[i]);
 		
 		format.type = type;
 		api.set(typePath, format);
 	}
 }
 
-async function setDataMembers(member : Element) : Promise<XmlFormat> {
-	io.mkdirP(TEMP_FOLDER + "debugging/");
+function setDataMembers(member : Element) : XmlFormat {
 	// Variables
 	let format : XmlFormat = new XmlFormat();
-	const parameters : NameDescription[] = await gatherNameDescriptionList(member.getElementsByTagName("param"), "name");
-	const exceptions : NameDescription[] = await gatherNameDescriptionList(member.getElementsByTagName("exception"), "cref");
-	const typeParameters : NameDescription[] = await gatherNameDescriptionList(member.getElementsByTagName("typeparam"), "name");
+	const parameters : NameDescription[] = gatherNameDescriptionList(member.getElementsByTagName("param"), "name");
+	const exceptions : NameDescription[] = gatherNameDescriptionList(member.getElementsByTagName("exception"), "cref");
+	const typeParameters : NameDescription[] = gatherNameDescriptionList(member.getElementsByTagName("typeparam"), "name");
 	
 	for(let i = 0; i < TEXT_CONTENTS.length; i++) {
 		format.setTextContent(
 			TEXT_CONTENTS[i][0],
-			await getTextContent(member, TEXT_CONTENTS[i][0], TEXT_CONTENTS[i][1])
+			getTextContent(member, TEXT_CONTENTS[i][0], TEXT_CONTENTS[i][1])
 		);
 	}
 	format.parameters = parameters;
@@ -139,7 +136,7 @@ async function setDataMembers(member : Element) : Promise<XmlFormat> {
  * @param members {HTMLCollectionOf<Element>} - The list of members to look into.
  * @param attrName {string} - The name of the attribute to look into.
  * @returns Returns the list of names and descriptions of the attributes of the members.*/
-async function gatherNameDescriptionList(members : (HTMLCollectionOf<Element> | NodeListOf<Element>), attrName : string) : Promise<NameDescription[]> {
+function gatherNameDescriptionList(members : (HTMLCollectionOf<Element> | NodeListOf<Element>), attrName : string) : NameDescription[] {
 	// Variables
 	let results : NameDescription[] = [];
 	
@@ -147,11 +144,11 @@ async function gatherNameDescriptionList(members : (HTMLCollectionOf<Element> | 
 		// Variables
 		const name = members[i].getAttribute(attrName);
 		if(!name) { continue; }
-		let desc = (await getTextContentFromMember(members[i], "No description")).trim();
+		let desc = (getTextContentFromMember(members[i], "No description")).trim();
 		
-		if(desc != "" && !desc.endsWith(".")) { desc += "."; }
+		if(desc != "" && !(desc.endsWith(".") || desc.endsWith('!') || desc.endsWith('?'))) { desc += "."; }
 		
-		results.push({ name: name, description: desc });
+		results.push({ name: name, description: md.render(desc) });
 	}
 	
 	return results;
@@ -162,18 +159,18 @@ async function gatherNameDescriptionList(members : (HTMLCollectionOf<Element> | 
  * @param id {string} - The name of the tag to look into.
  * @param defaultText {string} - The fail safe default text to go to when the tag or text was not found.
  * @returns Returns the text content of the member.*/
-async function getTextContent(member : Element, id : string, defaultText : string) : Promise<string> {
+function getTextContent(member : Element, id : string, defaultText : string) : string {
 	// Variables
 	const elems = member.getElementsByTagName(id);
 	if(elems.length == 0) { return defaultText; }
-	let desc = (await getTextContentFromMember(elems[0], defaultText)).trim();
+	let desc = (getTextContentFromMember(elems[0], defaultText)).trim();
 	
-	if(desc != "" && !desc.endsWith(".")) { desc += "."; }
+	if(desc != "" && !(desc.endsWith(".") || desc.endsWith('!') || desc.endsWith('?'))) { desc += "."; }
 	
-	return desc;
+	return md.render(desc);
 }
 
-async function getTextContentFromMember(member : Element, defaultText : string) : Promise<string> {
+function getTextContentFromMember(member : Element, defaultText : string) : string {
 	if(!member.textContent) { return defaultText; }
 	
 	// Variables
@@ -184,7 +181,6 @@ async function getTextContentFromMember(member : Element, defaultText : string) 
 			switch(member.childNodes[i].nodeName) {
 				case "#text": {
 					results += member.childNodes[i].textContent;
-					md.render("", );
 				} break;
 				case "paramref": {
 					results += '<span class="paramref">';
@@ -205,22 +201,15 @@ async function getTextContentFromMember(member : Element, defaultText : string) 
 						const typeMatches = matches[2].match(/((?:[a-zA-Z0-9`]+[\.\/]?)*)[\.\/](.*)|([a-zA-Z0-9`]+)/);
 						if(!typeMatches) { break; }
 						let link = (typeMatches[1].startsWith("System") ?
-							createSystemLink(matches[2].replace(/[`\/]/g, ".")) :
-							await createInternalLink(typeMatches[1])
+							createSystemLink(matches[2].replace(/`/g, '-').replace(/\//g, '.')) :
+							createInternalLink(typeMatches[matches[1] == "T" ? 0 : 1])
 						);
 						let name = (!typeMatches[1] ? typeMatches[0] : typeMatches[2].replace(/`+\d+/g, ""));
 						
-						// TODO: Link to webpage using the xml type path
-						results += `[${ name }](${ link })`;
+						results += `<a href="${ link }">${ name }</a>`;
 					}
 				} break;
 			}
-			fs.appendFileSync(
-				TEMP_FOLDER + "debugging/debug.txt",
-				"\t\tChild: " + member.childNodes[i].textContent + "\n" +
-				"\t\t\tChild Type: " + member.childNodes[i].nodeName + "\n" +
-				"\t\t\tChild Attrs: " + (member.childNodes[i] as Element).attributes
-			);
 		}
 	}
 	else { results = member.textContent; }
@@ -230,13 +219,13 @@ async function getTextContentFromMember(member : Element, defaultText : string) 
 }
 
 function createSystemLink(typePath : string) : string {
-	return `https://docs.microsoft.com/en-us/dotnet/api/${ typePath }`;
+	return `https://docs.microsoft.com/en-us/dotnet/api/${ typePath.toLowerCase() }`;
 }
 
-async function createInternalLink(typePath : string) : Promise<string> {
+function createInternalLink(typePath : string) : string {
 	// Variables
 	const args : InputArguments = getArguments();
-	const list : TypeList = await generateTypeList(args);
+	const list : TypeList = getTypeList();
 	
 	for(const key in list.types) {
 		// Variables
@@ -244,10 +233,10 @@ async function createInternalLink(typePath : string) : Promise<string> {
 		
 		for(let i = 0; i < value.length; i++) {
 			if(value[i] == typePath) {
-				return typePath.replace(/[`\/]/g, ".") + args.outputExtension;
+				return typePath.replace(/`/g, '-').replace(/\//g, '.').toLowerCase() + args.outputExtension;
 			}
 		}
 	}
 	
-	return `https://www.google.com/search?q=${ typePath.replace(/[`\/]/g, ".") }`;
+	return `https://www.google.com/search?q=${ typePath.replace(/`/g, '-').replace(/\//g, ".").toLowerCase() }`;
 }

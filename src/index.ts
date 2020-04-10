@@ -9,7 +9,8 @@ import { InputArguments } from "./models/InputArguments";
 import { XmlFormat } from "./models/XmlFormat";
 import { exec } from "@actions/exec";
 import { gatherApiMap, getXmls } from "./read-xml";
-import { generateHtmlDocumentation } from "./generate";
+import { generateHtmlDocumentation, generateTypeList } from "./generate";
+import { TypeList } from "./models/SharpChecker";
 
 // Variables
 export const TEMP_FOLDER = "__temp/";
@@ -18,9 +19,14 @@ const NETSTANDARD_API = "https://github.com/FuLagann/csharp-docs-generator/raw/p
 const SHARP_CHECKER_URL = "https://github.com/FuLagann/sharp-checker/releases/download/v1/SharpChecker-v1.0-standalone-win-x64.zip";
 const SHARP_CHECKER_EXE = "SharpChecker-v1.0-win-x64/SharpChecker";
 const args : InputArguments = input.getInputs();
-let dependencies : string[] = getXmls(args.binaries).concat(NETSTANDARD_XMLS);
+let dependencies : string[];
 let sharpCheckerExe : string;
 let xmlApi : Map<string, XmlFormat>;
+let typeList : TypeList;
+
+for(let i = 1; i <= 32; i++) {
+	NETSTANDARD_XMLS.push(`${ TEMP_FOLDER }/debugging/netstandard-p${ i }.xml`);
+}
 
 for(let i = 1; i <= 32; i++) {
 	NETSTANDARD_XMLS.push(`${ TEMP_FOLDER }netstandard-p${ i }.xml`);
@@ -35,6 +41,8 @@ export function getXmlApi() : Map<string, XmlFormat> { return xmlApi; }
 export function getArguments() : InputArguments { return args; }
 
 export function getDependencies() : string[] { return dependencies; }
+
+export function getTypeList() : TypeList { return typeList; }
 
 /**Gets the template uri using the base path of the template json.
  * @param uri {string} - The file path relative to the template json.
@@ -82,14 +90,15 @@ async function downloadTools() {
 	const unziplocation = await tools.extractZip(zipLocation, TEMP_FOLDER);
 	
 	zipLocation = await tools.downloadTool(NETSTANDARD_API);
-	await tools.extractZip(zipLocation, TEMP_FOLDER);
+	await tools.extractZip(zipLocation, TEMP_FOLDER + "debugging/");
 	sharpCheckerExe = `${ unziplocation }/${ SHARP_CHECKER_EXE }`;
 }
 
 /**Generates the html documentation.*/
 async function generateDocs() {
+	dependencies = getXmls(args.binaries).concat(NETSTANDARD_XMLS);
+	typeList = await generateTypeList(args);
 	xmlApi = new Map<string, XmlFormat>();
-	//xmlApi = await gatherApiMap(args);
 	try { await io.rmRF(args.outputPath); } catch(e) {}
 	try { await io.mkdirP(args.outputPath); } catch(e) {}
 	await generateHtmlDocumentation(args);
@@ -104,7 +113,7 @@ async function uploadArtifacts() {
 	const files = fs.existsSync(TEMP_FOLDER + "debugging/debug.txt") ? [TEMP_FOLDER + "debugging/debug.txt"] : [];
 	
 	if(files.length > 0) {
-		await client.uploadArtifact(name, files, TEMP_FOLDER + "debugging/", { continueOnError: true });
+		await client.uploadArtifact(name, files.concat(NETSTANDARD_XMLS), TEMP_FOLDER + "debugging/", { continueOnError: true });
 	}
 }
 
@@ -155,7 +164,7 @@ async function gitPush() {
 	await executeBuildTasks();
 	await downloadTools();
 	await generateDocs();
-	await uploadArtifacts();
+	//await uploadArtifacts();
 	await cleanUp();
 	await gitPush().catch(onGitError);
 })().catch(onError);
