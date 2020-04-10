@@ -23,12 +23,12 @@ export async function getInputs() : Promise<InputArguments> {
 	results.outputPath = core.getInput("output-path") || results.outputPath;
 	results.user.name = core.getInput("user-name") || results.user.name;
 	results.user.email = core.getInput("user-email") || results.user.email;
-	results.templatePath = core.getInput("template-uris-json") || results.templatePath;
 	results.outputExtension = core.getInput("output-extension") || results.outputExtension;
 	results.includePrivate = Boolean(core.getInput("include-private") == "true" || results.includePrivate);
 	results.template = core.getInput("template") || results.template;
+	results.templatePath = core.getInput("template-uris-json") || results.templatePath;
 	console.log("Gathering template data.");
-	results.templateUris = await getTemplate(results.template);
+	results.templateUris = await getTemplate(results.template, results.templateUris);
 	results.templateUris = gatherUris(results.templatePath, results.templateUris, results.templatePath);
 	
 	return results;
@@ -37,7 +37,7 @@ export async function getInputs() : Promise<InputArguments> {
 /**Downloads the template data and returns the files that the template uses.
  * @param templateID {string} - The name of the template to look up.
  * @returns Returns the template files used for templating.*/
-async function getTemplate(templateID : string) : Promise<TemplateUris> {
+async function getTemplate(templateID : string, defaultUris : TemplateUris) : Promise<TemplateUris> {
 	try {
 		// Variables
 		const toolLocation : string = getTemplateToolLocation(templateID);
@@ -60,8 +60,8 @@ async function getTemplate(templateID : string) : Promise<TemplateUris> {
 		
 		return template;
 	} catch {
-		if(templateID == "default") { return JSON.parse("{}") as TemplateUris; }
-		return await getTemplate("default");
+		if(templateID == "default") { return defaultUris; }
+		return await getTemplate("default", defaultUris);
 	}
 }
 
@@ -144,11 +144,11 @@ function gatherUris(templatePath : string, template : TemplateUris, yamlUri : st
 	template.globalScripts = yamlJson.globalScripts || [];
 	template.namespace = getFilename(basePath, yamlJson.namespace, template.namespace);
 	template.type = getFilename(basePath, yamlJson.type, template.type);
-	gatherCompactFullUri(basePath, template.constructors, yamlJson.constructors);
-	gatherCompactFullUri(basePath, template.fields, yamlJson.fields);
-	gatherCompactFullUri(basePath, template.properties, yamlJson.properties);
-	gatherCompactFullUri(basePath, template.events, yamlJson.events);
-	gatherCompactFullUri(basePath, template.methods, yamlJson.methods);
+	template.constructors = gatherCompactFullUri(basePath, template.constructors, yamlJson.constructors);
+	template.fields = gatherCompactFullUri(basePath, template.fields, yamlJson.fields);
+	template.properties = gatherCompactFullUri(basePath, template.properties, yamlJson.properties);
+	template.events = gatherCompactFullUri(basePath, template.events, yamlJson.events);
+	template.methods = gatherCompactFullUri(basePath, template.methods, yamlJson.methods);
 	
 	return template;
 }
