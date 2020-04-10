@@ -218,7 +218,7 @@ function getTextContentFromMember(member : Element, defaultText : string) : stri
 }
 
 function createSystemLink(typePath : string) : string {
-	return `https://docs.microsoft.com/en-us/dotnet/api/${ typePath }`;
+	return `https://docs.microsoft.com/en-us/dotnet/api/${ typePath.toLowerCase() }`;
 }
 
 function createInternalLink(typePath : string) : string {
@@ -232,10 +232,10 @@ function createInternalLink(typePath : string) : string {
 		
 		for(let i = 0; i < value.length; i++) {
 			if(value[i] == typePath) {
-				return typePath.replace(/`/g, '-').replace(/\//g, '.') + args.outputExtension;
+				return typePath.replace(/`/g, '-').replace(/\//g, '.').toLowerCase() + args.outputExtension;
 			}
 		}
 	}
 	
-	return `https://www.google.com/search?q=${ typePath.replace(/`/g, '-').replace(/\//g, ".") }`;
+	return `https://www.google.com/search?q=${ typePath.replace(/`/g, '-').replace(/\//g, ".").toLowerCase() }`;
 }
