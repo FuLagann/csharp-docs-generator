@@ -48,7 +48,7 @@ export class InputArguments {
 		this.outputPath = "docs/api/";
 		this.branchName = "";
 		this.amendNoEdit = false;
-		this.templatePath = "./";
+		this.templatePath = "";
 		this.outputExtension = ".html";
 		this.includePrivate = false;
 		this.template = "default";

@@ -119,7 +119,7 @@ function getTemplateToolLocation(templateID : string) : string {
  * @returns Returns all the uris needed for templating the documention.*/
 function gatherUris(templatePath : string, template : TemplateUris, yamlUri : string | undefined) : TemplateUris {
 	// Variables
-	const yamlJson : TemplateUris = JSON.parse(yamlUri ? readFile(yamlUri).toString() : "{}");
+	const yamlJson : TemplateUris = JSON.parse(yamlUri ? readFile(yamlUri, "{}") : "{}");
 	const basePath : string = (templatePath == "" || templatePath == "." ?
 		"./" :
 		templatePath.replace(/[\\\/][\w\.]+$/gm, "/")
