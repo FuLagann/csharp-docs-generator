@@ -50,7 +50,10 @@ export function getDependencies() : string[] { return dependencies; }
 export function getTypeList() : TypeList { return typeList; }
 
 /**Catches any error and reports the action as a failed aciton*/
-async function onError(error : Error) { core.setFailed(error.message); }
+async function onError(error : Error) {
+	console.error(error);
+	core.setFailed(error.message);
+}
 
 /**Catches an error when pushing to git, this will check the status and push if possible.*/
 async function onGitError() {
@@ -61,7 +64,9 @@ async function onGitError() {
 
 /**Initiates the program, setting things up before everything starts up.*/
 async function initiate() {
-	await io.mkdirP(TEMP_FOLDER);
+	try { await io.rmRF(TEMP_FOLDER); } catch {}
+	try { await io.mkdirP(TEMP_FOLDER); } catch {}
+	console.log("Gathering input from workflow yaml.");
 	args = await getInputs();
 }
 
@@ -80,9 +85,7 @@ async function executeBuildTasks() {
 
 /**Downloads the SharpChecker tool needed to look deeper into the binaries.*/
 async function downloadTools() {
-	try { await io.rmRF(TEMP_FOLDER); } catch(e) {}
-	try { await io.mkdirP(TEMP_FOLDER); } catch(e) {}
-	
+	console.log("Downloading SharpChecker tool.");
 	// Variables
 	let zipLocation = await tools.downloadTool(SHARP_CHECKER_URL);
 	const unziplocation = await tools.extractZip(zipLocation, TEMP_FOLDER);
@@ -94,7 +97,7 @@ async function downloadTools() {
 
 /**Generates the html documentation.*/
 async function generateDocs() {
-	dependencies = getXmls(args.binaries).concat(NETSTANDARD_XMLS);
+	dependencies = getXmls(args.binaries).concat(NETSTANDARD_XMLS).concat(getXmls(args.dependencies));
 	typeList = await generateTypeList(args);
 	try { await io.rmRF(args.outputPath); } catch(e) {}
 	try { await io.mkdirP(args.outputPath); } catch(e) {}
