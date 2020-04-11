@@ -12,7 +12,7 @@ export function readFile(filename : string, defaultText : string = "") : string 
 	
 	try {
 		return (filename.startsWith("http") ?
-			readLink(filename) :
+			readLink(filename, defaultText) :
 			fs.readFileSync(filename).toString()
 		);
 	} catch { return defaultText; }

@@ -27,12 +27,19 @@ const TEXT_CONTENTS : string[][] = [
 export function getApiDoc(typePath : string, xmls : string[]) : XmlFormat {
 	// Variables
 	const parser : DOMParser = new DOMParser();
-	let content : string;
 	let format : (XmlFormat | null) = null;
 	
 	for(let i = 0; i < xmls.length; i++) {
-		content = readFile(xmls[i]);
-		format = generateMember(parser.parseFromString(content, "text/xml"), typePath);
+		// Variables
+		const content = readFile(xmls[i]);
+		const xml : XMLDocument = parser.parseFromString(content, "text/xml");
+		
+		if(!xml) {
+			console.warn("Undefined xml [" + xmls[i] +"]!");
+			continue;
+		}
+		
+		format = generateMember(xml, typePath);
 		if(format) { break; }
 	}
 	
@@ -58,8 +65,6 @@ export function getXmls(binaries : string[]) : string[] {
  * @param typePath {string} - The type path to look up.
  * @returns Returns the xml format to use for documentation. Returns null if the member was not found.*/
 function generateMember(xml : XMLDocument, typePath : string) : (XmlFormat | null) {
-	if(!xml) { throw new Error("Undefined xml!"); }
-	
 	// Variables
 	const members = xml.getElementsByTagName("member");
 	
