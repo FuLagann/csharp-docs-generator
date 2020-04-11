@@ -15,7 +15,10 @@ export function readFile(filename : string, defaultText : string = "") : string 
 			readLink(filename, defaultText) :
 			fs.readFileSync(filename).toString()
 		);
-	} catch { return defaultText; }
+	} catch {
+		console.log(`Could not find file [${ filename }]`);
+		return defaultText;
+	}
 }
 
 /**Reads the link and returns the contents of that link.
@@ -28,5 +31,8 @@ export function readLink(link : string, defaultText : string = "") : string {
 		const res = request.default("GET", link);
 		
 		return res.getBody().toString();
-	} catch { return defaultText; }
+	} catch {
+		console.log(`Could not find link [${ link }]`);
+		return defaultText;
+	}
 }

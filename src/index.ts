@@ -29,10 +29,6 @@ let dependencies : string[];
 let sharpCheckerExe : string;
 let typeList : TypeList;
 
-for(let i = 1; i <= 32; i++) {
-	NETSTANDARD_XMLS.push(`${ TEMP_FOLDER }netstandard-p${ i }.xml`);
-}
-
 /**Gets the path to the SharpChecker program.
  * @returns Returns the path to the SharpChecker program.*/
 export function getSharpCheckerExe() : string { return sharpCheckerExe; }
@@ -90,11 +86,15 @@ async function downloadTools() {
 	console.log("Downloading SharpChecker tool.");
 	// Variables
 	let zipLocation = await tools.downloadTool(SHARP_CHECKER_URL);
-	const unziplocation = await tools.extractZip(zipLocation, TEMP_FOLDER);
+	let unzipLocation = await tools.extractZip(zipLocation, TEMP_FOLDER);
 	
+	sharpCheckerExe = `${ unzipLocation }/${ SHARP_CHECKER_EXE }`;
+	// Openning up the netstandard api
 	zipLocation = await tools.downloadTool(NETSTANDARD_API);
-	await tools.extractZip(zipLocation, TEMP_FOLDER + "debugging/");
-	sharpCheckerExe = `${ unziplocation }/${ SHARP_CHECKER_EXE }`;
+	unzipLocation = await tools.extractZip(zipLocation, TEMP_FOLDER);
+	for(let i = 1; i <= 32; i++) {
+		NETSTANDARD_XMLS.push(`${ unzipLocation }/netstandard-p${ i }.xml`);
+	}
 }
 
 /**Generates the html documentation.*/
