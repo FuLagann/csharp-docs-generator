@@ -36,6 +36,7 @@ export function getApiDoc(typePath : string, xmls : string[]) : XmlFormat {
 		
 		if(!xml) {
 			console.warn("Undefined xml [" + xmls[i] +"]!");
+			console.log("Content: " + content.substring(0, Math.min(100, content.length)));
 			continue;
 		}
 		

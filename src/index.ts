@@ -68,6 +68,8 @@ async function initiate() {
 	try { await io.mkdirP(TEMP_FOLDER); } catch {}
 	console.log("Gathering input from workflow yaml.");
 	args = await getInputs();
+	try { await io.rmRF(args.outputPath); } catch(e) {}
+	try { await io.mkdirP(args.outputPath); } catch(e) {}
 }
 
 /**Executes all the build tasks needed prior to document generation.*/
@@ -97,10 +99,9 @@ async function downloadTools() {
 
 /**Generates the html documentation.*/
 async function generateDocs() {
-	dependencies = getXmls(args.binaries).concat(NETSTANDARD_XMLS).concat(getXmls(args.dependencies));
+	dependencies = getXmls(args.binaries).concat(NETSTANDARD_XMLS);
+	if(args.dependencies.length > 0) { dependencies = dependencies.concat(getXmls(args.dependencies)); }
 	typeList = await generateTypeList(args);
-	try { await io.rmRF(args.outputPath); } catch(e) {}
-	try { await io.mkdirP(args.outputPath); } catch(e) {}
 	await generateHtmlDocumentation(args);
 }
 
