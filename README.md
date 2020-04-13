@@ -25,6 +25,10 @@ A GitHub action that generates html documentation for C# projects.
 
 **`amend-no-edit`:** Set to true if you want the generation to append itself to the latest commit instead of creating a new commit. *(Default: `false`).*
 
+**`output-extension`:** The output extension that every file built will contain. *(Default: `.html`).*
+
+**`include-private`:** Set to true to include all the privates types and members. *(Default: `false`).*
+
 <details>
 <summary>Example yml</summary>
 <p>
@@ -42,10 +46,10 @@ jobs:
         uses: FuLagann/csharp-docs/generator
         id: generate-docs
         with:
-          build-tasks: dotnet build -c Release -r netcoreapp3.1 src/Module1/Module1.csproj, dotnet build -c Debug -r netcoreapp3.1 src/Module2/Module2.csproj
+          build-tasks: dotnet build -c Release -f netcoreapp3.1 src/Module1/Module1.csproj, dotnet build -c Debug -f netcoreapp3.1 src/Module2/Module2.csproj
           binaries: src/Module1/bin/Release/netcoreapp3.1/Module1.dll, src/Module2/bin/Release/netcoreapp3.1/Module2.dll
           output-path: docs/api/
-          template-json: docs/_template
+          template-json: docs/_template/template.json
           branch-name: api-docs
           commit-message: Automatically generated API docs
           amend-no-edit: false
@@ -81,7 +85,7 @@ The template JSON that contains all the file locations (relative to the template
 
 **`typeUri` as (string):** The file location (local to the location of the template.json) or URL to the handlebars template view of the type that will contain links and views to it's contained members.
 
-**`constructorUri` as ([CompactFullUris](#compactfulluris)).** The file locations (local to the location of the template.json) or URLs to the handlebars template view of the constructors' compact and full view.
+**`constructorsUri` as ([CompactFullUris](#compactfulluris)).** The file locations (local to the location of the template.json) or URLs to the handlebars template view of the constructors' compact and full view.
 
 **`fieldsUri` as ([CompactFullUris](#compactfulluris)).** The file locations (local to the location of the template.json) or URLs to the handlebars template view of the fields' compact and full view.
 
@@ -102,7 +106,7 @@ The template JSON that contains all the file locations (relative to the template
     "scriptUris": [],
     "namespaceUri": "namespace.hbs",
     "typeUri": "type.hbs",
-    "constructorUri": {
+    "constructorsUri": {
         "compact": "constructor-compact.hbs",
         "full": "constructor-full.hbs"
     },
