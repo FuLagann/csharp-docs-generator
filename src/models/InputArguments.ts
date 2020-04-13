@@ -25,7 +25,6 @@ export class InputArguments {
 	buildTasks : string[];
 	cleanUpTasks : string[];
 	binaries : string[];
-	dependencies : string[];
 	commitMessage : string;
 	branchName : string;
 	amendNoEdit : boolean;
@@ -43,7 +42,6 @@ export class InputArguments {
 		this.buildTasks = [];
 		this.cleanUpTasks = [];
 		this.binaries = [];
-		this.dependencies = [];
 		this.commitMessage = "Automated creation of documentation";
 		this.outputPath = "docs/api/";
 		this.branchName = "";

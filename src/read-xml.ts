@@ -55,7 +55,7 @@ export function getXmls(binaries : string[]) : string[] {
 	let results : string[] = [];
 	
 	for(let i = 0; i < binaries.length; i++) {
-		results.push(binaries[i].replace(/\.(dll|exe)/, ".xml").trim());
+		results.push(binaries[i].replace(/\.(dll|exe)$/, ".xml").trim());
 	}
 	
 	return results;

@@ -12,9 +12,6 @@ inputs:
   binaries:
     description: "The list of binaries used to look into, must be named the same as the xml documentation."
     required: true
-  dependencies:
-    description: "The list of binaries or xmls that your program uses to depend on."
-    required: false
   user-name:
     description: "The name of the user who will commit."
     required: false

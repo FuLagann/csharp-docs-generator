@@ -13,6 +13,7 @@ import core = require("@actions/core");
 import io = require("@actions/io");
 import tools = require("@actions/tool-cache");
 import fs = require("fs");
+import { downloadDependencyXmls } from "./read-deps-json";
 
 // Variables
 /**The list of files to artifact.*/
@@ -99,8 +100,10 @@ async function downloadTools() {
 
 /**Generates the html documentation.*/
 async function generateDocs() {
-	dependencies = getXmls(args.binaries).concat(NETSTANDARD_XMLS);
-	if(args.dependencies.length > 0) { dependencies = dependencies.concat(getXmls(args.dependencies)); }
+	// Variables
+	let dependencyXmls : string[] = await downloadDependencyXmls(args.binaries);
+	
+	dependencies = getXmls(args.binaries).concat(NETSTANDARD_XMLS).concat(dependencyXmls);
 	typeList = await generateTypeList(args);
 	await generateHtmlDocumentation(args);
 }
