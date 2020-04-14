@@ -42,7 +42,7 @@ export async function compileBase(args : InputArguments, typePath : string) : Pr
 		sidebarView: sidebar,
 		typePath: typePath,
 		breadcrumbs: generatedTypeJson.typeInfo.fullName.split('.')
-	}));
+	}).replace(/\s+\n/gm, "\n").replace(/\t/gm, "  "));
 }
 
 // TODO: Complete this
@@ -73,7 +73,7 @@ export async function compileNamespace(args : InputArguments, namespace : string
 		types: types,
 		typePath: namespace,
 		breadcrumbs: namespace.split('.')
-	}).replace(/\t/gm, "  ")).replace(/\s+\n/gm, "\n").replace(/\t/gm, "  ");
+	}).replace(/\s+\n/gm, "\n").replace(/\t/gm, "  "));
 }
 
 /**Compiles the type template.
