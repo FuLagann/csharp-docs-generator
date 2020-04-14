@@ -103,7 +103,7 @@ async function downloadDependencies(dependencies : DependencyJson) : Promise<str
 				
 				if(libPath == "") { continue; }
 				libPath = `https://www.nuget.org/api/v2/package/${ libPath }`;
-				try { io.mkdirP(extractPath); } catch {}
+				try { await io.mkdirP(extractPath); } catch {}
 				zipLocation = await tools.downloadTool(libPath);
 				unzipLocation = await tools.extractZip(zipLocation, extractPath);
 				list = runtimes.get(deps[i]) || [];

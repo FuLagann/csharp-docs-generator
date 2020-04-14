@@ -22,7 +22,7 @@ export async function generateHtmlDocumentation(args : InputArguments) {
 	const list : TypeList = await generateTypeList(args);
 	
 	console.log("Generating HTML Documentation...");
-	generateCssAndScriptFiles(args);
+	await generateCssAndScriptFiles(args);
 	for(const key in list.types) {
 		// Variables
 		const value : string[] = list.types[key] as string[];
@@ -48,9 +48,9 @@ export async function generateHtmlDocumentation(args : InputArguments) {
 
 /**Generates the local css and javascript files used by the template.
  * @param args {InputArguments} - The input arguments to look into the local css and javascript.*/
-export function generateCssAndScriptFiles(args : InputArguments) {
-	generateSupplementaryFile(path.join(args.outputPath, "css/"), args.templateUris.localCss || []);
-	generateSupplementaryFile(path.join(args.outputPath, "js/"), args.templateUris.localScripts || []);
+export async function generateCssAndScriptFiles(args : InputArguments) {
+	await generateSupplementaryFile(path.join(args.outputPath, "css/"), args.templateUris.localCss || []);
+	await generateSupplementaryFile(path.join(args.outputPath, "js/"), args.templateUris.localScripts || []);
 }
 
 /**Checks the type and returns it's info.
@@ -85,8 +85,8 @@ export async function generateTypeList(args : InputArguments) : Promise<TypeList
 /**Generates the supplementary files (used for creating css and js files from templates).
  * @param basePath {string} - The base path to build to.
  * @param files {string[]} - The files to copy from and into the base path.*/
-function generateSupplementaryFile(basePath : string, files : string[]) {
-	try { io.mkdirP(basePath); } catch {}
+async function generateSupplementaryFile(basePath : string, files : string[]) {
+	try { await io.mkdirP(basePath); } catch {}
 	for(let i = 0; i < files.length; i++) {
 		// Variables
 		const filename = files[i].replace(/.*[\\\/]([\w\.]+)$/gm, "$1");
