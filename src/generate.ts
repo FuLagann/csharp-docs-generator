@@ -9,6 +9,7 @@ import { compileBase, compileNamespace } from "./template";
 // External libraries
 import { exec } from "@actions/exec";
 import fs = require("fs");
+import io = require("@actions/io");
 import path = require("path");
 
 // Variables
@@ -85,6 +86,7 @@ export async function generateTypeList(args : InputArguments) : Promise<TypeList
  * @param basePath {string} - The base path to build to.
  * @param files {string[]} - The files to copy from and into the base path.*/
 function generateSupplementaryFile(basePath : string, files : string[]) {
+	try { io.mkdirP(basePath); } catch {}
 	for(let i = 0; i < files.length; i++) {
 		// Variables
 		const filename = files[i].replace(/.*[\\\/]([\w\.]+)$/gm, "$1");
