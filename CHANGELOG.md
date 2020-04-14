@@ -1,4 +1,7 @@
 
+v0.7 includes:
+* Generates local css and javascript files.
+
 v0.6 includes:
 * Reads dependency json to download dependency .xml files for use on documentation.
 * Added functions for templates:

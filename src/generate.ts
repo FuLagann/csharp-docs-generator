@@ -21,6 +21,7 @@ export async function generateHtmlDocumentation(args : InputArguments) {
 	const list : TypeList = await generateTypeList(args);
 	
 	console.log("Generating HTML Documentation...");
+	generateCssAndScriptFiles(args);
 	for(const key in list.types) {
 		// Variables
 		const value : string[] = list.types[key] as string[];
