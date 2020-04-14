@@ -61,6 +61,36 @@ export function getXmls(binaries : string[]) : string[] {
 	return results;
 }
 
+/**Creates a external link to the C# MSDN Library documentation of the given type.
+ * @param typePath {string} - The type path to create the link with.
+ * @returns Returns a link to the type found within the C# MSDN Library.*/
+export function createSystemLink(typePath : string) : string {
+	return `https://docs.microsoft.com/en-us/dotnet/api/${ typePath.toLowerCase() }`;
+}
+
+/**Creates an internal link to the given type.
+ * @param typePath {string} - The type path to create the link with.
+ * @return Returns a link to the type. If it's a dependent, then it will give a link to google,
+ * look up the type. It's not the best thing to do, but it's a viable option.*/
+export function createInternalLink(typePath : string) : string {
+	// Variables
+	const args : InputArguments = getArguments();
+	const list : TypeList = getTypeList();
+	
+	for(const key in list.types) {
+		// Variables
+		const value : string[] = list.types[key] as string[];
+		
+		for(let i = 0; i < value.length; i++) {
+			if(value[i] == typePath) {
+				return typePath.replace(/`/g, '-').replace(/\//g, '.').toLowerCase() + args.outputExtension;
+			}
+		}
+	}
+	
+	return `https://www.google.com/search?q=${ typePath.replace(/`/g, '-').replace(/\//g, ".").toLowerCase() }`;
+}
+
 /**Generates the documentation member from the given type path.
  * @param xml {XMLDocument} - The xml document to look into.
  * @param typePath {string} - The type path to look up.
@@ -193,34 +223,4 @@ function getTextContent(member : Element, defaultText : string) : string {
 	
 	
 	return results;
-}
-
-/**Creates a external link to the C# MSDN Library documentation of the given type.
- * @param typePath {string} - The type path to create the link with.
- * @returns Returns a link to the type found within the C# MSDN Library.*/
-function createSystemLink(typePath : string) : string {
-	return `https://docs.microsoft.com/en-us/dotnet/api/${ typePath.toLowerCase() }`;
-}
-
-/**Creates an internal link to the given type.
- * @param typePath {string} - The type path to create the link with.
- * @return Returns a link to the type. If it's a dependent, then it will give a link to google,
- * look up the type. It's not the best thing to do, but it's a viable option.*/
-function createInternalLink(typePath : string) : string {
-	// Variables
-	const args : InputArguments = getArguments();
-	const list : TypeList = getTypeList();
-	
-	for(const key in list.types) {
-		// Variables
-		const value : string[] = list.types[key] as string[];
-		
-		for(let i = 0; i < value.length; i++) {
-			if(value[i] == typePath) {
-				return typePath.replace(/`/g, '-').replace(/\//g, '.').toLowerCase() + args.outputExtension;
-			}
-		}
-	}
-	
-	return `https://www.google.com/search?q=${ typePath.replace(/`/g, '-').replace(/\//g, ".").toLowerCase() }`;
 }

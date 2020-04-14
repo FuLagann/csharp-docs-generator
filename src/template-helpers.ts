@@ -1,9 +1,10 @@
 
 // Models
-import { FieldInfo, PropertyInfo, EventInfo, MethodInfo } from "./models/SharpChecker";
+import { FieldInfo, PropertyInfo, EventInfo, MethodInfo, TypeInfo, QuickTypeInfo } from "./models/SharpChecker";
 import { SidebarView } from "./models/TemplateApi";
 // External functionalities
 import { readFile } from "./read-file";
+import { createSystemLink, createInternalLink } from "./read-xml";
 import { compileType, compileField, compilePropety, compileEvent, compileMethod } from "./template";
 // External libraries
 import ejs = require("ejs");
@@ -23,6 +24,26 @@ export function createPartial(type : string, url : string, context : any = {}) :
 	}
 	
 	return ejs.render(readFile(url), context);
+}
+
+/**Creates a internal or external link to the given type.
+ * @param typePath {string} - The type path to create a link from.
+ * @returns Returns an http(s) link to where the type is found.*/
+export function createLinkToType(typePath : string) : string {
+	return (typePath.startsWith("System") ?
+		createSystemLink(typePath.replace(/`/g, '-').replace(/\//g, '.')) :
+		createInternalLink(typePath)
+	);
+}
+
+/**Creates an anchor tag to the type (includes using the type name).
+ * @param typeInfo {QuickTypeInfo} - The quick look into the type to look into.
+ * @returns Returns an anchor tag to the type with a link.*/
+export function createAnchorToType(typeInfo : QuickTypeInfo) : string {
+	// Variables
+	const link = createLinkToType(typeInfo.unlocalizedName);
+	
+	return `<a href="${ link }">${ typeInfo.name.replace('<', "&lt;").replace('>', "&gt;") }</a>`;
 }
 
 /**Generates the html code for the sidebar tree view.

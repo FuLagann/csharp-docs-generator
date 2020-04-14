@@ -10,7 +10,7 @@ import { generateTypeDetails } from "./generate";
 import { getArguments, getDependencies } from "./index";
 import { readFile } from "./read-file";
 import { getApiDoc } from "./read-xml";
-import { createPartial, generateSidebar } from "./template-helpers";
+import { createPartial, generateSidebar, createLinkToType, createAnchorToType } from "./template-helpers";
 // External libraries
 import ejs = require("ejs");
 import pretty = require("pretty");
@@ -113,7 +113,9 @@ export function compileField(filename : string, details : FieldInfo) {
 	return ejs.render(readFile(filename), {
 		details: details,
 		xmlDocs: xmlApi,
-		typeInfo: generatedTypeJson.typeInfo
+		typeInfo: generatedTypeJson.typeInfo,
+		createLinkToType: createLinkToType,
+		createAnchorToType: createAnchorToType
 	});
 }
 
@@ -130,7 +132,9 @@ export function compilePropety(filename : string, details : PropertyInfo) {
 	return ejs.render(readFile(filename), {
 		details: details,
 		xmlDocs: xmlApi,
-		typeInfo: generatedTypeJson.typeInfo
+		typeInfo: generatedTypeJson.typeInfo,
+		createLinkToType: createLinkToType,
+		createAnchorToType: createAnchorToType
 	});
 }
 
@@ -147,7 +151,9 @@ export function compileEvent(filename : string, details : EventInfo) {
 	return ejs.render(readFile(filename), {
 		details: details,
 		xmlDocs: xmlApi,
-		typeInfo: generatedTypeJson.typeInfo
+		typeInfo: generatedTypeJson.typeInfo,
+		createLinkToType: createLinkToType,
+		createAnchorToType: createAnchorToType
 	});
 }
 
@@ -164,7 +170,9 @@ export function compileMethod(filename : string, details : MethodInfo) {
 	return ejs.render(readFile(filename), {
 		details: details,
 		xmlDocs: xmlApi,
-		typeInfo: generatedTypeJson.typeInfo
+		typeInfo: generatedTypeJson.typeInfo,
+		createLinkToType: createLinkToType,
+		createAnchorToType: createAnchorToType
 	});
 }
 

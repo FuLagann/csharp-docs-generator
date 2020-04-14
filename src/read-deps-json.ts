@@ -1,8 +1,11 @@
 
+// Models
 import { DependencyJson, DependencyTarget, DependencyLibrary } from "./models/XmlFormat";
+// External functionalities
 import { TEMP_FOLDER } from "./index";
 import { readFile } from "./read-file";
 import { getXmls } from "./read-xml";
+// External libraries
 import fs = require("fs");
 import io = require("@actions/io");
 import path = require("path");

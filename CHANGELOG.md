@@ -1,6 +1,9 @@
 
 v0.6 includes:
 * Reads dependency json to download dependency .xml files for use on documentation.
+* Added functions for templates:
+  * Creating link to type using type path.
+  * Creating anchor to type using quick type info.
 
 v0.5 includes:
 * Gets packaged templates from packages folder within repository.
