@@ -104,7 +104,7 @@ async function generateSupplementaryFile(basePath : string, files : string[]) {
 function getSharpCheckerArguments(args : InputArguments, isList : boolean, typePath : string) : string[] {
 	// Variables
 	const includePrivate : string[] = args.includePrivate ? ["-p"] : [];
-	const outputPath : string = TEMP_FOLDER + (isList ? "list.json" : typePath + ".json");
+	const outputPath : string = TEMP_FOLDER + (isList ? "list.json" : "type.json");
 	
 	return ["-o", outputPath, typePath].concat(includePrivate).concat(args.binaries);
 }

@@ -30,19 +30,22 @@ export async function compileBase(args : InputArguments, typePath : string) : Pr
 	generatedTypeJson = await generateTypeDetails(args, typePath);
 	// TODO: Generate sidebar
 	
-	return pretty(ejs.render(readFile(filename), {
-		displaySidebar: generateSidebar,
-		createPartial: createPartial,
-		uris: {
-			css: getRelativeLinks("css/", args.templateUris.localCss || [], args.templateUris.globalCss || []),
-			scripts: getRelativeLinks("js/", args.templateUris.localScripts || [], args.templateUris.globalScripts || []),
-			type: args.templateUris.type
-		},
-		isNamespace: false,
-		sidebarView: sidebar,
-		typePath: typePath,
-		breadcrumbs: generatedTypeJson.typeInfo.fullName.split('.')
-	}).replace(/\s+\n/gm, "\n").replace(/\t/gm, "  "), { ocd: true });
+	return pretty(ejs.render(
+		readFile(filename).replace(/\s+\n/gm, "\n").replace(/\t/gm, "  ").trim(),
+		{
+			displaySidebar: generateSidebar,
+			createPartial: createPartial,
+			uris: {
+				css: getRelativeLinks("css/", args.templateUris.localCss || [], args.templateUris.globalCss || []),
+				scripts: getRelativeLinks("js/", args.templateUris.localScripts || [], args.templateUris.globalScripts || []),
+				type: args.templateUris.type
+			},
+			isNamespace: false,
+			sidebarView: sidebar,
+			typePath: typePath,
+			breadcrumbs: generatedTypeJson.typeInfo.fullName.split('.')
+		}
+	), { ocd: true });
 }
 
 // TODO: Complete this
@@ -59,21 +62,24 @@ export async function compileNamespace(args : InputArguments, namespace : string
 	// TODO: Generate sidebar
 	// TODO: Figure out namespaces listed in namespace webpages
 	
-	return pretty(ejs.render(readFile(filename), {
-		displaySidebar: generateSidebar,
-		createPartial: createPartial,
-		uris: {
-			css: getRelativeLinks("css/", args.templateUris.localCss || [], args.templateUris.globalCss || []),
-			scripts: getRelativeLinks("js/", args.templateUris.localScripts || [], args.templateUris.globalScripts || []),
-			type: args.templateUris.type
-		},
-		isNamespace: true,
-		sidebarView: sidebar,
-		namespaceName: namespace,
-		types: types,
-		typePath: namespace,
-		breadcrumbs: namespace.split('.')
-	}).replace(/\s+\n/gm, "\n").replace(/\t/gm, "  "), { ocd: true });
+	return pretty(ejs.render(
+		readFile(filename).replace(/\s+\n/gm, "\n").replace(/\t/gm, "  ").trim(),
+		{
+			displaySidebar: generateSidebar,
+			createPartial: createPartial,
+			uris: {
+				css: getRelativeLinks("css/", args.templateUris.localCss || [], args.templateUris.globalCss || []),
+				scripts: getRelativeLinks("js/", args.templateUris.localScripts || [], args.templateUris.globalScripts || []),
+				type: args.templateUris.type
+			},
+			isNamespace: true,
+			sidebarView: sidebar,
+			namespaceName: namespace,
+			types: types,
+			typePath: namespace,
+			breadcrumbs: namespace.split('.')
+		}
+	), { ocd: true });
 }
 
 /**Compiles the type template.
@@ -86,18 +92,21 @@ export function compileType(filename : string, typePath : string) : string {
 	const xmlFormat = getApiDoc(`T:${ typePath }`, getDependencies());
 	const xmlApi : TemplateApiItems = getApiItems(xmlFormat);
 	
-	return ejs.render(readFile(filename), {
-		details: generatedTypeJson,
-		xmlDocs: xmlApi,
-		createPartial: createPartial,
-		uris: {
-			constructors: args.templateUris.constructors,
-			fields: args.templateUris.fields,
-			properties: args.templateUris.properties,
-			events: args.templateUris.events,
-			methods: args.templateUris.methods
+	return ejs.render(
+		readFile(filename).replace(/\s+\n/gm, "\n").replace(/\t/gm, "  ").trim(),
+		{
+			details: generatedTypeJson,
+			xmlDocs: xmlApi,
+			createPartial: createPartial,
+			uris: {
+				constructors: args.templateUris.constructors,
+				fields: args.templateUris.fields,
+				properties: args.templateUris.properties,
+				events: args.templateUris.events,
+				methods: args.templateUris.methods
+			}
 		}
-	});
+	);
 }
 
 /**Compiles the field template.
@@ -110,13 +119,16 @@ export function compileField(filename : string, details : FieldInfo) {
 	const xmlFormat = getApiDoc(`F:${ typePath }`, getDependencies());
 	const xmlApi : TemplateApiItems = getApiItems(xmlFormat);
 	
-	return ejs.render(readFile(filename), {
-		details: details,
-		xmlDocs: xmlApi,
-		typeInfo: generatedTypeJson.typeInfo,
-		createLinkToType: createLinkToType,
-		createAnchorToType: createAnchorToType
-	});
+	return ejs.render(
+		readFile(filename).replace(/\s+\n/gm, "\n").replace(/\t/gm, "  ").trim(),
+		{
+			details: details,
+			xmlDocs: xmlApi,
+			typeInfo: generatedTypeJson.typeInfo,
+			createLinkToType: createLinkToType,
+			createAnchorToType: createAnchorToType
+		}
+	);
 }
 
 /**Compiles the property template.
@@ -129,13 +141,16 @@ export function compilePropety(filename : string, details : PropertyInfo) {
 	const xmlFormat = getApiDoc(`P:${ typePath }`, getDependencies());
 	const xmlApi : TemplateApiItems = getApiItems(xmlFormat);
 	
-	return ejs.render(readFile(filename), {
-		details: details,
-		xmlDocs: xmlApi,
-		typeInfo: generatedTypeJson.typeInfo,
-		createLinkToType: createLinkToType,
-		createAnchorToType: createAnchorToType
-	});
+	return ejs.render(
+		readFile(filename).replace(/\s+\n/gm, "\n").replace(/\t/gm, "  ").trim(),
+		{
+			details: details,
+			xmlDocs: xmlApi,
+			typeInfo: generatedTypeJson.typeInfo,
+			createLinkToType: createLinkToType,
+			createAnchorToType: createAnchorToType
+		}
+	);
 }
 
 /**Compiles the event template.
@@ -148,13 +163,16 @@ export function compileEvent(filename : string, details : EventInfo) {
 	const xmlFormat = getApiDoc(`E:${ typePath }`, getDependencies());
 	const xmlApi : TemplateApiItems = getApiItems(xmlFormat);
 	
-	return ejs.render(readFile(filename), {
-		details: details,
-		xmlDocs: xmlApi,
-		typeInfo: generatedTypeJson.typeInfo,
-		createLinkToType: createLinkToType,
-		createAnchorToType: createAnchorToType
-	});
+	return ejs.render(
+		readFile(filename).replace(/\s+\n/gm, "\n").replace(/\t/gm, "  ").trim(),
+		{
+			details: details,
+			xmlDocs: xmlApi,
+			typeInfo: generatedTypeJson.typeInfo,
+			createLinkToType: createLinkToType,
+			createAnchorToType: createAnchorToType
+		}
+	);
 }
 
 /**Compiles the method template.
@@ -167,13 +185,16 @@ export function compileMethod(filename : string, details : MethodInfo) {
 	const xmlFormat = getApiDoc(`M:${ typePath }`, getDependencies());
 	const xmlApi : TemplateApiItems = getApiItems(xmlFormat);
 		
-	return ejs.render(readFile(filename), {
-		details: details,
-		xmlDocs: xmlApi,
-		typeInfo: generatedTypeJson.typeInfo,
-		createLinkToType: createLinkToType,
-		createAnchorToType: createAnchorToType
-	});
+	return ejs.render(
+		readFile(filename).replace(/\s+\n/gm, "\n").replace(/\t/gm, "  ").trim(),
+		{
+			details: details,
+			xmlDocs: xmlApi,
+			typeInfo: generatedTypeJson.typeInfo,
+			createLinkToType: createLinkToType,
+			createAnchorToType: createAnchorToType
+		}
+	);
 }
 
 /**Gets the relative links for the individual webpage to reference, in relation to the webpage.
