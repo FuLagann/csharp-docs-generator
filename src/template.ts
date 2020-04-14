@@ -1,8 +1,8 @@
 
 // Models
-import { InputArguments } from "./models/InputArguments";
+import { InputArguments, TemplateUris } from "./models/InputArguments";
 import { TypeInfo, FieldInfo, PropertyInfo, EventInfo, MethodInfo, QuickTypeInfo } from "./models/SharpChecker";
-import { TemplateApiItems } from "./models/TemplateApi";
+import { TemplateApiItems, TemplateApiUris, MemberList } from "./models/TemplateApi";
 import { SidebarView } from "./models/TemplateApi";
 import { XmlFormat } from "./models/XmlFormat";
 // External functionality
@@ -10,7 +10,7 @@ import { generateTypeDetails } from "./generate";
 import { getArguments, getDependencies } from "./index";
 import { readFile } from "./read-file";
 import { getApiDoc } from "./read-xml";
-import { createPartial, generateSidebar, createLinkToType, createAnchorToType } from "./template-helpers";
+import { createPartial, generateSidebar, createLinkToType, createAnchorToType, capitalize, getIdFrom } from "./template-helpers";
 // External libraries
 import ejs = require("ejs");
 import pretty = require("pretty");
@@ -91,20 +91,28 @@ export function compileType(filename : string, typePath : string) : string {
 	const args : InputArguments = getArguments();
 	const xmlFormat = getApiDoc(`T:${ typePath }`, getDependencies());
 	const xmlApi : TemplateApiItems = getApiItems(xmlFormat);
+	const details = generatedTypeJson;
+	const uris = {
+		constructors: args.templateUris.constructors,
+		fields: args.templateUris.fields,
+		properties: args.templateUris.properties,
+		events: args.templateUris.events,
+		methods: args.templateUris.methods
+	};
+	const members = getMembers(details, uris);
 	
 	return ejs.render(
 		readFile(filename).replace(/\s+\n/gm, "\n").replace(/\t/gm, "  ").trim(),
 		{
-			details: generatedTypeJson,
+			details: details,
 			xmlDocs: xmlApi,
+			uris: uris,
+			members: members,
 			createPartial: createPartial,
-			uris: {
-				constructors: args.templateUris.constructors,
-				fields: args.templateUris.fields,
-				properties: args.templateUris.properties,
-				events: args.templateUris.events,
-				methods: args.templateUris.methods
-			}
+			capitalize: capitalize,
+			getIdFrom: getIdFrom,
+			createLinkToType: createLinkToType,
+			createAnchorToType: createAnchorToType
 		}
 	);
 }
@@ -125,6 +133,8 @@ export function compileField(filename : string, details : FieldInfo) {
 			details: details,
 			xmlDocs: xmlApi,
 			typeInfo: generatedTypeJson.typeInfo,
+			capitalize: capitalize,
+			getIdFrom: getIdFrom,
 			createLinkToType: createLinkToType,
 			createAnchorToType: createAnchorToType
 		}
@@ -147,6 +157,8 @@ export function compilePropety(filename : string, details : PropertyInfo) {
 			details: details,
 			xmlDocs: xmlApi,
 			typeInfo: generatedTypeJson.typeInfo,
+			capitalize: capitalize,
+			getIdFrom: getIdFrom,
 			createLinkToType: createLinkToType,
 			createAnchorToType: createAnchorToType
 		}
@@ -169,6 +181,8 @@ export function compileEvent(filename : string, details : EventInfo) {
 			details: details,
 			xmlDocs: xmlApi,
 			typeInfo: generatedTypeJson.typeInfo,
+			capitalize: capitalize,
+			getIdFrom: getIdFrom,
 			createLinkToType: createLinkToType,
 			createAnchorToType: createAnchorToType
 		}
@@ -191,10 +205,31 @@ export function compileMethod(filename : string, details : MethodInfo) {
 			details: details,
 			xmlDocs: xmlApi,
 			typeInfo: generatedTypeJson.typeInfo,
+			capitalize: capitalize,
+			getIdFrom: getIdFrom,
 			createLinkToType: createLinkToType,
 			createAnchorToType: createAnchorToType
 		}
 	);
+}
+
+/**Gets the members of the type used for templating.
+ * @param details {TypeInfo} - The type info to look into.
+ * @param uris {TemplateApiUris} - The uris used to reference other templates for partials.
+ * @returns Returns the list of members of the type used for templating.*/
+function getMembers(details : TypeInfo, uris : TemplateApiUris) : MemberList[] {
+	return [
+		new MemberList(details.constructors, "constructors", "method", uris.constructors),
+		new MemberList(details.fields, "fields", "field", uris.fields),
+		new MemberList(details.staticFields, "static-fields", "field", uris.fields),
+		new MemberList(details.properties, "properties", "property", uris.properties),
+		new MemberList(details.staticProperties, "static-properties", "property", uris.properties),
+		new MemberList(details.events, "events", "event", uris.events),
+		new MemberList(details.staticEvents, "static-events", "event", uris.events),
+		new MemberList(details.methods, "methods", "method", uris.methods),
+		new MemberList(details.staticMethods, "static-methods", "method", uris.methods),
+		new MemberList(details.operators, "operators", "method", uris.methods)
+	];
 }
 
 /**Gets the relative links for the individual webpage to reference, in relation to the webpage.

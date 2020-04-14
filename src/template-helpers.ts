@@ -1,6 +1,6 @@
 
 // Models
-import { FieldInfo, PropertyInfo, EventInfo, MethodInfo, TypeInfo, QuickTypeInfo } from "./models/SharpChecker";
+import { FieldInfo, PropertyInfo, EventInfo, MethodInfo, QuickTypeInfo, ParameterInfo } from "./models/SharpChecker";
 import { SidebarView } from "./models/TemplateApi";
 // External functionalities
 import { readFile } from "./read-file";
@@ -8,6 +8,51 @@ import { createSystemLink, createInternalLink } from "./read-xml";
 import { compileType, compileField, compilePropety, compileEvent, compileMethod } from "./template";
 // External libraries
 import ejs = require("ejs");
+
+/**Capitalizes the given string, turning hello-world to Hello World.
+ * @param val {string} - The value used to capitalize.
+ * @returns Returns the capitalized string*/
+export function capitalize(val : string) : string {
+	return val.replace(/(?:^|\s|-)\w/g, function(v : string) {
+		return v.toUpperCase();
+	}).replace(/(\w)\-(\w)/g, "$1 $2");
+}
+
+/**Gets the id from the given details.
+ * @param details {FieldInfo | PropertyInfo | EventInfo | MethodInfo} - The details to look into.
+ * @returns Returns the id used for anchoring and referencing.*/
+export function getIdFrom(details : (FieldInfo | PropertyInfo | EventInfo | MethodInfo)) : string {
+	if((details as MethodInfo).returnType) {
+		// Variables
+		const method = details as MethodInfo;
+		let parameters : string[] = [];
+		
+		method.parameters.forEach(function(parameter : ParameterInfo) {
+			parameters.push(parameter.typeInfo.unlocalizedName);
+		});
+		
+		return (
+			method.name +
+			(parameters.length > 0 ? `(${ parameters.join(',') })` : "")
+		).replace(/`(\d+)/g, "-$1");
+	}
+	if((details as PropertyInfo).getSetDeclaration) {
+		// Variables
+		const property = details as PropertyInfo;
+		let parameters : string[] = [];
+		
+		property.parameters.forEach(function(parameter : ParameterInfo) {
+			parameters.push(parameter.typeInfo.unlocalizedName);
+		});
+		
+		return (
+			property.name +
+			(parameters.length > 0 ? `(${ parameters.join(',') })` : "")
+		).replace(/`(\d+)/g, "-$1");
+	}
+	
+	return details.name;
+}
 
 /**Creates a partial using the type and location to the template file.
  * @param type {string} - The type to create from (type, field, property, event, method).

@@ -1,3 +1,4 @@
+import { CompactFullUris } from "./InputArguments";
 
 export interface NameDescription {
 	name : string;
@@ -12,6 +13,28 @@ export class SidebarView {
 		this.name = name;
 		this.children = [];
 	}
+}
+
+export class MemberList {
+	list : any[];
+	linkName : string;
+	templateType : string;
+	templateUris : CompactFullUris;
+	
+	constructor(list : any[], linkName : string, templateType : string, templateUris : CompactFullUris) {
+		this.list = list;
+		this.linkName = linkName;
+		this.templateType = templateType;
+		this.templateUris = templateUris;
+	}
+}
+
+export interface TemplateApiUris {
+	constructors : CompactFullUris;
+	fields : CompactFullUris;
+	properties : CompactFullUris;
+	events : CompactFullUris;
+	methods : CompactFullUris;
 }
 
 export interface TemplateApiItems {
