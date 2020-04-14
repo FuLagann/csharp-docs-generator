@@ -18,14 +18,14 @@ export class SidebarView {
 export class MemberList {
 	list : any[];
 	linkName : string;
-	templateType : string;
-	templateUris : CompactFullUris;
+	type : string;
+	uris : CompactFullUris;
 	
 	constructor(list : any[], linkName : string, templateType : string, templateUris : CompactFullUris) {
 		this.list = list;
 		this.linkName = linkName;
-		this.templateType = templateType;
-		this.templateUris = templateUris;
+		this.type = templateType;
+		this.uris = templateUris;
 	}
 }
 
