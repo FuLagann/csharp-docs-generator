@@ -73,7 +73,7 @@ export async function compileNamespace(args : InputArguments, namespace : string
 		types: types,
 		typePath: namespace,
 		breadcrumbs: namespace.split('.')
-	}));
+	}).replace(/\s+\n/gm, "\n").replace(/\t/gm, "  "), { ocd: true });
 }
 
 /**Compiles the type template.

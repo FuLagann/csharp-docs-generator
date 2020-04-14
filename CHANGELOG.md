@@ -4,6 +4,7 @@ v0.6 includes:
 * Added functions for templates:
   * Creating link to type using type path.
   * Creating anchor to type using quick type info.
+* Updated outputted html to look cleaner.
 
 v0.5 includes:
 * Gets packaged templates from packages folder within repository.
