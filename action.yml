@@ -38,10 +38,6 @@ inputs:
     description: "The message of the commit that the generation will perform."
     required: false
     default: "Automated creation of documentation"
-  amend-no-edit:
-    description: "Set to true if you want the generation to append itself to the latest commit instead of creating a new commit."
-    required: false
-    default: false
   output-extension:
     description: "The output extension that every file built will contain."
     default: ".html"

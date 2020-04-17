@@ -147,13 +147,7 @@ async function gitPush() {
 		await exec("git", ["switch", "--create", args.branchName]);
 	}
 	await exec("git", ["add", "--all"]);
-	// Commits along with previous commit instead
-	if(args.amendNoEdit == true) {
-		await exec("git", ["commit", "--amend", "--no-edit"]);
-	}
-	else {
-		await exec("git", ["commit", "-m", args.commitMessage]);
-	}
+	await exec("git", ["commit", "-m", args.commitMessage]);
 	// Pushing to a separate branch
 	if(args.branchName != "") {
 		await exec("git", ["push", "--set-upstream", "origin", args.branchName]);

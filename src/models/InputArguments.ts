@@ -27,7 +27,6 @@ export class InputArguments {
 	binaries : string[];
 	commitMessage : string;
 	branchName : string;
-	amendNoEdit : boolean;
 	template : string;
 	templatePath : string;
 	templateUris : TemplateUris;
@@ -45,7 +44,6 @@ export class InputArguments {
 		this.commitMessage = "Automated creation of documentation";
 		this.outputPath = "docs/api/";
 		this.branchName = "";
-		this.amendNoEdit = false;
 		this.templatePath = "";
 		this.outputExtension = ".html";
 		this.includePrivate = false;
