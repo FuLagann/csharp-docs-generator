@@ -10,7 +10,7 @@ import { generateTypeDetails } from "./generate";
 import { getArguments, getDependencies } from "./index";
 import { readFile } from "./read-file";
 import { getApiDoc } from "./read-xml";
-import { createPartial, generateSidebar, createLinkToType, createAnchorToType, capitalize, getIdFrom } from "./template-helpers";
+import { createPartial, generateSidebar, createLinkToType, createAnchorToType, capitalize, getIdFrom, getParameterType } from "./template-helpers";
 // External libraries
 import ejs = require("ejs");
 import pretty = require("pretty");
@@ -30,7 +30,7 @@ export async function compileBase(args : InputArguments, typePath : string) : Pr
 	generatedTypeJson = await generateTypeDetails(args, typePath);
 	// TODO: Generate sidebar
 	
-	return pretty(ejs.render(
+	return ("\n" + pretty(ejs.render(
 		readFile(filename).replace(/\s+\n/gm, "\n").replace(/\t/gm, "  ").trim(),
 		{
 			displaySidebar: generateSidebar,
@@ -45,7 +45,7 @@ export async function compileBase(args : InputArguments, typePath : string) : Pr
 			typePath: typePath,
 			breadcrumbs: generatedTypeJson.typeInfo.fullName.split('.')
 		}
-	), { ocd: true });
+	), { ocd: true }) + "\n");
 }
 
 // TODO: Complete this
@@ -62,7 +62,7 @@ export async function compileNamespace(args : InputArguments, namespace : string
 	// TODO: Generate sidebar
 	// TODO: Figure out namespaces listed in namespace webpages
 	
-	return pretty(ejs.render(
+	return ("\n" + pretty(ejs.render(
 		readFile(filename).replace(/\s+\n/gm, "\n").replace(/\t/gm, "  ").trim(),
 		{
 			displaySidebar: generateSidebar,
@@ -79,7 +79,7 @@ export async function compileNamespace(args : InputArguments, namespace : string
 			typePath: namespace,
 			breadcrumbs: namespace.split('.')
 		}
-	), { ocd: true });
+	), { ocd: true }) + "\n");
 }
 
 /**Compiles the type template.
@@ -112,7 +112,8 @@ export function compileType(filename : string, typePath : string) : string {
 			capitalize: capitalize,
 			getIdFrom: getIdFrom,
 			createLinkToType: createLinkToType,
-			createAnchorToType: createAnchorToType
+			createAnchorToType: createAnchorToType,
+			getParameterType: getParameterType
 		}
 	);
 }
@@ -136,7 +137,8 @@ export function compileField(filename : string, details : FieldInfo) {
 			capitalize: capitalize,
 			getIdFrom: getIdFrom,
 			createLinkToType: createLinkToType,
-			createAnchorToType: createAnchorToType
+			createAnchorToType: createAnchorToType,
+			getParameterType: getParameterType
 		}
 	);
 }
@@ -160,7 +162,8 @@ export function compilePropety(filename : string, details : PropertyInfo) {
 			capitalize: capitalize,
 			getIdFrom: getIdFrom,
 			createLinkToType: createLinkToType,
-			createAnchorToType: createAnchorToType
+			createAnchorToType: createAnchorToType,
+			getParameterType: getParameterType
 		}
 	);
 }
@@ -184,7 +187,8 @@ export function compileEvent(filename : string, details : EventInfo) {
 			capitalize: capitalize,
 			getIdFrom: getIdFrom,
 			createLinkToType: createLinkToType,
-			createAnchorToType: createAnchorToType
+			createAnchorToType: createAnchorToType,
+			getParameterType: getParameterType
 		}
 	);
 }
@@ -208,7 +212,8 @@ export function compileMethod(filename : string, details : MethodInfo) {
 			capitalize: capitalize,
 			getIdFrom: getIdFrom,
 			createLinkToType: createLinkToType,
-			createAnchorToType: createAnchorToType
+			createAnchorToType: createAnchorToType,
+			getParameterType: getParameterType
 		}
 	);
 }

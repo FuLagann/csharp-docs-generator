@@ -5,6 +5,7 @@ v0.7 includes:
   * Capitalizes sentences (removing hyphens).
   * Getting an anchor id from a member info.
   * Getting a list of members for type templating.
+  * Get the type info from a parameter
 
 v0.6 includes:
 * Reads dependency json to download dependency .xml files for use on documentation.
@@ -22,4 +23,4 @@ v0.4 includes:
 v0.3 includes:
 * Generates html code from API.
 * Compiles templates together for each webpage.
-* 
+

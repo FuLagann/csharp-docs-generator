@@ -91,6 +91,27 @@ export function createAnchorToType(typeInfo : QuickTypeInfo) : string {
 	return `<a href="${ link }">${ typeInfo.name.replace('<', "&lt;").replace('>', "&gt;") }</a>`;
 }
 
+/**Gets the parameter type from the given name.
+ * @param parameters {ParameterInfo[]} - The list of parameters to look into.
+ * @param name {string} - The name of the parameter to look into.
+ * @returns Returns the type info of the parameter.*/
+export function getParameterType(parameters : ParameterInfo[], name : string) : QuickTypeInfo {
+	for(let i = 0; i < parameters.length; i++) {
+		if(parameters[i].name == name) {
+			return parameters[i].typeInfo;
+		}
+	}
+	
+	return {
+		name: "",
+		unlocalizedName: "",
+		fullName: "",
+		namespaceName: "",
+		genericParameters: [],
+		nonInstancedFullName: ""
+	};
+}
+
 /**Generates the html code for the sidebar tree view.
  * @returns Returns the html code for the sidebar tree view*/
 export function generateSidebar(
