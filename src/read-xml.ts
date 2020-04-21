@@ -177,6 +177,9 @@ function getMarkdownTextContent(member : Element, id : string, defaultText : str
 	return md.render(desc);
 }
 
+/**Trims the text content to be friendly with markdown-it.
+ * @param content {string} - The content to trim.
+ * @returns Returns the trimmed text content.*/
 function trimTextContent(content : string) : string {
 	if(content != "" && !(
 		content.endsWith(".") ||
@@ -184,10 +187,12 @@ function trimTextContent(content : string) : string {
 		content.endsWith("?") ||
 		content.endsWith("```")
 	)) {
-		content += content.trimRight + ".";
+		content += content.trimRight() + ".";
 	}
 	
-	return content;
+	content = content.replace(/^[ ]{12}/gm, "");
+	
+	return content.trim();
 }
 
 /**Gets the text content from the given member.
