@@ -13,15 +13,13 @@ import markdownIt = require("markdown-it");
 import prism = require("markdown-it-prism");
 
 // Variables
-const md = markdownIt({ html: true });
+export const markdown = markdownIt({ html: true }).use(prism);;
 const TEXT_CONTENTS : string[][] = [
 	["summary", "No description"],
 	["returns", ""],
 	["remarks", ""],
 	["example", ""]
 ];
-
-md.use(prism);
 
 /**Gets the api documentation using the type path.
  * @param typePath {string} - The path to the type to look into.
@@ -152,7 +150,7 @@ function gatherNameDescriptionList(members : (HTMLCollectionOf<Element> | NodeLi
 		if(!name) { continue; }
 		let desc = trimTextContent(getTextContent(members[i], "No description"));
 		
-		results.push({ name: name, description: md.render(desc) });
+		results.push({ name: name, description: markdown.render(desc) });
 	}
 	
 	return results;
@@ -172,9 +170,9 @@ function getMarkdownTextContent(member : Element, id : string, defaultText : str
 	console.log("Text Content:");
 	console.log(desc);
 	console.log("Markdown Render");
-	console.log(md.render(desc));
+	console.log(markdown.render(desc));
 	
-	return md.render(desc);
+	return markdown.render(desc);
 }
 
 /**Trims the text content to be friendly with markdown-it.

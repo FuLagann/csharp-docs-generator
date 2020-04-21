@@ -9,7 +9,7 @@ import { XmlFormat } from "./models/XmlFormat";
 import { generateTypeDetails } from "./generate";
 import { getArguments, getDependencies } from "./index";
 import { readFile } from "./read-file";
-import { getApiDoc } from "./read-xml";
+import { getApiDoc, markdown } from "./read-xml";
 import { createPartial, generateSidebar, createLinkToType, createAnchorToType, capitalize, getIdFrom, getParameterType } from "./template-helpers";
 // External libraries
 import ejs = require("ejs");
@@ -106,6 +106,7 @@ export function compileType(filename : string, typePath : string) : string {
 		{
 			details: details,
 			xmlDocs: xmlApi,
+			codeDeclaration: getMarkdownCodeDeclaration(details),
 			uris: uris,
 			members: members,
 			createPartial: createPartial,
@@ -133,6 +134,7 @@ export function compileField(filename : string, details : FieldInfo) {
 		{
 			details: details,
 			xmlDocs: xmlApi,
+			codeDeclaration: getMarkdownCodeDeclaration(details),
 			typeInfo: generatedTypeJson.typeInfo,
 			capitalize: capitalize,
 			getIdFrom: getIdFrom,
@@ -158,6 +160,7 @@ export function compilePropety(filename : string, details : PropertyInfo) {
 		{
 			details: details,
 			xmlDocs: xmlApi,
+			codeDeclaration: getMarkdownCodeDeclaration(details),
 			typeInfo: generatedTypeJson.typeInfo,
 			capitalize: capitalize,
 			getIdFrom: getIdFrom,
@@ -183,6 +186,7 @@ export function compileEvent(filename : string, details : EventInfo) {
 		{
 			details: details,
 			xmlDocs: xmlApi,
+			codeDeclaration: getMarkdownCodeDeclaration(details),
 			typeInfo: generatedTypeJson.typeInfo,
 			capitalize: capitalize,
 			getIdFrom: getIdFrom,
@@ -208,6 +212,7 @@ export function compileMethod(filename : string, details : MethodInfo) {
 		{
 			details: details,
 			xmlDocs: xmlApi,
+			codeDeclaration: getMarkdownCodeDeclaration(details),
 			typeInfo: generatedTypeJson.typeInfo,
 			capitalize: capitalize,
 			getIdFrom: getIdFrom,
@@ -406,4 +411,20 @@ function doesItemExist(str : string) : boolean { return (str != null && str != u
  * @returns Returns true if the list is non-empty and exists.*/
 function doesArrayItemExist(list : any[]) : boolean {
 	return (list != null && list != undefined && list.length > 0);
+}
+
+/**Gets the code declaration thats been parsed through markdown-it.
+ * @param info {TypeInfo | FieldInfo | PropertyInfo | EventInfo | MethodInfo} - The info to look into.
+ * @returns Returns the rendered markdown code.*/
+function getMarkdownCodeDeclaration(info : (TypeInfo | FieldInfo | PropertyInfo | EventInfo | MethodInfo)) : string {
+	// Variables
+	let code = "";
+	
+	for(let i = 0; i < info.attributes.length; i++) {
+		code += info.attributes[i].fullDeclaration + "\n";
+	}
+	code += info.fullDeclaration;
+	code = "```csharp\n" + code + "\n```";
+	
+	return markdown.render(code);
 }

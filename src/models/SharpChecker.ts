@@ -140,7 +140,7 @@ export interface FieldInfo {
 	/**The type the field is implemented in.*/
 	implementedType : QuickTypeInfo;
 	/**The declaration of the field as it is found witihn the code.*/
-	declaration : string;
+	fullDeclaration : string;
 }
 
 /**All the information relevant to the property.*/
@@ -192,6 +192,8 @@ export interface EventInfo {
 	modifier : string;
 	/**The information of the event's type.*/
 	typeInfo : QuickTypeInfo;
+	/**The attributes associated with the event.*/
+	attributes : AttributeInfo[];
 	/**The type the event is implemented in.*/
 	implementedType : QuickTypeInfo;
 	/**The information of the event's adding method.*/
