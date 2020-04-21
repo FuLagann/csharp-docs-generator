@@ -92,6 +92,7 @@ async function generateSupplementaryFile(basePath : string, files : string[]) {
 		const filename = files[i].replace(/.*[\\\/]([\w\.]+)$/gm, "$1");
 		const content = readFile(files[i]);
 		
+		console.log(path.join(basePath, filename));
 		fs.writeFileSync(path.join(basePath, filename), content);
 	}
 }

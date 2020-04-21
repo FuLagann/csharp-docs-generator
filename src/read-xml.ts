@@ -172,6 +172,10 @@ function getMarkdownTextContent(member : Element, id : string, defaultText : str
 	let desc = (getTextContent(elems[0], defaultText)).trim();
 	
 	if(desc != "" && !(desc.endsWith(".") || desc.endsWith('!') || desc.endsWith('?'))) { desc += "."; }
+	if(id == "example") {
+		console.log("Text Content:", desc);
+		console.log("Markdown Render", md.render(desc));
+	}
 	
 	return md.render(desc);
 }
