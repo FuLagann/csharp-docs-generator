@@ -150,9 +150,7 @@ function gatherNameDescriptionList(members : (HTMLCollectionOf<Element> | NodeLi
 		// Variables
 		const name = members[i].getAttribute(attrName);
 		if(!name) { continue; }
-		let desc = (getTextContent(members[i], "No description")).trim();
-		
-		if(desc != "" && !(desc.endsWith(".") || desc.endsWith('!') || desc.endsWith('?') || desc.endsWith("```"))) { desc += "."; }
+		let desc = trimTextContent(getTextContent(members[i], "No description"));
 		
 		results.push({ name: name, description: md.render(desc) });
 	}
@@ -169,15 +167,27 @@ function getMarkdownTextContent(member : Element, id : string, defaultText : str
 	// Variables
 	const elems = member.getElementsByTagName(id);
 	if(elems.length == 0) { return defaultText; }
-	let desc = (getTextContent(elems[0], defaultText)).trim();
+	let desc = trimTextContent(getTextContent(elems[0], defaultText));
 	
-	if(desc != "" && !(desc.endsWith(".") || desc.endsWith('!') || desc.endsWith('?') || desc.endsWith("```"))) { desc += "."; }
-	if(id == "example") {
-		console.log("Text Content:", desc);
-		console.log("Markdown Render", md.render(desc));
-	}
+	console.log("Text Content:");
+	console.log(desc);
+	console.log("Markdown Render");
+	console.log(md.render(desc));
 	
 	return md.render(desc);
+}
+
+function trimTextContent(content : string) : string {
+	if(content != "" && !(
+		content.endsWith(".") ||
+		content.endsWith("!") ||
+		content.endsWith("?") ||
+		content.endsWith("```")
+	)) {
+		content += content.trimRight + ".";
+	}
+	
+	return content;
 }
 
 /**Gets the text content from the given member.
