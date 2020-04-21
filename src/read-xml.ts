@@ -181,18 +181,18 @@ function getMarkdownTextContent(member : Element, id : string, defaultText : str
  * @param content {string} - The content to trim.
  * @returns Returns the trimmed text content.*/
 function trimTextContent(content : string) : string {
+	content = content.replace(/^[ ]{12}/gm, "");
+	content = content.trim();
 	if(content != "" && !(
 		content.endsWith(".") ||
 		content.endsWith("!") ||
 		content.endsWith("?") ||
 		content.endsWith("```")
 	)) {
-		content += content.trimRight() + ".";
+		content += ".";
 	}
 	
-	content = content.replace(/^[ ]{12}/gm, "");
-	
-	return content.trim();
+	return content;
 }
 
 /**Gets the text content from the given member.
