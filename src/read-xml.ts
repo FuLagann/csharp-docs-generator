@@ -152,7 +152,7 @@ function gatherNameDescriptionList(members : (HTMLCollectionOf<Element> | NodeLi
 		if(!name) { continue; }
 		let desc = (getTextContent(members[i], "No description")).trim();
 		
-		if(desc != "" && !(desc.endsWith(".") || desc.endsWith('!') || desc.endsWith('?'))) { desc += "."; }
+		if(desc != "" && !(desc.endsWith(".") || desc.endsWith('!') || desc.endsWith('?') || desc.endsWith("```"))) { desc += "."; }
 		
 		results.push({ name: name, description: md.render(desc) });
 	}
@@ -171,7 +171,7 @@ function getMarkdownTextContent(member : Element, id : string, defaultText : str
 	if(elems.length == 0) { return defaultText; }
 	let desc = (getTextContent(elems[0], defaultText)).trim();
 	
-	if(desc != "" && !(desc.endsWith(".") || desc.endsWith('!') || desc.endsWith('?'))) { desc += "."; }
+	if(desc != "" && !(desc.endsWith(".") || desc.endsWith('!') || desc.endsWith('?') || desc.endsWith("```"))) { desc += "."; }
 	if(id == "example") {
 		console.log("Text Content:", desc);
 		console.log("Markdown Render", md.render(desc));
