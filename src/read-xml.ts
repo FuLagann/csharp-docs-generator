@@ -10,6 +10,7 @@ import { readFile } from "./read-file";
 // External libraries
 import { DOMParser } from "xmldom";
 import markdownIt = require("markdown-it");
+import prism = require("markdown-it-prism");
 
 // Variables
 const md = markdownIt({ html: true });
@@ -19,6 +20,8 @@ const TEXT_CONTENTS : string[][] = [
 	["remarks", ""],
 	["example", ""]
 ];
+
+md.use(prism);
 
 /**Gets the api documentation using the type path.
  * @param typePath {string} - The path to the type to look into.
