@@ -31,7 +31,7 @@ export async function compileBase(args : InputArguments, typePath : string) : Pr
 	// TODO: Generate sidebar
 	
 	return ("\n" + pretty(ejs.render(
-		readFile(filename).replace(/\s+\n/gm, "\n").replace(/\t/gm, "  ").trim(),
+		readFile(filename).replace(/(?<=\S)\s+(?=<\/code>)/gm, "").trim(),
 		{
 			displaySidebar: generateSidebar,
 			createPartial: createPartial,
@@ -45,7 +45,7 @@ export async function compileBase(args : InputArguments, typePath : string) : Pr
 			typePath: typePath,
 			breadcrumbs: generatedTypeJson.typeInfo.fullName.split('.')
 		}
-	), { ocd: true }) + "\n");
+	)) + "\n");
 }
 
 // TODO: Complete this
@@ -63,7 +63,7 @@ export async function compileNamespace(args : InputArguments, namespace : string
 	// TODO: Figure out namespaces listed in namespace webpages
 	
 	return ("\n" + pretty(ejs.render(
-		readFile(filename).replace(/\s+\n/gm, "\n").replace(/\t/gm, "  ").trim(),
+		readFile(filename).replace(/(?<=\S)\s+(?=<\/code>)/gm, "").trim(),
 		{
 			displaySidebar: generateSidebar,
 			createPartial: createPartial,
