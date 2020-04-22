@@ -45,7 +45,7 @@ export async function compileBase(args : InputArguments, typePath : string) : Pr
 			typePath: typePath,
 			breadcrumbs: generatedTypeJson.typeInfo.fullName.split('.')
 		}
-	), { parser: "html", endOfLine: "crlf", htmlWhitespaceSensitivity: "ignore" });
+	), { parser: "html", endOfLine: "crlf", htmlWhitespaceSensitivity: "ignore", proseWrap: "never" });
 }
 
 // TODO: Complete this
@@ -79,7 +79,7 @@ export async function compileNamespace(args : InputArguments, namespace : string
 			typePath: namespace,
 			breadcrumbs: namespace.split('.')
 		}
-	), { parser: "html", endOfLine: "crlf", htmlWhitespaceSensitivity: "ignore" });
+	), { parser: "html", endOfLine: "crlf", htmlWhitespaceSensitivity: "ignore", proseWrap: "never" });
 }
 
 /**Compiles the type template.
@@ -371,9 +371,10 @@ function getTypePath(typeInfo : QuickTypeInfo, name : string) : string {
  * @return Returns the api documentation items.*/
 function getApiItems(format : (XmlFormat | undefined)) : TemplateApiItems {
 	if(format == undefined) { format = new XmlFormat(); }
-	
+	// TODO: Add details parameter.
 	return {
 		summary: format.summary,
+		// TODO: Update this to reflect the details iff the format doesn't exist
 		returns: {
 			exists: doesItemExist(format.returns),
 			value: format.returns
@@ -386,6 +387,8 @@ function getApiItems(format : (XmlFormat | undefined)) : TemplateApiItems {
 			exists: doesItemExist(format.example),
 			value: format.example
 		},
+		// TODO: Update this to reflect the details iff the format doesn't exist
+		// TODO: Update the value to fill up by the details
 		parameters: {
 			exists: doesArrayItemExist(format.parameters),
 			value: format.parameters
@@ -394,6 +397,7 @@ function getApiItems(format : (XmlFormat | undefined)) : TemplateApiItems {
 			exists: doesArrayItemExist(format.exceptions),
 			value: format.exceptions
 		},
+		// TODO: Update this to reflect the details iff the format doesn't exist
 		typeParameters: {
 			exists: doesArrayItemExist(format.typeParameters),
 			value: format.typeParameters
@@ -424,6 +428,9 @@ function getMarkdownCodeDeclaration(info : (TypeInfo | FieldInfo | PropertyInfo 
 		code += info.attributes[i].fullDeclaration + "\n";
 	}
 	code += info.fullDeclaration;
+	if(!(info as TypeInfo).staticMethods) {
+		code += ";";
+	}
 	code = "```csharp\n" + code + "\n```";
 	
 	return markdown.render(code);

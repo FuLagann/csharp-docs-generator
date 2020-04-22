@@ -19,6 +19,10 @@ export interface TemplateUris {
 	properties : CompactFullUris;
 	events : CompactFullUris;
 	methods : CompactFullUris;
+	// TODO: Add header, footer, and nav uris.
+	// header : string;
+	// footer : string;
+	// navigation : string;
 }
 
 export class InputArguments {

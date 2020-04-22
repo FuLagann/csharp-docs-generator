@@ -7,6 +7,7 @@ v0.8 includes:
 * Removed whitespace line remover.
 * Replaced pretty with prettier.
 * Fixed misspelling of outputted file (`` ` => - ``).
+* Updated code declaration + turned off wrapping from prettier.
 
 v0.7 includes:
 * Generates local css and javascript files.
