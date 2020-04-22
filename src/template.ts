@@ -13,7 +13,7 @@ import { getApiDoc, markdown } from "./read-xml";
 import { createPartial, generateSidebar, createLinkToType, createAnchorToType, capitalize, getIdFrom, getParameterType } from "./template-helpers";
 // External libraries
 import ejs = require("ejs");
-import pretty = require("pretty");
+import prettier = require("prettier");
 
 // Variables
 let generatedTypeJson : TypeInfo;
@@ -30,7 +30,7 @@ export async function compileBase(args : InputArguments, typePath : string) : Pr
 	generatedTypeJson = await generateTypeDetails(args, typePath);
 	// TODO: Generate sidebar
 	
-	return ("\n" + pretty(ejs.render(
+	return prettier.format(ejs.render(
 		readFile(filename).replace(/(?<=\S)\s+(?=<\/code>)/gm, "").trim(),
 		{
 			displaySidebar: generateSidebar,
@@ -45,7 +45,7 @@ export async function compileBase(args : InputArguments, typePath : string) : Pr
 			typePath: typePath,
 			breadcrumbs: generatedTypeJson.typeInfo.fullName.split('.')
 		}
-	)) + "\n");
+	), { endOfLine: "crlf", htmlWhitespaceSensitivity: "ignore" });
 }
 
 // TODO: Complete this
@@ -62,7 +62,7 @@ export async function compileNamespace(args : InputArguments, namespace : string
 	// TODO: Generate sidebar
 	// TODO: Figure out namespaces listed in namespace webpages
 	
-	return ("\n" + pretty(ejs.render(
+	return prettier.format(ejs.render(
 		readFile(filename).replace(/(?<=\S)\s+(?=<\/code>)/gm, "").trim(),
 		{
 			displaySidebar: generateSidebar,
@@ -79,7 +79,7 @@ export async function compileNamespace(args : InputArguments, namespace : string
 			typePath: namespace,
 			breadcrumbs: namespace.split('.')
 		}
-	), { ocd: true }) + "\n");
+	), { endOfLine: "crlf", htmlWhitespaceSensitivity: "ignore" });
 }
 
 /**Compiles the type template.
