@@ -2,9 +2,11 @@
 v0.8 includes:
 * Updated sharp checker types to reflect updated version.
 * Included prism code highlighting.
+* Added codeDeclaration variable to templating.
 * Trimmed description content to take out unneeded tabbed spaces.
 * Removed whitespace line remover.
 * Replaced pretty with prettier.
+* Fixed misspelling of outputted file (`` ` => - ``).
 
 v0.7 includes:
 * Generates local css and javascript files.

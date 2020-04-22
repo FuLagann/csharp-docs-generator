@@ -34,9 +34,9 @@ export async function generateHtmlDocumentation(args : InputArguments) {
 		
 		for(let i = 0; i < value.length; i++) {
 			// Variables
-			const typePath = value[i].replace("/", ".");
+			const typePath = value[i].replace(/\//g, ".");
 			if(typePath.indexOf("<") != -1) { continue; }
-			const filename = args.outputPath + typePath + args.outputExtension;
+			const filename = args.outputPath + typePath.replace(/`/g, "-") + args.outputExtension;
 			const html = await compileBase(args, typePath);
 			
 			fs.writeFileSync(filename.toLowerCase(), html);
