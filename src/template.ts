@@ -45,7 +45,7 @@ export async function compileBase(args : InputArguments, typePath : string) : Pr
 			typePath: typePath,
 			breadcrumbs: generatedTypeJson.typeInfo.fullName.split('.')
 		}
-	), { endOfLine: "crlf", htmlWhitespaceSensitivity: "ignore" });
+	), { parser: "html", endOfLine: "crlf", htmlWhitespaceSensitivity: "ignore" });
 }
 
 // TODO: Complete this
@@ -79,7 +79,7 @@ export async function compileNamespace(args : InputArguments, namespace : string
 			typePath: namespace,
 			breadcrumbs: namespace.split('.')
 		}
-	), { endOfLine: "crlf", htmlWhitespaceSensitivity: "ignore" });
+	), { parser: "html", endOfLine: "crlf", htmlWhitespaceSensitivity: "ignore" });
 }
 
 /**Compiles the type template.
