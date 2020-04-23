@@ -132,6 +132,7 @@ export function generateSidebar(
 	
 	for(let i = 0; i < views.length; i++) {
 		results.push(views[i].name.replace(/</g, "&lt;").replace(/>/g, "&gt;"));
+		results[i] = `<span class="caret">${ results[i] }</span>`;
 		
 		if(views[i].children.length > 0) {
 			results[i] += (

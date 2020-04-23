@@ -149,9 +149,7 @@ async function assignToSidebar(sidebar : SidebarView, namespaces : string[], typ
 	}
 	
 	typeInfo = await generateTypeDetails(args, typePath);
-	console.log(tempSidebar);
 	tempSidebar = insertionSortChild(tempSidebar, new SidebarView(typeInfo.typeInfo.name));
-	console.log(tempSidebar);
 	tempSidebar = insertMember(tempSidebar, typeInfo.fields);
 	tempSidebar = insertMember(tempSidebar, typeInfo.staticFields);
 	tempSidebar = insertMember(tempSidebar, typeInfo.properties);
@@ -197,10 +195,26 @@ function insertionSortChild(sidebar : SidebarView, newSidebar : SidebarView, ret
 }
 
 function insertMember(sidebar : SidebarView, details : (FieldInfo[] | PropertyInfo[] | EventInfo[] | MethodInfo[])) : SidebarView {
+	// Variables
+	let name : string;
+	
 	for(let i = 0; i < details.length; i++) {
-		console.log("Loop (" + i + "): " + details[i].name);
-		console.log(sidebar);
-		insertionSortChild(sidebar, new SidebarView(details[i].name), false);
+		name = details[i].name;
+		if((details[i] as MethodInfo).genericParameters) {
+			// Variables
+			const method = details[i] as MethodInfo;
+			
+			name = `${ name }${ method.genericParameters }(${ method.parameterDeclaration })`;
+		}
+		else if((details[i] as PropertyInfo).getSetDeclaration) {
+			// Variables
+			const property = details[i] as PropertyInfo;
+			
+			if(property.parameters.length > 0) {
+				name = `${ name }(${ property.parameterDeclaration })`;
+			}
+		}
+		insertionSortChild(sidebar, new SidebarView(name), false);
 	}
 	
 	return sidebar;
