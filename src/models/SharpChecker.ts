@@ -2,7 +2,7 @@
 /**All the information of types with it's associated library or executable.*/
 export interface TypeList {
 	/**A hashmap of a library or executable mapping to a list of types it contains.*/
-	types : any;
+	types : { [key : string] : string[] };
 }
 
 /**A quick look into the information of the type.*/

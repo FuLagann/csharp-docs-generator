@@ -1,4 +1,7 @@
 
+v0.9 includes;
+* Creation of sidebar content (navigation for namespaces, types, and members).
+
 v0.8 includes:
 * Updated sharp checker types to reflect updated version.
 * Included prism code highlighting.

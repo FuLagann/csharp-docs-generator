@@ -1,9 +1,9 @@
 
 // Models
 import { InputArguments } from "./models/InputArguments";
-import { TypeInfo, TypeList } from "./models/SharpChecker";
+import { TypeInfo, TypeList, FieldInfo, PropertyInfo, EventInfo, MethodInfo } from "./models/SharpChecker";
 // External functionalities
-import { TEMP_FOLDER, getSharpCheckerExe } from "./index";
+import { TEMP_FOLDER, getSharpCheckerExe, getArguments } from "./index";
 import { readFile } from "./read-file";
 import { compileBase, compileNamespace } from "./template";
 // External libraries
@@ -11,6 +11,7 @@ import { exec } from "@actions/exec";
 import fs = require("fs");
 import io = require("@actions/io");
 import path = require("path");
+import { SidebarView } from "./models/TemplateApi";
 
 // Variables
 let typeList : (TypeList | null) = null;
@@ -20,6 +21,7 @@ let typeList : (TypeList | null) = null;
 export async function generateHtmlDocumentation(args : InputArguments) {
 	// Variables
 	const list : TypeList = await generateTypeList(args);
+	const sidebar : SidebarView = await createSidebar(list);
 	
 	console.log("Generating HTML Documentation...");
 	await generateCssAndScriptFiles(args);
@@ -27,7 +29,7 @@ export async function generateHtmlDocumentation(args : InputArguments) {
 		// Variables
 		const value : string[] = list.types[key] as string[];
 		const namespaceFilename = args.outputPath + key + args.outputExtension;
-		const html = await compileNamespace(args, key, value);
+		const html = await compileNamespace(args, key, value, sidebar);
 		
 		fs.writeFileSync(namespaceFilename.toLowerCase(), html);
 		console.log(`Created ${ namespaceFilename }`);
@@ -37,7 +39,7 @@ export async function generateHtmlDocumentation(args : InputArguments) {
 			const typePath = value[i].replace(/\//g, ".");
 			if(typePath.indexOf("<") != -1) { continue; }
 			const filename = args.outputPath + typePath.replace(/`/g, "-") + args.outputExtension;
-			const html = await compileBase(args, typePath);
+			const html = await compileBase(args, typePath, sidebar);
 			
 			fs.writeFileSync(filename.toLowerCase(), html);
 			console.log(`Created ${ filename }!`);
@@ -108,4 +110,84 @@ function getSharpCheckerArguments(args : InputArguments, isList : boolean, typeP
 	const outputPath : string = TEMP_FOLDER + (isList ? "list.json" : "type.json");
 	
 	return ["-o", outputPath, typePath].concat(includePrivate).concat(args.binaries);
+}
+
+async function createSidebar(list : TypeList) : Promise<SidebarView> {
+	// Variables
+	let sidebar : SidebarView = new SidebarView("~root");
+	
+	for(const key in list.types) {
+		// Variables
+		const values : string[] = list.types[key];
+		
+		for(let a = 0; a < values.length; a++) {
+			// Variables
+			const value = values[a];
+			const matches = value.match(/\w+(?=\.)/g);
+			
+			sidebar = await assignToSidebar(sidebar, matches || [], value);
+		}
+	}
+	
+	return sidebar;
+}
+
+async function assignToSidebar(sidebar : SidebarView, namespaces : string[], typePath : string) : Promise<SidebarView> {
+	// Variables
+	const args : InputArguments = getArguments();
+	let tempSidebar : SidebarView = sidebar;
+	let index : number;
+	let typeInfo : TypeInfo;
+	
+	for(let i = 0; i < namespaces.length; i++) {
+		index = indexOfSidebarChild(tempSidebar.children, namespaces[i]);
+		if(index == -1) {
+			tempSidebar = insertionSortChild(tempSidebar, new SidebarView(namespaces[i]));
+			continue;
+		}
+		tempSidebar = tempSidebar.children[index];
+	}
+	
+	typeInfo = await generateTypeDetails(args, typePath);
+	tempSidebar = insertionSortChild(tempSidebar, new SidebarView(typeInfo.typeInfo.name));
+	tempSidebar = insertMember(tempSidebar, typeInfo.fields);
+	tempSidebar = insertMember(tempSidebar, typeInfo.staticFields);
+	tempSidebar = insertMember(tempSidebar, typeInfo.properties);
+	tempSidebar = insertMember(tempSidebar, typeInfo.staticProperties);
+	tempSidebar = insertMember(tempSidebar, typeInfo.events);
+	tempSidebar = insertMember(tempSidebar, typeInfo.staticEvents);
+	tempSidebar = insertMember(tempSidebar, typeInfo.constructors);
+	tempSidebar = insertMember(tempSidebar, typeInfo.methods);
+	tempSidebar = insertMember(tempSidebar, typeInfo.staticMethods);
+	tempSidebar = insertMember(tempSidebar, typeInfo.operators);
+	
+	return sidebar;
+}
+
+function indexOfSidebarChild(children : SidebarView[], name : string) : number {
+	for(let i = 0; i < children.length; i++) {
+		if(children[i].name == name) { return i; }
+	}
+	
+	return -1;
+}
+
+function insertionSortChild(sidebar : SidebarView, newSidebar : SidebarView) : SidebarView {
+	for(let i = 0; i < sidebar.children.length; i++) {
+		if(sidebar.children[i].name.localeCompare(name) > 0) {
+			sidebar.children = sidebar.children.splice(i, 0, newSidebar);
+			return sidebar.children[i];
+		}
+	}
+	
+	sidebar.children.push(newSidebar);
+	return sidebar.children[sidebar.children.length - 1];
+}
+
+function insertMember(sidebar : SidebarView, details : (FieldInfo[] | PropertyInfo[] | EventInfo[] | MethodInfo[])) : SidebarView {
+	for(let i = 0; i < details.length; i++) {
+		insertionSortChild(sidebar, new SidebarView(details[i].name));
+	}
+	
+	return sidebar;
 }

@@ -22,10 +22,9 @@ let generatedTypeJson : TypeInfo;
  * @param args {InputArguments} - The input arguments to look into.
  * @param typePath {string} - The path to the type to generate the documentation for.
  * @returns Returns the compiled template code.*/
-export async function compileBase(args : InputArguments, typePath : string) : Promise<string> {
+export async function compileBase(args : InputArguments, typePath : string, sidebar : SidebarView) : Promise<string> {
 	// Variables
 	const filename = args.templateUris.base;
-	const sidebar : SidebarView = new SidebarView("$~root");
 	
 	generatedTypeJson = await generateTypeDetails(args, typePath);
 	// TODO: Generate sidebar
@@ -54,10 +53,9 @@ export async function compileBase(args : InputArguments, typePath : string) : Pr
  * @param namespace {string} - The name of the namespace.
  * @param types {string[]} - The list of types witihn the namespace.
  * @returns Returns the compiled template code.*/
-export async function compileNamespace(args : InputArguments, namespace : string, types : string[]) : Promise<string> {
+export async function compileNamespace(args : InputArguments, namespace : string, types : string[], sidebar : SidebarView) : Promise<string> {
 	// Variables
 	const filename = args.templateUris.base;
-	const sidebar : SidebarView = new SidebarView("$~root");
 	
 	// TODO: Generate sidebar
 	// TODO: Figure out namespaces listed in namespace webpages
