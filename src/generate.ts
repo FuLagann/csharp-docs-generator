@@ -114,7 +114,7 @@ function getSharpCheckerArguments(args : InputArguments, isList : boolean, typeP
 
 async function createSidebar(list : TypeList) : Promise<SidebarView> {
 	// Variables
-	let sidebar : SidebarView = new SidebarView("~root");
+	let sidebar : SidebarView = new SidebarView("$~root");
 	
 	for(const key in list.types) {
 		// Variables
