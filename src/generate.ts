@@ -172,21 +172,35 @@ function indexOfSidebarChild(children : SidebarView[], name : string) : number {
 	return -1;
 }
 
-function insertionSortChild(sidebar : SidebarView, newSidebar : SidebarView) : SidebarView {
+function insertionSortChild(sidebar : SidebarView, newSidebar : SidebarView, returnChild : boolean = true) : SidebarView {
+	if(!sidebar.children) {
+		sidebar.children = [];
+	}
+	
 	for(let i = 0; i < sidebar.children.length; i++) {
 		if(sidebar.children[i].name.localeCompare(newSidebar.name) > 0) {
 			sidebar.children = sidebar.children.splice(i, 0, newSidebar);
-			return sidebar.children[i];
+			if(returnChild) {
+				return sidebar.children[i];
+			}
+			else {
+				return sidebar;
+			}
 		}
 	}
 	
 	sidebar.children.push(newSidebar);
-	return sidebar.children[sidebar.children.length - 1];
+	if(returnChild) {
+		return sidebar.children[sidebar.children.length - 1];
+	}
+	else {
+		return sidebar;
+	}
 }
 
 function insertMember(sidebar : SidebarView, details : (FieldInfo[] | PropertyInfo[] | EventInfo[] | MethodInfo[])) : SidebarView {
 	for(let i = 0; i < details.length; i++) {
-		insertionSortChild(sidebar, new SidebarView(details[i].name));
+		sidebar = insertionSortChild(sidebar, new SidebarView(details[i].name), false);
 	}
 	
 	return sidebar;
