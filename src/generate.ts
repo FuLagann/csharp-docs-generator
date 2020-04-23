@@ -174,7 +174,7 @@ function indexOfSidebarChild(children : SidebarView[], name : string) : number {
 
 function insertionSortChild(sidebar : SidebarView, newSidebar : SidebarView) : SidebarView {
 	for(let i = 0; i < sidebar.children.length; i++) {
-		if(sidebar.children[i].name.localeCompare(name) > 0) {
+		if(sidebar.children[i].name.localeCompare(newSidebar.name) > 0) {
 			sidebar.children = sidebar.children.splice(i, 0, newSidebar);
 			return sidebar.children[i];
 		}
