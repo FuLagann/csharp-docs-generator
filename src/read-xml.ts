@@ -167,11 +167,6 @@ function getMarkdownTextContent(member : Element, id : string, defaultText : str
 	if(elems.length == 0) { return defaultText; }
 	let desc = trimTextContent(getTextContent(elems[0], defaultText));
 	
-	console.log("Text Content:");
-	console.log(desc);
-	console.log("Markdown Render");
-	console.log(markdown.render(desc));
-	
 	return markdown.render(desc);
 }
 

@@ -2,16 +2,17 @@
 // Models
 import { InputArguments } from "./models/InputArguments";
 import { TypeInfo, TypeList, FieldInfo, PropertyInfo, EventInfo, MethodInfo } from "./models/SharpChecker";
+import { SidebarView } from "./models/TemplateApi";
 // External functionalities
 import { TEMP_FOLDER, getSharpCheckerExe, getArguments } from "./index";
 import { readFile } from "./read-file";
+import { createInternalLink } from "./read-xml";
 import { compileBase, compileNamespace } from "./template";
 // External libraries
 import { exec } from "@actions/exec";
 import fs = require("fs");
 import io = require("@actions/io");
 import path = require("path");
-import { SidebarView } from "./models/TemplateApi";
 
 // Variables
 let typeList : (TypeList | null) = null;
@@ -114,7 +115,7 @@ function getSharpCheckerArguments(args : InputArguments, isList : boolean, typeP
 
 async function createSidebar(list : TypeList) : Promise<SidebarView> {
 	// Variables
-	let sidebar : SidebarView = new SidebarView("$~root");
+	let sidebar : SidebarView = new SidebarView("$~root", "");
 	
 	for(const key in list.types) {
 		// Variables
@@ -134,7 +135,7 @@ async function createSidebar(list : TypeList) : Promise<SidebarView> {
 
 async function assignToSidebar(sidebar : SidebarView, namespaces : string[], typePath : string) : Promise<SidebarView> {
 	// Variables
-	const args : InputArguments = getArguments();
+	let args : InputArguments = getArguments();
 	let tempSidebar : SidebarView = sidebar;
 	let index : number;
 	let typeInfo : TypeInfo;
@@ -142,14 +143,21 @@ async function assignToSidebar(sidebar : SidebarView, namespaces : string[], typ
 	for(let i = 0; i < namespaces.length; i++) {
 		index = indexOfSidebarChild(tempSidebar.children, namespaces[i]);
 		if(index == -1) {
-			tempSidebar = insertionSortChild(tempSidebar, new SidebarView(namespaces[i]));
+			// TODO: Add namespace link here
+			tempSidebar = insertionSortChild(tempSidebar, new SidebarView(namespaces[i], ""));
 			continue;
 		}
 		tempSidebar = tempSidebar.children[index];
 	}
 	
 	typeInfo = await generateTypeDetails(args, typePath);
-	tempSidebar = insertionSortChild(tempSidebar, new SidebarView(typeInfo.typeInfo.name));
+	tempSidebar = insertionSortChild(
+		tempSidebar,
+		new SidebarView(
+			typeInfo.typeInfo.name,
+			createInternalLink(typeInfo.typeInfo.unlocalizedName)
+		)
+	);
 	tempSidebar = insertMember(tempSidebar, typeInfo.fields);
 	tempSidebar = insertMember(tempSidebar, typeInfo.staticFields);
 	tempSidebar = insertMember(tempSidebar, typeInfo.properties);
@@ -214,7 +222,14 @@ function insertMember(sidebar : SidebarView, details : (FieldInfo[] | PropertyIn
 				name = `${ name }(${ property.parameterDeclaration })`;
 			}
 		}
-		insertionSortChild(sidebar, new SidebarView(name), false);
+		insertionSortChild(
+			sidebar,
+			new SidebarView(
+				name,
+				createInternalLink(details[i].implementedType.unlocalizedName)
+			),
+			false
+		);
 	}
 	
 	return sidebar;

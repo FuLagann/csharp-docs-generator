@@ -132,9 +132,13 @@ export function generateSidebar(
 	
 	for(let i = 0; i < views.length; i++) {
 		results.push(views[i].name.replace(/</g, "&lt;").replace(/>/g, "&gt;"));
-		results[i] = `<span class="caret">${ results[i] }</span>`;
+		
+		if(views[i].link != "") {
+			results[i] = `<a href="${ views[i].link }">${ results[i] }</a>`;
+		}
 		
 		if(views[i].children.length > 0) {
+			results[i] = `<span class="caret">${ results[i] }</span>`;
 			results[i] += (
 				`<ul class="${ nestedviewClass }">` +
 				`${ generateSidebar(views[i].children, treeviewClass, nestedviewClass) }</ul>`

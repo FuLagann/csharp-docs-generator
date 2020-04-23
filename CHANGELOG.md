@@ -3,6 +3,7 @@ v0.9 includes;
 * Creation of sidebar content (navigation for namespaces, types, and members).
 * Rendering of sidebar content.
 * Updated names of members for sidebar view.
+* Updated sideview to include links
 
 v0.8 includes:
 * Updated sharp checker types to reflect updated version.

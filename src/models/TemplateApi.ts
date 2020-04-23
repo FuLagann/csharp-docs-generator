@@ -7,10 +7,12 @@ export interface NameDescription {
 
 export class SidebarView {
 	name : string;
+	link : string;
 	children : SidebarView[];
 	
-	constructor(name : string) {
+	constructor(name : string, link : string) {
 		this.name = name;
+		this.link = link;
 		this.children = [];
 	}
 }
