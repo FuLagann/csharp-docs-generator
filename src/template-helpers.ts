@@ -131,7 +131,7 @@ export function generateSidebar(
 	let results = [];
 	
 	for(let i = 0; i < views.length; i++) {
-		results.push(views[i].name);
+		results.push(views[i].name.replace(/</g, "&lt;").replace(/>/g, "&gt;"));
 		
 		if(views[i].children.length > 0) {
 			results[i] += (
