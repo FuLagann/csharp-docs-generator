@@ -149,7 +149,9 @@ async function assignToSidebar(sidebar : SidebarView, namespaces : string[], typ
 	}
 	
 	typeInfo = await generateTypeDetails(args, typePath);
+	console.log(tempSidebar);
 	tempSidebar = insertionSortChild(tempSidebar, new SidebarView(typeInfo.typeInfo.name));
+	console.log(tempSidebar);
 	tempSidebar = insertMember(tempSidebar, typeInfo.fields);
 	tempSidebar = insertMember(tempSidebar, typeInfo.staticFields);
 	tempSidebar = insertMember(tempSidebar, typeInfo.properties);
@@ -173,13 +175,9 @@ function indexOfSidebarChild(children : SidebarView[], name : string) : number {
 }
 
 function insertionSortChild(sidebar : SidebarView, newSidebar : SidebarView, returnChild : boolean = true) : SidebarView {
-	if(!sidebar.children) {
-		sidebar.children = [];
-	}
-	
 	for(let i = 0; i < sidebar.children.length; i++) {
 		if(sidebar.children[i].name.localeCompare(newSidebar.name) > 0) {
-			sidebar.children = sidebar.children.splice(i, 0, newSidebar);
+			sidebar.children.splice(i, 0, newSidebar);
 			if(returnChild) {
 				return sidebar.children[i];
 			}
@@ -200,7 +198,9 @@ function insertionSortChild(sidebar : SidebarView, newSidebar : SidebarView, ret
 
 function insertMember(sidebar : SidebarView, details : (FieldInfo[] | PropertyInfo[] | EventInfo[] | MethodInfo[])) : SidebarView {
 	for(let i = 0; i < details.length; i++) {
-		sidebar = insertionSortChild(sidebar, new SidebarView(details[i].name), false);
+		console.log("Loop (" + i + "): " + details[i].name);
+		console.log(sidebar);
+		insertionSortChild(sidebar, new SidebarView(details[i].name), false);
 	}
 	
 	return sidebar;
