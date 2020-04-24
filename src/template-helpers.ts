@@ -144,6 +144,9 @@ export function generateSidebar(
 				`${ generateSidebar(views[i].children, treeviewClass, nestedviewClass) }</ul>`
 			)
 		}
+		else {
+			results[i] = `<span class="end-caret">${ results[i] }</span>`;
+		}
 		
 		results[i] = `<li>${ results[i] }</li>`;
 	}

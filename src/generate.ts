@@ -13,6 +13,8 @@ import { exec } from "@actions/exec";
 import fs = require("fs");
 import io = require("@actions/io");
 import path = require("path");
+import { Template } from "ejs";
+import { getIdFrom } from "./template-helpers";
 
 // Variables
 let typeList : (TypeList | null) = null;
@@ -137,16 +139,14 @@ async function assignToSidebar(sidebar : SidebarView, namespaces : string[], typ
 	// Variables
 	let args : InputArguments = getArguments();
 	let tempSidebar : SidebarView = sidebar;
-	let index : number;
+	let namespaceName : string = namespaces.join('.');
+	let index : number = indexOfSidebarChild(tempSidebar.children, namespaceName);
 	let typeInfo : TypeInfo;
 	
-	for(let i = 0; i < namespaces.length; i++) {
-		index = indexOfSidebarChild(tempSidebar.children, namespaces[i]);
-		if(index == -1) {
-			// TODO: Add namespace link here
-			tempSidebar = insertionSortChild(tempSidebar, new SidebarView(namespaces[i], ""));
-			continue;
-		}
+	if(index == -1) {
+		tempSidebar = insertionSortChild(tempSidebar, new SidebarView(namespaceName, ""));// namespaceName));
+	}
+	else {
 		tempSidebar = tempSidebar.children[index];
 	}
 	
@@ -158,16 +158,16 @@ async function assignToSidebar(sidebar : SidebarView, namespaces : string[], typ
 			createInternalLink(typeInfo.typeInfo.unlocalizedName)
 		)
 	);
-	tempSidebar = insertMember(tempSidebar, typeInfo.fields);
-	tempSidebar = insertMember(tempSidebar, typeInfo.staticFields);
-	tempSidebar = insertMember(tempSidebar, typeInfo.properties);
-	tempSidebar = insertMember(tempSidebar, typeInfo.staticProperties);
-	tempSidebar = insertMember(tempSidebar, typeInfo.events);
-	tempSidebar = insertMember(tempSidebar, typeInfo.staticEvents);
-	tempSidebar = insertMember(tempSidebar, typeInfo.constructors);
-	tempSidebar = insertMember(tempSidebar, typeInfo.methods);
-	tempSidebar = insertMember(tempSidebar, typeInfo.staticMethods);
-	tempSidebar = insertMember(tempSidebar, typeInfo.operators);
+	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.constructors);
+	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.fields);
+	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.staticFields);
+	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.properties);
+	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.staticProperties);
+	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.events);
+	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.staticEvents);
+	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.methods);
+	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.staticMethods);
+	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.operators);
 	
 	return sidebar;
 }
@@ -180,29 +180,19 @@ function indexOfSidebarChild(children : SidebarView[], name : string) : number {
 	return -1;
 }
 
-function insertionSortChild(sidebar : SidebarView, newSidebar : SidebarView, returnChild : boolean = true) : SidebarView {
+function insertionSortChild(sidebar : SidebarView, newSidebar : SidebarView) : SidebarView {
 	for(let i = 0; i < sidebar.children.length; i++) {
 		if(sidebar.children[i].name.localeCompare(newSidebar.name) > 0) {
 			sidebar.children.splice(i, 0, newSidebar);
-			if(returnChild) {
-				return sidebar.children[i];
-			}
-			else {
-				return sidebar;
-			}
+			return sidebar.children[i];
 		}
 	}
 	
 	sidebar.children.push(newSidebar);
-	if(returnChild) {
-		return sidebar.children[sidebar.children.length - 1];
-	}
-	else {
-		return sidebar;
-	}
+	return sidebar.children[sidebar.children.length - 1];
 }
 
-function insertMember(sidebar : SidebarView, details : (FieldInfo[] | PropertyInfo[] | EventInfo[] | MethodInfo[])) : SidebarView {
+function insertMember(type : TypeInfo, sidebar : SidebarView, details : (FieldInfo[] | PropertyInfo[] | EventInfo[] | MethodInfo[])) : SidebarView {
 	// Variables
 	let name : string;
 	
@@ -222,14 +212,10 @@ function insertMember(sidebar : SidebarView, details : (FieldInfo[] | PropertyIn
 				name = `${ name }(${ property.parameterDeclaration })`;
 			}
 		}
-		insertionSortChild(
-			sidebar,
-			new SidebarView(
-				name,
-				createInternalLink(details[i].implementedType.unlocalizedName)
-			),
-			false
-		);
+		sidebar.children.push(new SidebarView(
+			name,
+			`${ createInternalLink(type.typeInfo.unlocalizedName) }#${ getIdFrom(details[i]) }`
+		));
 	}
 	
 	return sidebar;

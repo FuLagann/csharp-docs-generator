@@ -3,7 +3,10 @@ v0.9 includes;
 * Creation of sidebar content (navigation for namespaces, types, and members).
 * Rendering of sidebar content.
 * Updated names of members for sidebar view.
-* Updated sideview to include links
+* Updated sideview to include links.
+* Changed sidebar view so namespace has it's own list instead of being nested.
+* Corrected link to members as anchored.
+* Added an ending caret dot span for terminal sidebar elements.
 
 v0.8 includes:
 * Updated sharp checker types to reflect updated version.
