@@ -18,29 +18,41 @@ import prettier = require("prettier");
 // Variables
 let generatedTypeJson : TypeInfo;
 
+export function compileSidebar(args : InputArguments, sidebar : SidebarView) : string {
+	return prettier.format(ejs.render(
+		readFile(args.templateUris.navigation),
+		{
+			displaySidebar: generateSidebar,
+			uris: {
+				css: getRelativeLinks("css/", args.templateUris.localCss || [], args.templateUris.globalCss || []),
+				scripts: getRelativeLinks("js/", args.templateUris.localScripts || [], args.templateUris.globalScripts || [])
+			},
+			sidebarView: sidebar,
+		}
+	), { parser: "html", endOfLine: "crlf", htmlWhitespaceSensitivity: "ignore", proseWrap: "never" });
+}
+
 /**Compiles the base template.
  * @param args {InputArguments} - The input arguments to look into.
  * @param typePath {string} - The path to the type to generate the documentation for.
  * @returns Returns the compiled template code.*/
-export async function compileBase(args : InputArguments, typePath : string, sidebar : SidebarView) : Promise<string> {
+export async function compileBase(args : InputArguments, typePath : string) : Promise<string> {
 	// Variables
 	const filename = args.templateUris.base;
 	
 	generatedTypeJson = await generateTypeDetails(args, typePath);
-	// TODO: Generate sidebar
 	
 	return prettier.format(ejs.render(
 		readFile(filename).replace(/(?<=\S)\s+(?=<\/code>)/gm, "").trim(),
 		{
-			displaySidebar: generateSidebar,
 			createPartial: createPartial,
 			uris: {
 				css: getRelativeLinks("css/", args.templateUris.localCss || [], args.templateUris.globalCss || []),
 				scripts: getRelativeLinks("js/", args.templateUris.localScripts || [], args.templateUris.globalScripts || []),
-				type: args.templateUris.type
+				type: args.templateUris.type,
+				navigation: "--navigation.html"
 			},
 			isNamespace: false,
-			sidebarView: sidebar,
 			typePath: typePath,
 			breadcrumbs: generatedTypeJson.typeInfo.fullName.split('.')
 		}
@@ -53,25 +65,23 @@ export async function compileBase(args : InputArguments, typePath : string, side
  * @param namespace {string} - The name of the namespace.
  * @param types {string[]} - The list of types witihn the namespace.
  * @returns Returns the compiled template code.*/
-export async function compileNamespace(args : InputArguments, namespace : string, types : string[], sidebar : SidebarView) : Promise<string> {
+export async function compileNamespace(args : InputArguments, namespace : string, types : string[]) : Promise<string> {
 	// Variables
 	const filename = args.templateUris.base;
 	
-	// TODO: Generate sidebar
 	// TODO: Figure out namespaces listed in namespace webpages
 	
 	return prettier.format(ejs.render(
 		readFile(filename).replace(/(?<=\S)\s+(?=<\/code>)/gm, "").trim(),
 		{
-			displaySidebar: generateSidebar,
 			createPartial: createPartial,
 			uris: {
 				css: getRelativeLinks("css/", args.templateUris.localCss || [], args.templateUris.globalCss || []),
 				scripts: getRelativeLinks("js/", args.templateUris.localScripts || [], args.templateUris.globalScripts || []),
-				type: args.templateUris.type
+				type: args.templateUris.type,
+				navigation: "--navigation.html"
 			},
 			isNamespace: true,
-			sidebarView: sidebar,
 			namespaceName: namespace,
 			types: types,
 			typePath: namespace,
@@ -98,6 +108,8 @@ export function compileType(filename : string, typePath : string) : string {
 		methods: args.templateUris.methods
 	};
 	const members = getMembers(details, uris);
+	
+	// TODO: Build navigation one by one through this method, then compile that at the end.
 	
 	return ejs.render(
 		readFile(filename).replace(/\s+\n/gm, "\n").replace(/\t/gm, "  ").trim(),

@@ -7,7 +7,7 @@ import { SidebarView } from "./models/TemplateApi";
 import { TEMP_FOLDER, getSharpCheckerExe, getArguments } from "./index";
 import { readFile } from "./read-file";
 import { createInternalLink } from "./read-xml";
-import { compileBase, compileNamespace } from "./template";
+import { compileBase, compileNamespace, compileSidebar } from "./template";
 // External libraries
 import { exec } from "@actions/exec";
 import fs = require("fs");
@@ -25,14 +25,16 @@ export async function generateHtmlDocumentation(args : InputArguments) {
 	// Variables
 	const list : TypeList = await generateTypeList(args);
 	const sidebar : SidebarView = await createSidebar(list);
+	const sidebarHtml : string = compileSidebar(args, sidebar);
 	
 	console.log("Generating HTML Documentation...");
 	await generateCssAndScriptFiles(args);
+	fs.writeFileSync("--navigation.html",sidebarHtml);
 	for(const key in list.types) {
 		// Variables
 		const value : string[] = list.types[key] as string[];
 		const namespaceFilename = args.outputPath + key + args.outputExtension;
-		const html = await compileNamespace(args, key, value, sidebar);
+		const html = await compileNamespace(args, key, value);
 		
 		fs.writeFileSync(namespaceFilename.toLowerCase(), html);
 		console.log(`Created ${ namespaceFilename }`);
@@ -42,7 +44,7 @@ export async function generateHtmlDocumentation(args : InputArguments) {
 			const typePath = value[i].replace(/\//g, ".");
 			if(typePath.indexOf("<") != -1) { continue; }
 			const filename = args.outputPath + typePath.replace(/`/g, "-") + args.outputExtension;
-			const html = await compileBase(args, typePath, sidebar);
+			const html = await compileBase(args, typePath);
 			
 			fs.writeFileSync(filename.toLowerCase(), html);
 			console.log(`Created ${ filename }!`);

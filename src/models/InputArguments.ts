@@ -19,10 +19,10 @@ export interface TemplateUris {
 	properties : CompactFullUris;
 	events : CompactFullUris;
 	methods : CompactFullUris;
-	// TODO: Add header, footer, and nav uris.
+	// TODO: Add header and footer
 	// header : string;
 	// footer : string;
-	// navigation : string;
+	navigation : string;
 }
 
 export class InputArguments {
@@ -62,6 +62,7 @@ export class InputArguments {
 			localScripts: [],
 			namespace: "",
 			type: "",
+			navigation: "",
 			constructors: {
 				compact: "",
 				full: ""
