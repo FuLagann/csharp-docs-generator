@@ -26,10 +26,11 @@ export async function generateHtmlDocumentation(args : InputArguments) {
 	const list : TypeList = await generateTypeList(args);
 	const sidebar : SidebarView = await createSidebar(list);
 	const sidebarHtml : string = compileSidebar(args, sidebar);
+	const navFilename : string = args.outputPath + "--navigation" + args.outputExtension;
 	
 	console.log("Generating HTML Documentation...");
 	await generateCssAndScriptFiles(args);
-	fs.writeFileSync("--navigation.html",sidebarHtml);
+	fs.writeFileSync(navFilename, sidebarHtml);
 	for(const key in list.types) {
 		// Variables
 		const value : string[] = list.types[key] as string[];

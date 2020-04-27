@@ -50,7 +50,7 @@ export async function compileBase(args : InputArguments, typePath : string) : Pr
 				css: getRelativeLinks("css/", args.templateUris.localCss || [], args.templateUris.globalCss || []),
 				scripts: getRelativeLinks("js/", args.templateUris.localScripts || [], args.templateUris.globalScripts || []),
 				type: args.templateUris.type,
-				navigation: "--navigation.html"
+				navigation: "--navigation" + args.outputExtension
 			},
 			isNamespace: false,
 			typePath: typePath,
@@ -79,7 +79,7 @@ export async function compileNamespace(args : InputArguments, namespace : string
 				css: getRelativeLinks("css/", args.templateUris.localCss || [], args.templateUris.globalCss || []),
 				scripts: getRelativeLinks("js/", args.templateUris.localScripts || [], args.templateUris.globalScripts || []),
 				type: args.templateUris.type,
-				navigation: "--navigation.html"
+				navigation: "--navigation" + args.outputExtension
 			},
 			isNamespace: true,
 			namespaceName: namespace,
