@@ -1,6 +1,6 @@
 
 // Models
-import { InputArguments, TemplateUris } from "./models/InputArguments";
+import { InputArguments } from "./models/InputArguments";
 import { TypeInfo, FieldInfo, PropertyInfo, EventInfo, MethodInfo, QuickTypeInfo } from "./models/SharpChecker";
 import { TemplateApiItems, TemplateApiUris, MemberList } from "./models/TemplateApi";
 import { SidebarView } from "./models/TemplateApi";
@@ -10,7 +10,7 @@ import { generateTypeDetails } from "./generate";
 import { getArguments, getDependencies } from "./index";
 import { readFile } from "./read-file";
 import { getApiDoc, markdown } from "./read-xml";
-import { createPartial, generateSidebar, createLinkToType, createAnchorToType, capitalize, getIdFrom, getParameterType } from "./template-helpers";
+import * as Helper from "./template-helpers";
 // External libraries
 import ejs = require("ejs");
 import prettier = require("prettier");
@@ -18,11 +18,15 @@ import prettier = require("prettier");
 // Variables
 let generatedTypeJson : TypeInfo;
 
+/**Compiles the sidebar for it's own separate file.
+ * @param args {InputArguments} - The input arguments to look into for the uris.
+ * @param sidebar {SidebarView} - The sidebar view to generate.
+ * @returns Returns the html code for the sidebar view.*/
 export function compileSidebar(args : InputArguments, sidebar : SidebarView) : string {
 	return prettier.format(ejs.render(
 		readFile(args.templateUris.navigation),
 		{
-			displaySidebar: generateSidebar,
+			displaySidebar: Helper.generateSidebar,
 			uris: {
 				css: getRelativeLinks("css/", args.templateUris.localCss || [], args.templateUris.globalCss || []),
 				scripts: getRelativeLinks("js/", args.templateUris.localScripts || [], args.templateUris.globalScripts || [])
@@ -45,7 +49,7 @@ export async function compileBase(args : InputArguments, typePath : string) : Pr
 	return prettier.format(ejs.render(
 		readFile(filename).replace(/(?<=\S)\s+(?=<\/code>)/gm, "").trim(),
 		{
-			createPartial: createPartial,
+			createPartial: Helper.createPartial,
 			uris: {
 				css: getRelativeLinks("css/", args.templateUris.localCss || [], args.templateUris.globalCss || []),
 				scripts: getRelativeLinks("js/", args.templateUris.localScripts || [], args.templateUris.globalScripts || []),
@@ -74,7 +78,7 @@ export async function compileNamespace(args : InputArguments, namespace : string
 	return prettier.format(ejs.render(
 		readFile(filename).replace(/(?<=\S)\s+(?=<\/code>)/gm, "").trim(),
 		{
-			createPartial: createPartial,
+			createPartial: Helper.createPartial,
 			uris: {
 				css: getRelativeLinks("css/", args.templateUris.localCss || [], args.templateUris.globalCss || []),
 				scripts: getRelativeLinks("js/", args.templateUris.localScripts || [], args.templateUris.globalScripts || []),
@@ -119,12 +123,12 @@ export function compileType(filename : string, typePath : string) : string {
 			codeDeclaration: getMarkdownCodeDeclaration(details),
 			uris: uris,
 			members: members,
-			createPartial: createPartial,
-			capitalize: capitalize,
-			getIdFrom: getIdFrom,
-			createLinkToType: createLinkToType,
-			createAnchorToType: createAnchorToType,
-			getParameterType: getParameterType
+			createPartial: Helper.createPartial,
+			capitalize: Helper.capitalize,
+			getIdFrom: Helper.getIdFrom,
+			createLinkToType: Helper.createLinkToType,
+			createAnchorToType: Helper.createAnchorToType,
+			getParameterType: Helper.getParameterType
 		}
 	);
 }
@@ -146,11 +150,11 @@ export function compileField(filename : string, details : FieldInfo) {
 			xmlDocs: xmlApi,
 			codeDeclaration: getMarkdownCodeDeclaration(details),
 			typeInfo: generatedTypeJson.typeInfo,
-			capitalize: capitalize,
-			getIdFrom: getIdFrom,
-			createLinkToType: createLinkToType,
-			createAnchorToType: createAnchorToType,
-			getParameterType: getParameterType
+			capitalize: Helper.capitalize,
+			getIdFrom: Helper.getIdFrom,
+			createLinkToType: Helper.createLinkToType,
+			createAnchorToType: Helper.createAnchorToType,
+			getParameterType: Helper.getParameterType
 		}
 	);
 }
@@ -172,11 +176,11 @@ export function compilePropety(filename : string, details : PropertyInfo) {
 			xmlDocs: xmlApi,
 			codeDeclaration: getMarkdownCodeDeclaration(details),
 			typeInfo: generatedTypeJson.typeInfo,
-			capitalize: capitalize,
-			getIdFrom: getIdFrom,
-			createLinkToType: createLinkToType,
-			createAnchorToType: createAnchorToType,
-			getParameterType: getParameterType
+			capitalize: Helper.capitalize,
+			getIdFrom: Helper.getIdFrom,
+			createLinkToType: Helper.createLinkToType,
+			createAnchorToType: Helper.createAnchorToType,
+			getParameterType: Helper.getParameterType
 		}
 	);
 }
@@ -198,11 +202,11 @@ export function compileEvent(filename : string, details : EventInfo) {
 			xmlDocs: xmlApi,
 			codeDeclaration: getMarkdownCodeDeclaration(details),
 			typeInfo: generatedTypeJson.typeInfo,
-			capitalize: capitalize,
-			getIdFrom: getIdFrom,
-			createLinkToType: createLinkToType,
-			createAnchorToType: createAnchorToType,
-			getParameterType: getParameterType
+			capitalize: Helper.capitalize,
+			getIdFrom: Helper.getIdFrom,
+			createLinkToType: Helper.createLinkToType,
+			createAnchorToType: Helper.createAnchorToType,
+			getParameterType: Helper.getParameterType
 		}
 	);
 }
@@ -224,11 +228,11 @@ export function compileMethod(filename : string, details : MethodInfo) {
 			xmlDocs: xmlApi,
 			codeDeclaration: getMarkdownCodeDeclaration(details),
 			typeInfo: generatedTypeJson.typeInfo,
-			capitalize: capitalize,
-			getIdFrom: getIdFrom,
-			createLinkToType: createLinkToType,
-			createAnchorToType: createAnchorToType,
-			getParameterType: getParameterType
+			capitalize: Helper.capitalize,
+			getIdFrom: Helper.getIdFrom,
+			createLinkToType: Helper.createLinkToType,
+			createAnchorToType: Helper.createAnchorToType,
+			getParameterType: Helper.getParameterType
 		}
 	);
 }

@@ -7,14 +7,13 @@ import { SidebarView } from "./models/TemplateApi";
 import { TEMP_FOLDER, getSharpCheckerExe, getArguments } from "./index";
 import { readFile } from "./read-file";
 import { createInternalLink } from "./read-xml";
+import { getIdFrom } from "./template-helpers";
 import { compileBase, compileNamespace, compileSidebar } from "./template";
 // External libraries
 import { exec } from "@actions/exec";
 import fs = require("fs");
 import io = require("@actions/io");
 import path = require("path");
-import { Template } from "ejs";
-import { getIdFrom } from "./template-helpers";
 
 // Variables
 let typeList : (TypeList | null) = null;
@@ -35,7 +34,7 @@ export async function generateHtmlDocumentation(args : InputArguments) {
 		// Variables
 		const value : string[] = list.types[key] as string[];
 		const namespaceFilename = args.outputPath + key + args.outputExtension;
-		const html = await compileNamespace(args, key, value);
+		const html = (await compileNamespace(args, key, value)).replace(/(?<=>)\s+([\)\.]|<\/code>)/gm, "$1");
 		
 		fs.writeFileSync(namespaceFilename.toLowerCase(), html);
 		console.log(`Created ${ namespaceFilename }`);
@@ -45,7 +44,7 @@ export async function generateHtmlDocumentation(args : InputArguments) {
 			const typePath = value[i].replace(/\//g, ".");
 			if(typePath.indexOf("<") != -1) { continue; }
 			const filename = args.outputPath + typePath.replace(/`/g, "-") + args.outputExtension;
-			const html = await compileBase(args, typePath);
+			const html = (await compileBase(args, typePath)).replace(/(?<=>)\s+([\)\.]|<\/code>)/gm, "$1");
 			
 			fs.writeFileSync(filename.toLowerCase(), html);
 			console.log(`Created ${ filename }!`);
@@ -118,6 +117,9 @@ function getSharpCheckerArguments(args : InputArguments, isList : boolean, typeP
 	return ["-o", outputPath, typePath].concat(includePrivate).concat(args.binaries);
 }
 
+/**Creates a sidebar view from the given list of types.
+ * @param list {TypeList} - The list of types to look into.
+ * @returns Returns a sidebar view to be generated through templating.*/
 async function createSidebar(list : TypeList) : Promise<SidebarView> {
 	// Variables
 	let sidebar : SidebarView = new SidebarView("$~root", "");
@@ -138,6 +140,11 @@ async function createSidebar(list : TypeList) : Promise<SidebarView> {
 	return sidebar;
 }
 
+/**Assigns the type and namespaces to the sidebar.
+ * @param sidebar {SidebarView} - The sidebar view to insert the type into.
+ * @param namespaces {string[]} - The breadcrumb of namespaces to place into the sidebar.
+ * @param typePath {string} - The path of the type.
+ * @returns Returns the sidebar view with the inserted type.*/
 async function assignToSidebar(sidebar : SidebarView, namespaces : string[], typePath : string) : Promise<SidebarView> {
 	// Variables
 	let args : InputArguments = getArguments();
@@ -175,6 +182,10 @@ async function assignToSidebar(sidebar : SidebarView, namespaces : string[], typ
 	return sidebar;
 }
 
+/**Gets the index of the sidebar child from the given name.
+ * @param children {SidebarView[]} - The list of sidebar views to look into.
+ * @param name {string} - The name of the sidebar view too look for.
+ * @returns Returns the index of the child that was found, returns -1 if no child was found.*/
 function indexOfSidebarChild(children : SidebarView[], name : string) : number {
 	for(let i = 0; i < children.length; i++) {
 		if(children[i].name == name) { return i; }
@@ -183,6 +194,10 @@ function indexOfSidebarChild(children : SidebarView[], name : string) : number {
 	return -1;
 }
 
+/**Inserts the child through an insertion sort.
+ * @param sidebar {SidebarView} - The sidebar view to insert the child into.
+ * @param newSidebar {SidebarView} - The child to insert into the sidebar.
+ * @returns Returns the sidebar view with the inserted child.*/
 function insertionSortChild(sidebar : SidebarView, newSidebar : SidebarView) : SidebarView {
 	for(let i = 0; i < sidebar.children.length; i++) {
 		if(sidebar.children[i].name.localeCompare(newSidebar.name) > 0) {
@@ -195,6 +210,11 @@ function insertionSortChild(sidebar : SidebarView, newSidebar : SidebarView) : S
 	return sidebar.children[sidebar.children.length - 1];
 }
 
+/**Inserts the member into the sidebar in an unsorted fashion.
+ * @param type {TypeInfo} - The type used to get the link for the sidebar.
+ * @param sidebar {SidebarView} - The sidebar to insert the member.
+ * @param details {FieldInfo[] | PropertyInfo[] | EventInfo[] | MethodInfo[]} - The list of details to iterate through and generate the sidebar member content.
+ * @returns Returns the sidebar with the inserted member.*/
 function insertMember(type : TypeInfo, sidebar : SidebarView, details : (FieldInfo[] | PropertyInfo[] | EventInfo[] | MethodInfo[])) : SidebarView {
 	// Variables
 	let name : string;

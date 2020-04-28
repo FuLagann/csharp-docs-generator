@@ -13,7 +13,7 @@ export class XmlFormat {
 	
 	constructor() {
 		this.type = "";
-		this.summary = "No description.";
+		this.summary = "<p>No description.</p>";
 		this.returns = "";
 		this.remarks = "";
 		this.example = "";

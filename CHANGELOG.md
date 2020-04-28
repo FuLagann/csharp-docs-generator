@@ -7,6 +7,8 @@ v0.9 includes;
 * Changed sidebar view so namespace has it's own list instead of being nested.
 * Corrected link to members as anchored.
 * Added an ending caret dot span for terminal sidebar elements.
+* Added comment documentation to functions.
+* Cleaned up unwanted whitespacing.
 
 v0.8 includes:
 * Updated sharp checker types to reflect updated version.

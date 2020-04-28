@@ -13,7 +13,7 @@ import markdownIt = require("markdown-it");
 import prism = require("markdown-it-prism");
 
 // Variables
-export const markdown = markdownIt({ html: true }).use(prism);;
+export const markdown = markdownIt({ html: true }).use(prism);
 const TEXT_CONTENTS : string[][] = [
 	["summary", "No description"],
 	["returns", ""],
