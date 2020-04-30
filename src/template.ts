@@ -18,27 +18,6 @@ import prettier = require("prettier");
 // Variables
 let generatedTypeJson : TypeInfo;
 
-// TODO: Add a compileHeader function to compile the header.
-// TODO: Add a compileFooter function to compile the footer.
-
-/**Compiles the sidebar for it's own separate file.
- * @param args {InputArguments} - The input arguments to look into for the uris.
- * @param sidebar {SidebarView} - The sidebar view to generate.
- * @returns Returns the html code for the sidebar view.*/
-export function compileSidebar(args : InputArguments, sidebar : SidebarView) : string {
-	return prettier.format(ejs.render(
-		readFile(args.templateUris.navigation),
-		{
-			displaySidebar: Helper.generateSidebar,
-			uris: {
-				css: getRelativeLinks("css/", args.templateUris.localCss || [], args.templateUris.globalCss || []),
-				scripts: getRelativeLinks("js/", args.templateUris.localScripts || [], args.templateUris.globalScripts || [])
-			},
-			sidebarView: sidebar,
-		}
-	), { parser: "html", endOfLine: "crlf", htmlWhitespaceSensitivity: "ignore", proseWrap: "never" });
-}
-
 /**Compiles the base template.
  * @param args {InputArguments} - The input arguments to look into.
  * @param typePath {string} - The path to the type to generate the documentation for.
@@ -57,6 +36,8 @@ export async function compileBase(args : InputArguments, typePath : string) : Pr
 				css: getRelativeLinks("css/", args.templateUris.localCss || [], args.templateUris.globalCss || []),
 				scripts: getRelativeLinks("js/", args.templateUris.localScripts || [], args.templateUris.globalScripts || []),
 				type: args.templateUris.type,
+				header: args.templateUris.header,
+				footer: args.templateUris.footer,
 				navigation: "--navigation" + args.outputExtension
 			},
 			isNamespace: false,
@@ -86,6 +67,8 @@ export async function compileNamespace(args : InputArguments, namespace : string
 				css: getRelativeLinks("css/", args.templateUris.localCss || [], args.templateUris.globalCss || []),
 				scripts: getRelativeLinks("js/", args.templateUris.localScripts || [], args.templateUris.globalScripts || []),
 				type: args.templateUris.type,
+				header: args.templateUris.header,
+				footer: args.templateUris.footer,
 				navigation: "--navigation" + args.outputExtension
 			},
 			isNamespace: true,
@@ -95,6 +78,66 @@ export async function compileNamespace(args : InputArguments, namespace : string
 			breadcrumbs: namespace.split('.')
 		}
 	), { parser: "html", endOfLine: "crlf", htmlWhitespaceSensitivity: "ignore", proseWrap: "never" });
+}
+
+/**Compiles the sidebar for it's own separate file.
+ * @param args {InputArguments} - The input arguments to look into for the uris.
+ * @param sidebar {SidebarView} - The sidebar view to generate.
+ * @returns Returns the html code for the sidebar view.*/
+export function compileSidebar(args : InputArguments, sidebar : SidebarView) : string {
+	return prettier.format(ejs.render(
+		readFile(args.templateUris.navigation),
+		{
+			displaySidebar: Helper.generateSidebar,
+			uris: {
+				css: getRelativeLinks("css/", args.templateUris.localCss || [], args.templateUris.globalCss || []),
+				scripts: getRelativeLinks("js/", args.templateUris.localScripts || [], args.templateUris.globalScripts || [])
+			},
+			sidebarView: sidebar,
+		}
+	), { parser: "html", endOfLine: "crlf", htmlWhitespaceSensitivity: "ignore", proseWrap: "never" });
+}
+
+export function compileHeader(filename : string) : string {
+	// Variables
+	const args : InputArguments = getArguments();
+	
+	return ejs.render(
+		readFile(filename),
+		{
+			uris: {
+				css: getRelativeLinks("css/", args.templateUris.localCss || [], args.templateUris.globalCss || []),
+				scripts: getRelativeLinks("js/", args.templateUris.localScripts || [], args.templateUris.globalScripts || [])
+			},
+			createPartial: Helper.createPartial,
+			capitalize: Helper.capitalize,
+			getIdFrom: Helper.getIdFrom,
+			createLinkToType: Helper.createLinkToType,
+			createAnchorToType: Helper.createAnchorToType,
+			getParameterType: Helper.getParameterType
+		}
+	);
+}
+
+export function compileFooter(filename : string) : string {
+	// Variables
+	const args : InputArguments = getArguments();
+	
+	return ejs.render(
+		readFile(filename),
+		{
+			uris: {
+				css: getRelativeLinks("css/", args.templateUris.localCss || [], args.templateUris.globalCss || []),
+				scripts: getRelativeLinks("js/", args.templateUris.localScripts || [], args.templateUris.globalScripts || [])
+			},
+			createPartial: Helper.createPartial,
+			capitalize: Helper.capitalize,
+			getIdFrom: Helper.getIdFrom,
+			createLinkToType: Helper.createLinkToType,
+			createAnchorToType: Helper.createAnchorToType,
+			getParameterType: Helper.getParameterType
+		}
+	);
 }
 
 /**Compiles the type template.

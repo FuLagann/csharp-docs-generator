@@ -5,7 +5,7 @@ import { SidebarView } from "./models/TemplateApi";
 // External functionalities
 import { readFile } from "./read-file";
 import { createSystemLink, createInternalLink } from "./read-xml";
-import { compileType, compileField, compilePropety, compileEvent, compileMethod } from "./template";
+import * as Templates from "./template";
 // External libraries
 import ejs = require("ejs");
 
@@ -61,11 +61,13 @@ export function getIdFrom(details : (FieldInfo | PropertyInfo | EventInfo | Meth
  * @returns Returns the compiled template code.*/
 export function createPartial(type : string, url : string, context : any = {}) : string {
 	switch(type) {
-		case "type": return compileType(url, context as string);
-		case "field": return compileField(url, context as FieldInfo);
-		case "property": return compilePropety(url, context as PropertyInfo);
-		case "event": return compileEvent(url, context as EventInfo);
-		case "method": return compileMethod(url, context as MethodInfo);
+		case "type": return Templates.compileType(url, context as string);
+		case "field": return Templates.compileField(url, context as FieldInfo);
+		case "property": return Templates.compilePropety(url, context as PropertyInfo);
+		case "event": return Templates.compileEvent(url, context as EventInfo);
+		case "method": return Templates.compileMethod(url, context as MethodInfo);
+		case "header": return Templates.compileHeader(url);
+		case "footer": return Templates.compileFooter(url);
 	}
 	
 	return ejs.render(readFile(url), context);

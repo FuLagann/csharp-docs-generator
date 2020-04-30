@@ -47,6 +47,8 @@ async function getTemplate(templateID : string, defaultUris : TemplateUris) : Pr
 		template.base = path.join(TEMP_FOLDER, template.base);
 		template.namespace = path.join(TEMP_FOLDER, template.namespace);
 		template.type = path.join(TEMP_FOLDER, template.type);
+		template.header = path.join(TEMP_FOLDER, template.header);
+		template.footer = path.join(TEMP_FOLDER, template.footer);
 		template.navigation = path.join(TEMP_FOLDER, template.navigation);
 		template.constructors = updatePath(TEMP_FOLDER, template.constructors);
 		template.fields = updatePath(TEMP_FOLDER, template.fields);
@@ -144,6 +146,8 @@ function gatherUris(templatePath : string, template : TemplateUris, yamlUri : st
 	template.globalScripts = yamlJson.globalScripts || [];
 	template.namespace = getFilename(basePath, yamlJson.namespace, template.namespace);
 	template.type = getFilename(basePath, yamlJson.type, template.type);
+	template.header = getFilename(basePath, yamlJson.header, template.header);
+	template.footer = getFilename(basePath, yamlJson.footer, template.footer);
 	template.navigation = getFilename(basePath, yamlJson.navigation, template.navigation);
 	template.constructors = gatherCompactFullUri(basePath, template.constructors, yamlJson.constructors);
 	template.fields = gatherCompactFullUri(basePath, template.fields, yamlJson.fields);
