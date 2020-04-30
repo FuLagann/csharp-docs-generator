@@ -1,4 +1,7 @@
 
+v0.10 includes:
+* Updated getApiItems to include ParameterInfo and GenericParameterInfo details for undocumented items to appear.
+
 v0.9 includes;
 * Creation of sidebar content (navigation for namespaces, types, and members).
 * Rendering of sidebar content.
@@ -9,6 +12,7 @@ v0.9 includes;
 * Added an ending caret dot span for terminal sidebar elements.
 * Added comment documentation to functions.
 * Cleaned up unwanted whitespacing.
+* Added navigation template to template uris model.
 
 v0.8 includes:
 * Updated sharp checker types to reflect updated version.

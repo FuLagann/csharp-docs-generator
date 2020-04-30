@@ -225,7 +225,7 @@ function insertMember(type : TypeInfo, sidebar : SidebarView, details : (FieldIn
 			// Variables
 			const method = details[i] as MethodInfo;
 			
-			name = `${ name }${ method.genericParameters }(${ method.parameterDeclaration })`;
+			name = `${ name }${ method.genericDeclaration }(${ method.parameterDeclaration })`;
 		}
 		else if((details[i] as PropertyInfo).getSetDeclaration) {
 			// Variables

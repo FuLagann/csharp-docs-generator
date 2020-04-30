@@ -1,8 +1,17 @@
 import { CompactFullUris } from "./InputArguments";
+import { ParameterInfo, GenericParametersInfo, QuickTypeInfo } from "./SharpChecker";
 
 export interface NameDescription {
 	name : string;
 	description : string;
+}
+
+export interface ParameterNameDescription extends NameDescription {
+	details : (ParameterInfo | undefined);
+}
+
+export interface GenericParameterNameDescription extends NameDescription {
+	details : (GenericParametersInfo | undefined);
 }
 
 export class SidebarView {
@@ -41,12 +50,12 @@ export interface TemplateApiUris {
 
 export interface TemplateApiItems {
 	summary : string;
-	returns : ExistsValue;
+	returns : ExistsReturnsValue;
 	remarks : ExistsValue;
 	example : ExistsValue;
-	parameters : ExistsValueArray;
+	parameters : ExistsParameterValueArray;
 	exceptions : ExistsValueArray;
-	typeParameters : ExistsValueArray;
+	typeParameters : ExistsGenericParameterValueArray;
 }
 
 interface ExistsValue {
@@ -54,7 +63,23 @@ interface ExistsValue {
 	value : string;
 }
 
+interface ExistsReturnsValue {
+	exists : boolean;
+	value : string;
+	details : (QuickTypeInfo | undefined);
+}
+
 interface ExistsValueArray {
 	exists : boolean;
 	value : NameDescription[];
+}
+
+interface ExistsParameterValueArray {
+	exists : boolean;
+	value : ParameterNameDescription[];
+}
+
+interface ExistsGenericParameterValueArray {
+	exists : boolean;
+	value : GenericParameterNameDescription[];
 }
