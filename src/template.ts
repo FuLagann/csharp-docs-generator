@@ -474,42 +474,46 @@ function getParameterDetails(format : NameDescription[], details : (MethodInfo |
  * @returns Returns a true list of generic parameter details with descriptions, whether or not documented in the XML.*/
 function getGenericParameterDetails(format : NameDescription[], details : (TypeInfo | MethodInfo | any)) : GenericParameterNameDescription[] {
 	if(
-		!details ||
-		!(details as MethodInfo).genericParameters ||
-		!(details as TypeInfo).typeInfo ||
-		!(details as TypeInfo).typeInfo.genericParameters
+		details &&
+		(
+			(details as MethodInfo).genericParameters ||
+			(
+				(details as TypeInfo).typeInfo &&
+				(details as TypeInfo).typeInfo.genericParameters
+			)
+		)
 	) {
-		return [];
-	}
-	
-	// Variables
-	let typeParameters : GenericParameterNameDescription[] = [];
-	let temp : GenericParametersInfo[] = ((details as MethodInfo).genericParameters ?
-		(details as MethodInfo).genericParameters :
-		(details as TypeInfo).typeInfo.genericParameters
-	);
-	
-	for(let a = 0; a < temp.length; a++) {
 		// Variables
-		let index = -1;
-		let generic : GenericParameterNameDescription = {
-			name: temp[a].name,
-			description: "<p>No description.</p>",
-			details: temp[a]
-		};
+		let typeParameters : GenericParameterNameDescription[] = [];
+		let temp : GenericParametersInfo[] = ((details as MethodInfo).genericParameters ?
+			(details as MethodInfo).genericParameters :
+			(details as TypeInfo).typeInfo.genericParameters
+		);
 		
-		for(let b = 0; b < format.length; b++) {
-			if(temp[a].name == format[b].name) {
-				index = b;
-				break;
+		for(let a = 0; a < temp.length; a++) {
+			// Variables
+			let index = -1;
+			let generic : GenericParameterNameDescription = {
+				name: temp[a].name,
+				description: "<p>No description.</p>",
+				details: temp[a]
+			};
+			
+			for(let b = 0; b < format.length; b++) {
+				if(temp[a].name == format[b].name) {
+					index = b;
+					break;
+				}
 			}
+			
+			if(index != -1) { generic.description = format[index].description; }
+			typeParameters.push(generic);
 		}
 		
-		if(index != -1) { generic.description = format[index].description; }
-		typeParameters.push(generic);
+		return typeParameters;
 	}
 	
-	return typeParameters;
+	return format as GenericParameterNameDescription[];
 }
 
 /**Finds if the given string is non-empty and exists.
