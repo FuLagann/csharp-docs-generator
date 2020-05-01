@@ -16,20 +16,27 @@ import io = require("@actions/io");
 import path = require("path");
 
 // Variables
+let sidebarView : SidebarView = new SidebarView("$~root", "");
 let typeList : (TypeList | null) = null;
+
+/**Gets the sidebar view.
+ * @returns Returns the sidebar view.*/
+export function getSidebarView() : SidebarView { return sidebarView; }
+
+/**Sets the sidebar view.
+ * @param sidebar {SidebarView} - The new sidebar view to set.*/
+export function setSidebarView(sidebar : SidebarView) { sidebarView = sidebar; }
 
 /**Generates the hmtl documentation, with the input arguments.
  * @param args {InputArguments} - The input arguments used for html documentation.*/
 export async function generateHtmlDocumentation(args : InputArguments) {
 	// Variables
 	const list : TypeList = await generateTypeList(args);
-	const sidebar : SidebarView = await createSidebar(list);
-	const sidebarHtml : string = compileSidebar(args, sidebar);
-	const navFilename : string = args.outputPath + "--navigation" + args.outputExtension;
+	let sidebarHtml : string;
+	let navFilename : string;
 	
 	console.log("Generating HTML Documentation...");
 	await generateCssAndScriptFiles(args);
-	fs.writeFileSync(navFilename, sidebarHtml);
 	for(const key in list.types) {
 		// Variables
 		const value : string[] = list.types[key] as string[];
@@ -50,6 +57,11 @@ export async function generateHtmlDocumentation(args : InputArguments) {
 			console.log(`Created ${ filename }!`);
 		}
 	}
+	
+	
+	sidebarHtml = compileSidebar(args, sidebarView);
+	navFilename = args.outputPath + "--navigation" + args.outputExtension;
+	fs.writeFileSync(navFilename, sidebarHtml);
 	console.log("Generation completed!");
 }
 
@@ -89,6 +101,48 @@ export async function generateTypeList(args : InputArguments) : Promise<TypeList
 	return typeList;
 }
 
+/**Assigns the type and namespaces to the sidebar.
+ * @param sidebar {SidebarView} - The sidebar view to insert the type into.
+ * @param typeInfo {TypeInfo} - The type info to look into.
+ * @returns Returns the sidebar view with the inserted type.*/
+export function assignTypeToSidebr(sidebar : SidebarView, typeInfo : TypeInfo) : SidebarView {
+	// Variables
+	let args : InputArguments = getArguments();
+	let tempSidebar : SidebarView = sidebar;
+	let namespaceName : string = (typeInfo.typeInfo.namespaceName != "" ? 
+		typeInfo.typeInfo.namespaceName :
+		"(No Namespace)"
+	);
+	let index : number = indexOfSidebarChild(tempSidebar.children, namespaceName);
+	
+	if(index == -1) {
+		tempSidebar = insertionSortChild(tempSidebar, new SidebarView(namespaceName, ""));// namespaceName));
+	}
+	else {
+		tempSidebar = tempSidebar.children[index];
+	}
+	
+	tempSidebar = insertionSortChild(
+		tempSidebar,
+		new SidebarView(
+			typeInfo.typeInfo.name,
+			createInternalLink(typeInfo.typeInfo.unlocalizedName)
+		)
+	);
+	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.constructors);
+	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.fields);
+	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.staticFields);
+	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.properties);
+	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.staticProperties);
+	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.events);
+	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.staticEvents);
+	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.methods);
+	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.staticMethods);
+	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.operators);
+	
+	return sidebar;
+}
+
 /**Generates the supplementary files (used for creating css and js files from templates).
  * @param basePath {string} - The base path to build to.
  * @param files {string[]} - The files to copy from and into the base path.*/
@@ -115,71 +169,6 @@ function getSharpCheckerArguments(args : InputArguments, isList : boolean, typeP
 	const outputPath : string = TEMP_FOLDER + (isList ? "list.json" : "type.json");
 	
 	return ["-o", outputPath, typePath].concat(includePrivate).concat(args.binaries);
-}
-
-/**Creates a sidebar view from the given list of types.
- * @param list {TypeList} - The list of types to look into.
- * @returns Returns a sidebar view to be generated through templating.*/
-async function createSidebar(list : TypeList) : Promise<SidebarView> {
-	// Variables
-	let sidebar : SidebarView = new SidebarView("$~root", "");
-	
-	for(const key in list.types) {
-		// Variables
-		const values : string[] = list.types[key];
-		
-		for(let a = 0; a < values.length; a++) {
-			// Variables
-			const value = values[a];
-			const matches = value.match(/\w+(?=\.)/g);
-			
-			sidebar = await assignToSidebar(sidebar, matches || [], value);
-		}
-	}
-	
-	return sidebar;
-}
-
-/**Assigns the type and namespaces to the sidebar.
- * @param sidebar {SidebarView} - The sidebar view to insert the type into.
- * @param namespaces {string[]} - The breadcrumb of namespaces to place into the sidebar.
- * @param typePath {string} - The path of the type.
- * @returns Returns the sidebar view with the inserted type.*/
-async function assignToSidebar(sidebar : SidebarView, namespaces : string[], typePath : string) : Promise<SidebarView> {
-	// Variables
-	let args : InputArguments = getArguments();
-	let tempSidebar : SidebarView = sidebar;
-	let namespaceName : string = namespaces.join('.');
-	let index : number = indexOfSidebarChild(tempSidebar.children, namespaceName);
-	let typeInfo : TypeInfo;
-	
-	if(index == -1) {
-		tempSidebar = insertionSortChild(tempSidebar, new SidebarView(namespaceName, ""));// namespaceName));
-	}
-	else {
-		tempSidebar = tempSidebar.children[index];
-	}
-	
-	typeInfo = await generateTypeDetails(args, typePath);
-	tempSidebar = insertionSortChild(
-		tempSidebar,
-		new SidebarView(
-			typeInfo.typeInfo.name,
-			createInternalLink(typeInfo.typeInfo.unlocalizedName)
-		)
-	);
-	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.constructors);
-	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.fields);
-	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.staticFields);
-	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.properties);
-	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.staticProperties);
-	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.events);
-	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.staticEvents);
-	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.methods);
-	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.staticMethods);
-	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.operators);
-	
-	return sidebar;
 }
 
 /**Gets the index of the sidebar child from the given name.

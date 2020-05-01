@@ -3,6 +3,8 @@ v0.10 includes:
 * Updated getApiItems to include ParameterInfo and GenericParameterInfo details for undocumented items to appear.
 * Updated bad logic if checking for getGenericParameterDetails and reworked that to work.
 * Added header and footer template compilation.
+* Added comment documentation to header and footer.
+* Sidebar generation comes after doc generation, with type compilations added to sidebar content.
 
 v0.9 includes;
 * Creation of sidebar content (navigation for namespaces, types, and members).

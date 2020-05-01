@@ -6,7 +6,7 @@ import { TemplateApiItems, TemplateApiUris, MemberList, NameDescription, Paramet
 import { SidebarView } from "./models/TemplateApi";
 import { XmlFormat } from "./models/XmlFormat";
 // External functionality
-import { generateTypeDetails } from "./generate";
+import { assignTypeToSidebr, generateTypeDetails, getSidebarView, setSidebarView } from "./generate";
 import { getArguments, getDependencies } from "./index";
 import { readFile } from "./read-file";
 import { getApiDoc, markdown } from "./read-xml";
@@ -98,6 +98,9 @@ export function compileSidebar(args : InputArguments, sidebar : SidebarView) : s
 	), { parser: "html", endOfLine: "crlf", htmlWhitespaceSensitivity: "ignore", proseWrap: "never" });
 }
 
+/**Compiles the header template.
+ * @param filename {string} - The filename to get the header template code from.
+ * @returns Returns the compiled header template code.*/
 export function compileHeader(filename : string) : string {
 	// Variables
 	const args : InputArguments = getArguments();
@@ -119,6 +122,9 @@ export function compileHeader(filename : string) : string {
 	);
 }
 
+/**Compiles the footer template.
+ * @param filename {string} - The filename to get the footer template code from.
+ * @returns Returns the compiled footer template code.*/
 export function compileFooter(filename : string) : string {
 	// Variables
 	const args : InputArguments = getArguments();
@@ -159,7 +165,7 @@ export function compileType(filename : string, typePath : string) : string {
 	};
 	const members = getMembers(details, uris);
 	
-	// TODO: Build navigation one by one through this method, then compile that at the end.
+	setSidebarView(assignTypeToSidebr(getSidebarView(), details));
 	
 	return ejs.render(
 		readFile(filename).replace(/\s+\n/gm, "\n").replace(/\t/gm, "  ").trim(),
