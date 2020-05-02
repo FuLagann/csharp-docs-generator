@@ -2,7 +2,7 @@
 // Models
 import { InputArguments } from "./models/InputArguments";
 import { TypeInfo, FieldInfo, PropertyInfo, EventInfo, MethodInfo, QuickTypeInfo, ParameterInfo, GenericParametersInfo } from "./models/SharpChecker";
-import { TemplateApiItems, TemplateApiUris, MemberList, NameDescription, ParameterNameDescription, GenericParameterNameDescription } from "./models/TemplateApi";
+import { NamespaceDetails, TemplateApiItems, TemplateApiUris, MemberList, NameDescription, ParameterNameDescription, GenericParameterNameDescription } from "./models/TemplateApi";
 import { SidebarView } from "./models/TemplateApi";
 import { XmlFormat } from "./models/XmlFormat";
 // External functionality
@@ -17,6 +17,13 @@ import prettier = require("prettier");
 
 // Variables
 let generatedTypeJson : TypeInfo;
+let namespaceTypes : { [key : string] : NamespaceDetails[] } = {};
+
+/**Gets the map of namespaces tied to the list of types.
+ * @returns Returns the map of namespaces that are tied to the list of types.*/
+export function getNamespaceTypes() : { [key : string] : NamespaceDetails[] } {
+	return namespaceTypes;
+}
 
 /**Compiles the base template.
  * @param args {InputArguments} - The input arguments to look into.
@@ -53,11 +60,9 @@ export async function compileBase(args : InputArguments, typePath : string) : Pr
  * @param namespace {string} - The name of the namespace.
  * @param types {string[]} - The list of types witihn the namespace.
  * @returns Returns the compiled template code.*/
-export async function compileNamespace(args : InputArguments, namespace : string, types : string[]) : Promise<string> {
+export async function compileNamespace(args : InputArguments, namespace : string, types : NamespaceDetails[]) : Promise<string> {
 	// Variables
 	const filename = args.templateUris.base;
-	
-	// TODO: Figure out namespaces listed in namespace webpages
 	
 	return prettier.format(ejs.render(
 		readFile(filename).replace(/(?<=\S)\s+(?=<\/code>)/gm, "").trim(),
@@ -166,6 +171,13 @@ export function compileType(filename : string, typePath : string) : string {
 	const members = getMembers(details, uris);
 	
 	setSidebarView(assignTypeToSidebr(getSidebarView(), details));
+	if(!namespaceTypes[details.typeInfo.namespaceName]) {
+		namespaceTypes[details.typeInfo.namespaceName] = [];
+	}
+	namespaceTypes[details.typeInfo.namespaceName].push({
+		typeInfo: details.typeInfo,
+		typeDocs: xmlApi
+	});
 	
 	return ejs.render(
 		readFile(filename).replace(/\s+\n/gm, "\n").replace(/\t/gm, "  ").trim(),

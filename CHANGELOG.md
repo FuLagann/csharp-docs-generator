@@ -1,4 +1,9 @@
 
+
+v0.11 includes:
+* Added template content for namespace pages.
+* Rearranged console logs for what's being generated.
+
 v0.10 includes:
 * Updated getApiItems to include ParameterInfo and GenericParameterInfo details for undocumented items to appear.
 * Updated bad logic if checking for getGenericParameterDetails and reworked that to work.

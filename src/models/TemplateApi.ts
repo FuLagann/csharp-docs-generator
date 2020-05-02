@@ -1,6 +1,11 @@
 import { CompactFullUris } from "./InputArguments";
 import { ParameterInfo, GenericParametersInfo, QuickTypeInfo } from "./SharpChecker";
 
+export interface NamespaceDetails {
+	typeInfo : QuickTypeInfo;
+	typeDocs : TemplateApiItems;
+}
+
 export interface NameDescription {
 	name : string;
 	description : string;

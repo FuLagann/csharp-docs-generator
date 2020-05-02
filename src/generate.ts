@@ -1,14 +1,14 @@
 
 // Models
 import { InputArguments } from "./models/InputArguments";
-import { TypeInfo, TypeList, FieldInfo, PropertyInfo, EventInfo, MethodInfo } from "./models/SharpChecker";
-import { SidebarView } from "./models/TemplateApi";
+import { TypeInfo, TypeList, FieldInfo, PropertyInfo, EventInfo, MethodInfo, QuickTypeInfo } from "./models/SharpChecker";
+import { SidebarView, NamespaceDetails } from "./models/TemplateApi";
 // External functionalities
 import { TEMP_FOLDER, getSharpCheckerExe, getArguments } from "./index";
 import { readFile } from "./read-file";
 import { createInternalLink } from "./read-xml";
 import { getIdFrom } from "./template-helpers";
-import { compileBase, compileNamespace, compileSidebar } from "./template";
+import { compileBase, compileNamespace, compileSidebar, getNamespaceTypes } from "./template";
 // External libraries
 import { exec } from "@actions/exec";
 import fs = require("fs");
@@ -32,44 +32,55 @@ export function setSidebarView(sidebar : SidebarView) { sidebarView = sidebar; }
 export async function generateHtmlDocumentation(args : InputArguments) {
 	// Variables
 	const list : TypeList = await generateTypeList(args);
-	let sidebarHtml : string;
-	let navFilename : string;
+	let filename : string;
+	let html : string;
+	let namespaceTypes : { [key : string] : NamespaceDetails[] };
 	
-	console.log("Generating HTML Documentation...");
+	console.log("Generating local CSS and JS files");
 	await generateCssAndScriptFiles(args);
+	console.log("Generating type HTML documentation...");
 	for(const key in list.types) {
 		// Variables
 		const value : string[] = list.types[key] as string[];
-		const namespaceFilename = args.outputPath + key + args.outputExtension;
-		const html = (await compileNamespace(args, key, value)).replace(/(?<=>)\s+([\)\.]|<\/code>)/gm, "$1");
-		
-		fs.writeFileSync(namespaceFilename.toLowerCase(), html);
-		console.log(`Created ${ namespaceFilename }`);
 		
 		for(let i = 0; i < value.length; i++) {
 			// Variables
 			const typePath = value[i].replace(/\//g, ".");
+			
 			if(typePath.indexOf("<") != -1) { continue; }
-			const filename = args.outputPath + typePath.replace(/`/g, "-") + args.outputExtension;
-			const html = (await compileBase(args, typePath)).replace(/(?<=>)\s+([\)\.]|<\/code>)/gm, "$1");
+			
+			filename = args.outputPath + typePath.replace(/`/g, "-") + args.outputExtension;
+			html = (await compileBase(args, typePath)).replace(/(?<=>)\s+([\)\.]|<\/code>)/gm, "$1");
 			
 			fs.writeFileSync(filename.toLowerCase(), html);
 			console.log(`Created ${ filename }!`);
 		}
 	}
 	
+	console.log("Generating namespace HTML documentation...");
+	namespaceTypes = getNamespaceTypes();
+	for(const key in namespaceTypes) {
+		// Variables
+		const value : NamespaceDetails[] = namespaceTypes[key] as NamespaceDetails[];
+		
+		filename = args.outputPath + key + args.outputExtension;
+		html = (await compileNamespace(args, key, value)).replace(/(?<=>)\s+([\)\.]|<\/code>)/gm, "$1");
+		
+		fs.writeFileSync(filename.toLowerCase(), html);
+		console.log(`Created ${ filename }`);
+	}
 	
-	sidebarHtml = compileSidebar(args, sidebarView);
-	navFilename = args.outputPath + "--navigation" + args.outputExtension;
-	fs.writeFileSync(navFilename, sidebarHtml);
-	console.log("Generation completed!");
+	html = compileSidebar(args, sidebarView);
+	filename = args.outputPath + "--navigation" + args.outputExtension;
+	fs.writeFileSync(filename, html);
+	console.log("HTML generation complete!");
 }
 
 /**Generates the local css and javascript files used by the template.
  * @param args {InputArguments} - The input arguments to look into the local css and javascript.*/
 export async function generateCssAndScriptFiles(args : InputArguments) {
-	await generateSupplementaryFile(path.join(args.outputPath, "css/"), args.templateUris.localCss || []);
-	await generateSupplementaryFile(path.join(args.outputPath, "js/"), args.templateUris.localScripts || []);
+	await generateSupplementaryFile(path.join(args.outputPath, "/css/"), args.templateUris.localCss || []);
+	await generateSupplementaryFile(path.join(args.outputPath, "/js/"), args.templateUris.localScripts || []);
 }
 
 /**Checks the type and returns it's info.
@@ -148,10 +159,13 @@ export function assignTypeToSidebr(sidebar : SidebarView, typeInfo : TypeInfo) :
  * @param files {string[]} - The files to copy from and into the base path.*/
 async function generateSupplementaryFile(basePath : string, files : string[]) {
 	try { await io.mkdirP(basePath); } catch {}
+	// TODO: Fix this, it breaks when copying the files over.
 	for(let i = 0; i < files.length; i++) {
+		console.log(files[i]);
+		console.log(files[i].replace(/.*[\\\/]([\w\.]+)$/gm, "$1"));
 		// Variables
-		const filename = files[i].replace(/.*[\\\/]([\w\.]+)$/gm, "$1");
 		const content = readFile(files[i]);
+		const filename = files[i].replace(/.*[\\\/]([\w\.]+)$/gm, "$1");
 		
 		console.log(path.join(basePath, filename));
 		fs.writeFileSync(path.join(basePath, filename), content);
