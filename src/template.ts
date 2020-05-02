@@ -331,7 +331,7 @@ function getRelativeLinks(localBasePath : string, locals : string[], globals : s
 	
 	for(let i = 0; i < locals.length; i++) {
 		if(!locals[i] || locals[i] == "") { continue; }
-		list.push(locals[i].replace(/.*[\\\/]([\w\.]+)$/gm, `${ localBasePath }$1`));
+		list.push(locals[i].replace(/.*[\\\/]([^\\\/]+)$/gm, `${ localBasePath }$1`));
 	}
 	
 	return list;
