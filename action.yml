@@ -27,6 +27,9 @@ inputs:
   template-uris-json:
     description: "The json to get all the template files used to generate the documentation."
     required: false
+  project-details-json:
+    description: "The json file that contains the details of the project, used for header and footer information."
+    required: false
   output-path:
     description: "The output path of the generated documents."
     required: false

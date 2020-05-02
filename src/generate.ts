@@ -18,6 +18,7 @@ import path = require("path");
 // Variables
 let sidebarView : SidebarView = new SidebarView("$~root", "");
 let typeList : (TypeList | null) = null;
+let projectDetails : any;
 
 /**Gets the sidebar view.
  * @returns Returns the sidebar view.*/
@@ -27,6 +28,8 @@ export function getSidebarView() : SidebarView { return sidebarView; }
  * @param sidebar {SidebarView} - The new sidebar view to set.*/
 export function setSidebarView(sidebar : SidebarView) { sidebarView = sidebar; }
 
+export function getProjectDetails() : any { return projectDetails; }
+
 /**Generates the hmtl documentation, with the input arguments.
  * @param args {InputArguments} - The input arguments used for html documentation.*/
 export async function generateHtmlDocumentation(args : InputArguments) {
@@ -35,6 +38,10 @@ export async function generateHtmlDocumentation(args : InputArguments) {
 	let filename : string;
 	let html : string;
 	let namespaceTypes : { [key : string] : NamespaceDetails[] };
+	
+	if(args.projectDetails != "") {
+		projectDetails = JSON.parse(readFile(args.projectDetails));
+	}
 	
 	console.log("Generating local CSS and JS files");
 	await generateCssAndScriptFiles(args);
@@ -159,15 +166,12 @@ export function assignTypeToSidebr(sidebar : SidebarView, typeInfo : TypeInfo) :
  * @param files {string[]} - The files to copy from and into the base path.*/
 async function generateSupplementaryFile(basePath : string, files : string[]) {
 	try { await io.mkdirP(basePath); } catch {}
-	// TODO: Fix this, it breaks when copying the files over.
+	
 	for(let i = 0; i < files.length; i++) {
-		console.log(files[i]);
-		console.log(files[i].replace(/.*[\\\/]([^\\\/]+)$/gm, "$1"));
 		// Variables
 		const content = readFile(files[i]);
 		const filename = files[i].replace(/.*[\\\/]([^\\\/]+)$/gm, "$1");
 		
-		console.log(path.join(basePath, filename));
 		fs.writeFileSync(path.join(basePath, filename), content);
 	}
 }

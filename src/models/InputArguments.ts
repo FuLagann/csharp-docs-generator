@@ -36,6 +36,7 @@ export class InputArguments {
 	outputPath : string;
 	outputExtension : string;
 	includePrivate : boolean;
+	projectDetails : string;
 	user : {
 		name : string,
 		email : string
@@ -51,6 +52,7 @@ export class InputArguments {
 		this.outputExtension = ".html";
 		this.includePrivate = false;
 		this.template = "default";
+		this.projectDetails = "";
 		this.templateUris = {
 			base: "",
 			includeDefaultCss: true,

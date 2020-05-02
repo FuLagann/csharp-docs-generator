@@ -6,7 +6,7 @@ import { NamespaceDetails, TemplateApiItems, TemplateApiUris, MemberList, NameDe
 import { SidebarView } from "./models/TemplateApi";
 import { XmlFormat } from "./models/XmlFormat";
 // External functionality
-import { assignTypeToSidebr, generateTypeDetails, getSidebarView, setSidebarView } from "./generate";
+import { assignTypeToSidebr, generateTypeDetails, getSidebarView, setSidebarView, getProjectDetails } from "./generate";
 import { getArguments, getDependencies } from "./index";
 import { readFile } from "./read-file";
 import { getApiDoc, markdown } from "./read-xml";
@@ -49,12 +49,12 @@ export async function compileBase(args : InputArguments, typePath : string) : Pr
 			},
 			isNamespace: false,
 			typePath: typePath,
-			breadcrumbs: generatedTypeJson.typeInfo.fullName.split('.')
+			breadcrumbs: generatedTypeJson.typeInfo.fullName.split('.'),
+			project: getProjectDetails()
 		}
 	), { parser: "html", endOfLine: "crlf", htmlWhitespaceSensitivity: "ignore", proseWrap: "never" });
 }
 
-// TODO: Complete this
 /**Compiles the namespace template, listing all the types.
  * @param args {InputArguments} - The input arguments to look into.
  * @param namespace {string} - The name of the namespace.
@@ -80,7 +80,8 @@ export async function compileNamespace(args : InputArguments, namespace : string
 			namespaceName: namespace,
 			types: types,
 			typePath: namespace,
-			breadcrumbs: namespace.split('.')
+			breadcrumbs: namespace.split('.'),
+			project: getProjectDetails()
 		}
 	), { parser: "html", endOfLine: "crlf", htmlWhitespaceSensitivity: "ignore", proseWrap: "never" });
 }
@@ -99,6 +100,7 @@ export function compileSidebar(args : InputArguments, sidebar : SidebarView) : s
 				scripts: getRelativeLinks("js/", args.templateUris.localScripts || [], args.templateUris.globalScripts || [])
 			},
 			sidebarView: sidebar,
+			project: getProjectDetails()
 		}
 	), { parser: "html", endOfLine: "crlf", htmlWhitespaceSensitivity: "ignore", proseWrap: "never" });
 }
@@ -122,7 +124,8 @@ export function compileHeader(filename : string) : string {
 			getIdFrom: Helper.getIdFrom,
 			createLinkToType: Helper.createLinkToType,
 			createAnchorToType: Helper.createAnchorToType,
-			getParameterType: Helper.getParameterType
+			getParameterType: Helper.getParameterType,
+			project: getProjectDetails()
 		}
 	);
 }
@@ -146,7 +149,8 @@ export function compileFooter(filename : string) : string {
 			getIdFrom: Helper.getIdFrom,
 			createLinkToType: Helper.createLinkToType,
 			createAnchorToType: Helper.createAnchorToType,
-			getParameterType: Helper.getParameterType
+			getParameterType: Helper.getParameterType,
+			project: getProjectDetails()
 		}
 	);
 }
@@ -192,7 +196,8 @@ export function compileType(filename : string, typePath : string) : string {
 			getIdFrom: Helper.getIdFrom,
 			createLinkToType: Helper.createLinkToType,
 			createAnchorToType: Helper.createAnchorToType,
-			getParameterType: Helper.getParameterType
+			getParameterType: Helper.getParameterType,
+			project: getProjectDetails()
 		}
 	);
 }
@@ -218,7 +223,8 @@ export function compileField(filename : string, details : FieldInfo) {
 			getIdFrom: Helper.getIdFrom,
 			createLinkToType: Helper.createLinkToType,
 			createAnchorToType: Helper.createAnchorToType,
-			getParameterType: Helper.getParameterType
+			getParameterType: Helper.getParameterType,
+			project: getProjectDetails()
 		}
 	);
 }
@@ -244,7 +250,8 @@ export function compilePropety(filename : string, details : PropertyInfo) {
 			getIdFrom: Helper.getIdFrom,
 			createLinkToType: Helper.createLinkToType,
 			createAnchorToType: Helper.createAnchorToType,
-			getParameterType: Helper.getParameterType
+			getParameterType: Helper.getParameterType,
+			project: getProjectDetails()
 		}
 	);
 }
@@ -270,7 +277,8 @@ export function compileEvent(filename : string, details : EventInfo) {
 			getIdFrom: Helper.getIdFrom,
 			createLinkToType: Helper.createLinkToType,
 			createAnchorToType: Helper.createAnchorToType,
-			getParameterType: Helper.getParameterType
+			getParameterType: Helper.getParameterType,
+			project: getProjectDetails()
 		}
 	);
 }
@@ -296,7 +304,8 @@ export function compileMethod(filename : string, details : MethodInfo) {
 			getIdFrom: Helper.getIdFrom,
 			createLinkToType: Helper.createLinkToType,
 			createAnchorToType: Helper.createAnchorToType,
-			getParameterType: Helper.getParameterType
+			getParameterType: Helper.getParameterType,
+			project: getProjectDetails()
 		}
 	);
 }

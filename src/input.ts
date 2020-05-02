@@ -26,6 +26,7 @@ export async function getInputs() : Promise<InputArguments> {
 	results.includePrivate = Boolean(core.getInput("include-private") == "true" || results.includePrivate);
 	results.template = core.getInput("template") || results.template;
 	results.templatePath = core.getInput("template-uris-json") || results.templatePath;
+	results.projectDetails = core.getInput("project-details") || results.projectDetails;
 	console.log("Gathering template data.");
 	results.templateUris = await getTemplate(results.template, results.templateUris);
 	results.templateUris = gatherUris(results.templatePath, results.templateUris, results.templatePath);
