@@ -162,10 +162,10 @@ async function generateSupplementaryFile(basePath : string, files : string[]) {
 	// TODO: Fix this, it breaks when copying the files over.
 	for(let i = 0; i < files.length; i++) {
 		console.log(files[i]);
-		console.log(files[i].replace(/.*[\\\/]([\w\.]+)$/gm, "$1"));
+		console.log(files[i].replace(/.*[\\\/]([^\\\/]+)$/gm, "$1"));
 		// Variables
 		const content = readFile(files[i]);
-		const filename = files[i].replace(/.*[\\\/]([\w\.]+)$/gm, "$1");
+		const filename = files[i].replace(/.*[\\\/]([^\\\/]+)$/gm, "$1");
 		
 		console.log(path.join(basePath, filename));
 		fs.writeFileSync(path.join(basePath, filename), content);

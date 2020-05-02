@@ -3,6 +3,7 @@
 v0.11 includes:
 * Added template content for namespace pages.
 * Rearranged console logs for what's being generated.
+* Fixed regex for getting filenames when copying over CSS and JS files.
 
 v0.10 includes:
 * Updated getApiItems to include ParameterInfo and GenericParameterInfo details for undocumented items to appear.
