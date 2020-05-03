@@ -197,6 +197,7 @@ export function compileType(filename : string, typePath : string) : string {
 			createLinkToType: Helper.createLinkToType,
 			createAnchorToType: Helper.createAnchorToType,
 			getParameterType: Helper.getParameterType,
+			isGenericType: Helper.isGenericType,
 			project: getProjectDetails()
 		}
 	);
@@ -224,6 +225,7 @@ export function compileField(filename : string, details : FieldInfo) {
 			createLinkToType: Helper.createLinkToType,
 			createAnchorToType: Helper.createAnchorToType,
 			getParameterType: Helper.getParameterType,
+			isGenericType: Helper.isGenericType,
 			project: getProjectDetails()
 		}
 	);
@@ -251,6 +253,7 @@ export function compilePropety(filename : string, details : PropertyInfo) {
 			createLinkToType: Helper.createLinkToType,
 			createAnchorToType: Helper.createAnchorToType,
 			getParameterType: Helper.getParameterType,
+			isGenericType: Helper.isGenericType,
 			project: getProjectDetails()
 		}
 	);
@@ -278,6 +281,7 @@ export function compileEvent(filename : string, details : EventInfo) {
 			createLinkToType: Helper.createLinkToType,
 			createAnchorToType: Helper.createAnchorToType,
 			getParameterType: Helper.getParameterType,
+			isGenericType: Helper.isGenericType,
 			project: getProjectDetails()
 		}
 	);
@@ -305,6 +309,7 @@ export function compileMethod(filename : string, details : MethodInfo) {
 			createLinkToType: Helper.createLinkToType,
 			createAnchorToType: Helper.createAnchorToType,
 			getParameterType: Helper.getParameterType,
+			isGenericType: Helper.isGenericType,
 			project: getProjectDetails()
 		}
 	);

@@ -5,6 +5,7 @@ v0.11 includes:
 * Rearranged console logs for what's being generated.
 * Fixed regex for getting filenames when copying over CSS and JS files.
 * Added basic project details json for templates to use that will be used for headers and footers mainly.
+* Added isGenericType function to templates.
 
 v0.10 includes:
 * Updated getApiItems to include ParameterInfo and GenericParameterInfo details for undocumented items to appear.

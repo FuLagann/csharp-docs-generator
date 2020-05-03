@@ -1,7 +1,7 @@
 
 // Models
 import { FieldInfo, PropertyInfo, EventInfo, MethodInfo, QuickTypeInfo, ParameterInfo } from "./models/SharpChecker";
-import { SidebarView } from "./models/TemplateApi";
+import { SidebarView, TemplateApiItems, ParameterNameDescription } from "./models/TemplateApi";
 // External functionalities
 import { readFile } from "./read-file";
 import { createSystemLink, createInternalLink } from "./read-xml";
@@ -154,4 +154,26 @@ export function generateSidebar(
 	}
 	
 	return results.join("");
+}
+
+/**Finds if the given parameter's type is a generic type.
+ * @param parameter {ParameterNameDescription} - The parameter to look into.
+ * @param xmlDocs {TemplateApiItems} - The api docs to look into.
+ * @returns Returns true if the parameter's type is generic.*/
+export function isGenericType(parameter : ParameterNameDescription, xmlDocs : TemplateApiItems) : boolean {
+	if(!xmlDocs.typeParameters.exists) { return false; }
+	
+	// Variables
+	let paramTypeName = parameter.details?.typeInfo.unlocalizedName;
+	
+	for(let i = 0; i < xmlDocs.typeParameters.value.length; i++) {
+		// Variables
+		const value = xmlDocs.typeParameters.value[i];
+		
+		if(paramTypeName == value.details?.unlocalizedName) {
+			return true;
+		}
+	}
+	
+	return false;
 }
