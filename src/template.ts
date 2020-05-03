@@ -486,7 +486,10 @@ function getApiItems(format : (XmlFormat | undefined), details : (TypeInfo | Met
 			value: format.example
 		},
 		parameters: {
-			exists: doesArrayItemExist(format.parameters || (details as (MethodInfo | PropertyInfo)).parameters),
+			exists: (
+				doesArrayItemExist(format.parameters) ||
+				doesArrayItemExist((details as (MethodInfo | PropertyInfo)).parameters)
+			),
 			value: getParameterDetails(format.parameters, details)
 		},
 		exceptions: {
@@ -494,12 +497,12 @@ function getApiItems(format : (XmlFormat | undefined), details : (TypeInfo | Met
 			value: format.exceptions
 		},
 		typeParameters: {
-			exists: doesArrayItemExist(
-				format.typeParameters ||
-				(details as MethodInfo).genericParameters ||
-				((details as TypeInfo).typeInfo ?
+			exists: (
+				doesArrayItemExist(format.typeParameters) ||
+				doesArrayItemExist((details as MethodInfo).genericParameters) ||
+				doesArrayItemExist((details as TypeInfo).typeInfo ?
 					(details as TypeInfo).typeInfo.genericParameters :
-					undefined
+					[]
 				)
 			),
 			value: getGenericParameterDetails(format.typeParameters, details)
@@ -513,7 +516,9 @@ function getApiItems(format : (XmlFormat | undefined), details : (TypeInfo | Met
  * @param details {MethodInfo | PropertyInfo | any} - The details to look into.
  * @returns Returns a true list of parameter details with descriptions, whether or not documented in the XML.*/
 function getParameterDetails(format : NameDescription[], details : (MethodInfo | PropertyInfo | any)) : ParameterNameDescription[] {
-	if(!details || !(details as (MethodInfo | PropertyInfo)).parameters) { return []; }
+	if(!details || !(details as (MethodInfo | PropertyInfo)).parameters) {
+		return format as ParameterNameDescription[];
+	}
 	
 	// Variables
 	let parameters : ParameterNameDescription[] = [];
