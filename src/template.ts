@@ -341,12 +341,14 @@ function getMembers(details : TypeInfo, uris : TemplateApiUris) : MemberList[] {
  * @returns Returns the links of both locals and globals relative to the individual webpage.*/
 function getRelativeLinks(localBasePath : string, locals : string[], globals : string[]) : string[] {
 	// Variables
-	let list : string[] = globals ? globals.slice() : [];
+	let list : string[] = [];
 	
 	for(let i = 0; i < locals.length; i++) {
 		if(!locals[i] || locals[i] == "") { continue; }
 		list.push(locals[i].replace(/.*[\\\/]([^\\\/]+)$/gm, `${ localBasePath }$1`));
 	}
+	
+	list = list.concat(globals);
 	
 	return list;
 }

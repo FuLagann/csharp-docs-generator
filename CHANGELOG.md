@@ -7,6 +7,7 @@ v0.11 includes:
 * Added basic project details json for templates to use that will be used for headers and footers mainly.
 * Added isGenericType function to templates.
 * Corrected logic in getApiItems.
+* Moved global css/js files to be after local css/js files.
 
 v0.10 includes:
 * Updated getApiItems to include ParameterInfo and GenericParameterInfo details for undocumented items to appear.
