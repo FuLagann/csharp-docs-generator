@@ -8,6 +8,7 @@ v0.11 includes:
 * Added isGenericType function to templates.
 * Corrected logic in getApiItems.
 * Moved global css/js files to be after local css/js files.
+* Updated createAnchorToType to include a parameter to assign it a class.
 
 v0.10 includes:
 * Updated getApiItems to include ParameterInfo and GenericParameterInfo details for undocumented items to appear.

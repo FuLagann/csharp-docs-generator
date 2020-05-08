@@ -86,11 +86,12 @@ export function createLinkToType(typePath : string) : string {
 /**Creates an anchor tag to the type (includes using the type name).
  * @param typeInfo {QuickTypeInfo} - The quick look into the type to look into.
  * @returns Returns an anchor tag to the type with a link.*/
-export function createAnchorToType(typeInfo : QuickTypeInfo) : string {
+export function createAnchorToType(typeInfo : QuickTypeInfo, classes : string = "") : string {
 	// Variables
 	const link = createLinkToType(typeInfo.unlocalizedName);
+	const classNames = classes != "" ? ` class="${ classes }"` : "";
 	
-	return `<a href="${ link }">${ typeInfo.name.replace('<', "&lt;").replace('>', "&gt;") }</a>`;
+	return `<a href="${ link }"${ classNames }>${ typeInfo.name.replace('<', "&lt;").replace('>', "&gt;") }</a>`;
 }
 
 /**Gets the parameter type from the given name.
