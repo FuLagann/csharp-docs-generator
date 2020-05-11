@@ -1,4 +1,7 @@
 
+v0.12 includes:
+* Updated QuickTypeInfo to reflect Sharp Checker.
+* Updated createAnchorToType to not create hyperlinks for generic types.
 
 v0.11 includes:
 * Added template content for namespace pages.

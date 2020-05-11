@@ -20,6 +20,8 @@ export interface QuickTypeInfo {
 	namespaceName : string;
 	/**The list of generic parameters that the type contains.*/
 	genericParameters : GenericParametersInfo[];
+	/**Set to true if the type is a generic type.*/
+	isGenericType : boolean;
 }
 
 /**All the information relevant to types.*/

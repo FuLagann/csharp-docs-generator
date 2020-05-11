@@ -85,8 +85,20 @@ export function createLinkToType(typePath : string) : string {
 
 /**Creates an anchor tag to the type (includes using the type name).
  * @param typeInfo {QuickTypeInfo} - The quick look into the type to look into.
+ * @param options {any} - Extra options to apply to the returning anchor type.
+ * The following options are used:
+ * * classes (string) - The list of classes to apply to the returning tag, seperated by spaces.
+ * * useFullName (boolean) - Set to true if the content of the anchor will use the full name instead
+ * of just the shortened name.
  * @returns Returns an anchor tag to the type with a link.*/
 export function createAnchorToType(typeInfo : QuickTypeInfo, options : any = {}) : string {
+	if(typeInfo.isGenericType) {
+		if(options.classes) {
+			return `<span class="${ options.classes }>${ typeInfo.name }</span>`
+		}
+		return typeInfo.name;
+	}
+	
 	// Variables
 	const link = createLinkToType(typeInfo.unlocalizedName);
 	const classNames = options.classes ? ` class="${ options.classes }"` : "";
@@ -112,7 +124,8 @@ export function getParameterType(parameters : ParameterInfo[], name : string) : 
 		fullName: "",
 		namespaceName: "",
 		genericParameters: [],
-		nonInstancedFullName: ""
+		nonInstancedFullName: "",
+		isGenericType: false
 	};
 }
 
