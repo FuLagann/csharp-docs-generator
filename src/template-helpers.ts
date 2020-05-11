@@ -94,7 +94,7 @@ export function createLinkToType(typePath : string) : string {
 export function createAnchorToType(typeInfo : QuickTypeInfo, options : any = {}) : string {
 	if(typeInfo.isGenericType) {
 		if(options.classes) {
-			return `<span class="${ options.classes }>${ typeInfo.name }</span>`
+			return `<span class="${ options.classes }">${ typeInfo.name }</span>`
 		}
 		return typeInfo.name;
 	}
