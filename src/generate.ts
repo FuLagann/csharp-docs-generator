@@ -171,57 +171,58 @@ export function assignTypeToSidebr(sidebar : SidebarView, typeInfo : TypeInfo) :
  * @param sidebar {SidebarView} - The sidebar view to look into to create the search js file.*/
 function saveSearchJs(filename : string, sidebar : SidebarView) {
 	// Variables
+	const args : InputArguments = getArguments();
 	let searchJson : {
-		[key : string] : {
+		namespaces: {
+			name : string;
 			link : string;
 			types : {
-				[key : string] : {
+				name : string;
+				link : string;
+				members : {
+					name : string;
 					link : string;
-					members : {
-						link : string;
-						name : string;
-					}[];
-				}
-			}
-		}
-	} = {};
+				}[];
+			}[];
+		}[];
+	} = {
+		namespaces: []
+	};
 	let content : string;
 	
 	for(let a = 0; a < sidebar.children.length; a++) {
 		// Variables
 		const namespace = sidebar.children[a];
+		const namespaceIndex = searchJson.namespaces.length;
 		
-		if(!searchJson[namespace.name]) {
-			searchJson[namespace.name] = {
-				link: namespace.link,
-				types: {}
-			};
-		}
+		searchJson.namespaces.push({
+			name: namespace.name,
+			link: namespace.link || namespace.name.toLowerCase() + args.outputExtension,
+			types: []
+		});
 		
 		for(let b = 0; b < namespace.children.length; b++) {
 			// Variables
 			const type = namespace.children[b];
+			const typeIndex = searchJson.namespaces[namespaceIndex].types.length;
 			
-			if(!searchJson[namespace.name].types[type.name]) {
-				searchJson[namespace.name].types[type.name] = {
-					link: type.link,
-					members: []
-				};
-			}
+			searchJson.namespaces[namespaceIndex].types.push({
+				name: type.name,
+				link: type.link,
+				members: []
+			});
 			
 			for(let c = 0; c < type.children.length; c++) {
-				searchJson[namespace.name].types[type.name].members.push({
-					link: type.children[c].link,
-					name: type.children[c].name
+				searchJson.namespaces[namespaceIndex].types[typeIndex].members.push({
+					name: type.children[c].name,
+					link: type.children[c].link
 				});
 			}
 		}
 	}
 	
 	content = `
-
 let searchJson = ${ JSON.stringify(searchJson, undefined, 1) };
-
 `;
 	fs.writeFileSync(filename, content);
 }
