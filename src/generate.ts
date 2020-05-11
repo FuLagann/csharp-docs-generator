@@ -38,13 +38,15 @@ export async function generateHtmlDocumentation(args : InputArguments) {
 	let filename : string;
 	let html : string;
 	let namespaceTypes : { [key : string] : NamespaceDetails[] };
+	let searchJs : string = path.join(TEMP_FOLDER, "js/search-types-members.js");
 	
 	if(args.projectDetails != "") {
 		projectDetails = JSON.parse(readFile(args.projectDetails));
 	}
 	
-	console.log("Generating local CSS and JS files");
-	await generateCssAndScriptFiles(args);
+	try { io.mkdirP(path.join(TEMP_FOLDER, "js/")); } catch {}
+	args.templateUris.localScripts.push(searchJs);
+	
 	console.log("Generating type HTML documentation...");
 	for(const key in list.types) {
 		// Variables
@@ -64,6 +66,9 @@ export async function generateHtmlDocumentation(args : InputArguments) {
 		}
 	}
 	
+	saveSearchJs(searchJs, sidebarView);
+	console.log("Generating local CSS and JS files");
+	await generateCssAndScriptFiles(args);
 	console.log("Generating namespace HTML documentation...");
 	namespaceTypes = getNamespaceTypes();
 	for(const key in namespaceTypes) {
@@ -159,6 +164,66 @@ export function assignTypeToSidebr(sidebar : SidebarView, typeInfo : TypeInfo) :
 	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.operators);
 	
 	return sidebar;
+}
+
+/**Saves the search javascript file to be copied for the templates.
+ * @param filename {string} - The filename to save the search json to.
+ * @param sidebar {SidebarView} - The sidebar view to look into to create the search js file.*/
+function saveSearchJs(filename : string, sidebar : SidebarView) {
+	// Variables
+	let searchJson : {
+		[key : string] : {
+			link : string;
+			types : {
+				[key : string] : {
+					link : string;
+					members : {
+						link : string;
+						name : string;
+					}[];
+				}
+			}
+		}
+	} = {};
+	let content : string;
+	
+	for(let a = 0; a < sidebar.children.length; a++) {
+		// Variables
+		const namespace = sidebar.children[a];
+		
+		if(!searchJson[namespace.name]) {
+			searchJson[namespace.name] = {
+				link: namespace.link,
+				types: {}
+			};
+		}
+		
+		for(let b = 0; b < namespace.children.length; b++) {
+			// Variables
+			const type = namespace.children[b];
+			
+			if(!searchJson[namespace.name].types[type.name]) {
+				searchJson[namespace.name].types[type.name] = {
+					link: type.link,
+					members: []
+				};
+			}
+			
+			for(let c = 0; c < type.children.length; c++) {
+				searchJson[namespace.name].types[type.name].members.push({
+					link: type.children[c].link,
+					name: type.children[c].name
+				});
+			}
+		}
+	}
+	
+	content = `
+
+let searchJson = ${ JSON.stringify(searchJson, undefined, 1) };
+
+`;
+	fs.writeFileSync(filename, content);
 }
 
 /**Generates the supplementary files (used for creating css and js files from templates).
