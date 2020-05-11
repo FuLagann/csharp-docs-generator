@@ -4,6 +4,7 @@ import { InputArguments } from "./models/InputArguments";
 import { TypeInfo, TypeList, FieldInfo, PropertyInfo, EventInfo, MethodInfo, QuickTypeInfo } from "./models/SharpChecker";
 import { SidebarView, NamespaceDetails } from "./models/TemplateApi";
 // External functionalities
+import { saveSearchJs } from "./generate-search-js";
 import { TEMP_FOLDER, getSharpCheckerExe, getArguments } from "./index";
 import { readFile } from "./read-file";
 import { createInternalLink } from "./read-xml";
@@ -164,65 +165,6 @@ export function assignTypeToSidebr(sidebar : SidebarView, typeInfo : TypeInfo) :
 	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.operators);
 	
 	return sidebar;
-}
-
-/**Saves the search javascript file to be copied for the templates.
- * @param filename {string} - The filename to save the search json to.
- * @param sidebar {SidebarView} - The sidebar view to look into to create the search js file.*/
-function saveSearchJs(filename : string, sidebar : SidebarView) {
-	// Variables
-	const args : InputArguments = getArguments();
-	let searchJson : {
-		[key : string] : {
-			link : string;
-			types : {
-				[key : string] : {
-					link : string;
-					members : {
-						link : string;
-						name : string;
-					}[];
-				}
-			}
-		}
-	} = {};
-	let content : string;
-	
-	for(let a = 0; a < sidebar.children.length; a++) {
-		// Variables
-		const namespace = sidebar.children[a];
-		
-		if(!searchJson[namespace.name]) {
-			searchJson[namespace.name] = {
-				link: namespace.link || namespace.name.toLowerCase() + args.outputExtension,
-				types: {}
-			};
-		}
-		
-		for(let b = 0; b < namespace.children.length; b++) {
-			// Variables
-			const type = namespace.children[b];
-			
-			if(!searchJson[namespace.name].types[type.name]) {
-				searchJson[namespace.name].types[type.name] = {
-					link: type.link,
-					members: []
-				};
-			}
-			
-			for(let c = 0; c < type.children.length; c++) {
-				searchJson[namespace.name].types[type.name].members.push({
-					link: type.children[c].link,
-					name: type.children[c].name
-				});
-			}
-		}
-	}
-	
-	content = `
-let searchJson = ${ JSON.stringify(searchJson, undefined, 1) };
-`;
-	fs.writeFileSync(filename, content);
 }
 
 /**Generates the supplementary files (used for creating css and js files from templates).

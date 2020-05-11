@@ -3,6 +3,7 @@ v0.12 includes:
 * Updated QuickTypeInfo to reflect Sharp Checker.
 * Updated createAnchorToType to not create hyperlinks for generic types.
 * Created an alpha version of a search.js file to easily search through the API.
+* Created usable version of a search.js file to easily search through the API.
 
 v0.11 includes:
 * Added template content for namespace pages.
