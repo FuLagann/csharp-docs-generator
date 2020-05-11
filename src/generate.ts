@@ -173,49 +173,47 @@ function saveSearchJs(filename : string, sidebar : SidebarView) {
 	// Variables
 	const args : InputArguments = getArguments();
 	let searchJson : {
-		namespaces: {
-			name : string;
+		[key : string] : {
 			link : string;
 			types : {
-				name : string;
-				link : string;
-				members : {
-					name : string;
+				[key : string] : {
 					link : string;
-				}[];
-			}[];
-		}[];
-	} = {
-		namespaces: []
-	};
+					members : {
+						link : string;
+						name : string;
+					}[];
+				}
+			}
+		}
+	} = {};
 	let content : string;
 	
 	for(let a = 0; a < sidebar.children.length; a++) {
 		// Variables
 		const namespace = sidebar.children[a];
-		const namespaceIndex = searchJson.namespaces.length;
 		
-		searchJson.namespaces.push({
-			name: namespace.name,
-			link: namespace.link || namespace.name.toLowerCase() + args.outputExtension,
-			types: []
-		});
+		if(!searchJson[namespace.name]) {
+			searchJson[namespace.name] = {
+				link: namespace.link || namespace.name.toLowerCase() + args.outputExtension,
+				types: {}
+			};
+		}
 		
 		for(let b = 0; b < namespace.children.length; b++) {
 			// Variables
 			const type = namespace.children[b];
-			const typeIndex = searchJson.namespaces[namespaceIndex].types.length;
 			
-			searchJson.namespaces[namespaceIndex].types.push({
-				name: type.name,
-				link: type.link,
-				members: []
-			});
+			if(!searchJson[namespace.name].types[type.name]) {
+				searchJson[namespace.name].types[type.name] = {
+					link: type.link,
+					members: []
+				};
+			}
 			
 			for(let c = 0; c < type.children.length; c++) {
-				searchJson.namespaces[namespaceIndex].types[typeIndex].members.push({
-					name: type.children[c].name,
-					link: type.children[c].link
+				searchJson[namespace.name].types[type.name].members.push({
+					link: type.children[c].link,
+					name: type.children[c].name
 				});
 			}
 		}
