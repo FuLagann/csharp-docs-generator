@@ -104,12 +104,18 @@ const SearchHelper = (function() {
 	let outputWindowFocusClass = "active";
 	/**@type {number} - The search interval.*/
 	let searchInterval = 10;
+    /**@type {number} - The starting search interval to make the user wait before the search starts.*/
+    let startingSearchInterval = 250;
 	/**@type {string} - The item that tells the user that it's searching.*/
 	let searchingItem = '<li style="text-align: center;">Searching...</li>';
 	/**Sets the search interval. Make this number to small and you run the risk of freezing up the web app,
 	 * this is to make the search pseudo-asynchronous.
 	 * @param value {number} - The interval to wait between each iteration of the search.*/
 	let setSearchInterval = function(value) { searchInterval = value; }
+    /**Sets the starting search interval. Make this number to small and you run the risk of freezing up the web app,
+	 * this is to make the search pseudo-asynchronous. This also stops the search bar from looking "glitchy".
+     * @param value {number} - The interval to wait before beginning the search.*/
+    let setStartingSearchInterval = function(value) { startingSearchInterval = value; }
 	/**Sets the output window's focus class to a specific class.
 	 * @param value {string} - The new class that will make the output window appear.*/
 	let setOutputWindowFocusClass = function(value) { outputWindowFocusClass = value; };
@@ -143,16 +149,19 @@ const SearchHelper = (function() {
 	   if(timeout) {
 		   window.clearTimeout(timeout);
 	   }
-	   val = value.toLowerCase();
-	   outputList = document.getElementById(listId);
 	   outputWindow = document.getElementById(windowId);
+       if(value == "") {
+	        outputWindow.classList.remove(outputWindowFocusClass);
+           return;
+       }
+	   val = value.toLowerCase().trim();
+	   outputList = document.getElementById(listId);
 	   outputList.innerHTML = searchingItem;
 	   outputWindow.classList.add(outputWindowFocusClass);
 	   namespaceIndex = (currNamespace && currType ? -1 : 0);
-	   console.log(namespaceIndex);
 	   typeIndex = 0;
 	   memberIndex = 0;
-	   timeout = setTimeout(search, searchInterval);
+	   timeout = setTimeout(search, startingSearchInterval);
 	};
 	/**Removes the searching item telling the user they are searching.
 	 * @return Returns true if the searching item was the only item and was promptly removed.*/
@@ -217,7 +226,7 @@ const SearchHelper = (function() {
 			const namespace = searchJson[currNamespace];
 			const type = namespace.types[currType];
 			const member = type.members[memberIndex];
-			
+            
 			if(member.name.toLowerCase().indexOf(val) != -1) {
 				removeSearchingItem();
 				outputList.innerHTML += formatOutputListItem(
@@ -266,9 +275,10 @@ const SearchHelper = (function() {
 			const namespace = searchJson[namespaceList[namespaceIndex]];
 			const type = namespace.types[typeList[typeIndex]];
 			const member = type.members[memberIndex];
+            let name = namespaceList[namespaceIndex] + "." + typeList[typeIndex] + "." + member.name;
 			
 			if(!isCurrentType()) {
-				if(member.name.toLowerCase().indexOf(val) != -1) {
+				if(name.toLowerCase().indexOf(val) != -1) {
 					removeSearchingItem();
 					outputList.innerHTML += formatOutputListItem(
 						val,
@@ -285,16 +295,18 @@ const SearchHelper = (function() {
 			if(memberIndex >= type.members.length) {
 				memberIndex = 0;
 				
-				if(!isCurrentType() && typeList[typeIndex].toLowerCase().indexOf(val) != -1) {
-					removeSearchingItem();
-					outputList.innerHTML += formatOutputListItem(
-						val,
-						type.link,
-						namespaceList[namespaceIndex],
-						typeList[typeIndex],
-						undefined,
-						markResult
-					);
+				if(!isCurrentType()) {
+					if(typeList[typeIndex].toLowerCase().indexOf(val) != -1) {
+						removeSearchingItem();
+						outputList.innerHTML += formatOutputListItem(
+							val,
+							member.link,
+							namespaceList[namespaceIndex],
+							typeList[typeIndex],
+							undefined,
+							markResult
+						);
+					}
 				}
 				
 				typeIndex++;
@@ -302,16 +314,18 @@ const SearchHelper = (function() {
 			if(typeIndex >= typeList.length) {
 				typeIndex = 0;
 				
-				if(!isCurrentType() && namespaceList[namespaceIndex].toLowerCase().indexOf(val) != -1) {
-					removeSearchingItem();
-					outputList.innerHTML += formatOutputListItem(
-						val,
-						namespace.link,
-						namespaceList[namespaceIndex],
-						undefined,
-						undefined,
-						markResult
-					);
+				if(!isCurrentType()) {
+					if(namespaceList[namespaceIndex].toLowerCase().indexOf(val) != -1) {
+						removeSearchingItem();
+						outputList.innerHTML += formatOutputListItem(
+							val,
+							member.link,
+							namespaceList[namespaceIndex],
+							undefined,
+							undefined,
+							markResult
+						);
+					}
 				}
 				
 				namespaceIndex++;
@@ -321,7 +335,7 @@ const SearchHelper = (function() {
 			}
 			else {
 				if(removeSearchingItem()) {
-					outputList.innerHTML = '<li style="text-align: center;>No results found!</li>';
+					outputList.innerHTML = '<li style="text-align: center;">No results found!</li>';
 				}
 			}
 		}
@@ -332,7 +346,8 @@ const SearchHelper = (function() {
 		search: startSearch,
 		setFormatOutputListItem: setFormatOutputListItem,
 		setOutputWindowFocusClass: setOutputWindowFocusClass,
-		setSearchInterval: setSearchInterval
+		setSearchInterval: setSearchInterval,
+        setStartingSearchInterval: setStartingSearchInterval
 	};
 })();
 `;

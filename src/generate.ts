@@ -140,7 +140,13 @@ export function assignTypeToSidebr(sidebar : SidebarView, typeInfo : TypeInfo) :
 	let index : number = indexOfSidebarChild(tempSidebar.children, namespaceName);
 	
 	if(index == -1) {
-		tempSidebar = insertionSortChild(tempSidebar, new SidebarView(namespaceName, ""));// namespaceName));
+		tempSidebar = insertionSortChild(
+			tempSidebar,
+			new SidebarView(
+				namespaceName,
+				namespaceName.toLowerCase() + args.outputExtension
+			)
+		);
 	}
 	else {
 		tempSidebar = tempSidebar.children[index];

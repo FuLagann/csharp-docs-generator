@@ -4,6 +4,7 @@ v0.12 includes:
 * Updated createAnchorToType to not create hyperlinks for generic types.
 * Created an alpha version of a search.js file to easily search through the API.
 * Created usable version of a search.js file to easily search through the API.
+* Updated search.js functionanlity for more customization and smoother interface.
 
 v0.11 includes:
 * Added template content for namespace pages.
