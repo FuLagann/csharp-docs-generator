@@ -138,7 +138,7 @@ const SearchHelper = (function() {
 	 * @param type {string} - The type to search for.*/
 	const setCurrent = function(namespace, type) {
 		currNamespace = namespace;
-		currType = type;
+		currType = type.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 	};
 	/**Marks the result with a bolded mark of what the query string was.
 	 * @param input {string} - The input string to mark.
@@ -181,7 +181,7 @@ const SearchHelper = (function() {
 	 * @param value {string} - The input value from the user.*/
 	const getValuesAndFilter = function(value) {
 		// Variables
-		const temp = value.toLowerCase().trim().split(' ');
+		const temp = value.toLowerCase().trim().replace(/</g, "&lt;").replace(/>/g, "&gt;").split(' ');
 		let index = -1;
 		
 		vals = [];
@@ -408,7 +408,7 @@ const SearchHelper = (function() {
 							outputList.innerHTML += formatOutputListItem(
 								vals,
 								filter.regex,
-								member.link,
+								namespace.link,
 								name,
 								markResult
 							);
@@ -424,7 +424,7 @@ const SearchHelper = (function() {
 						outputList.innerHTML += formatOutputListItem(
 							vals,
 							filter.regex,
-							member.link,
+							type.link,
 							name,
 							markResult
 						);

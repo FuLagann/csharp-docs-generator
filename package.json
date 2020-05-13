@@ -1,6 +1,6 @@
 {
   "name": "csharp-docs-generator",
-  "version": "0.12.11",
+  "version": "0.12.12",
   "description": "A GitHub action that generates html documentation for C# projects.",
   "main": "lib/index.js",
   "scripts": {
