@@ -17,7 +17,7 @@ import io = require("@actions/io");
 import path = require("path");
 
 // Variables
-let sidebarView : SidebarView = new SidebarView("$~root", "");
+let sidebarView : SidebarView = new SidebarView("$~root", "", "");
 let typeList : (TypeList | null) = null;
 let projectDetails : any;
 
@@ -144,7 +144,8 @@ export function assignTypeToSidebr(sidebar : SidebarView, typeInfo : TypeInfo) :
 			tempSidebar,
 			new SidebarView(
 				namespaceName,
-				namespaceName.toLowerCase() + args.outputExtension
+				namespaceName.toLowerCase() + args.outputExtension,
+				"namespace"
 			)
 		);
 	}
@@ -156,19 +157,20 @@ export function assignTypeToSidebr(sidebar : SidebarView, typeInfo : TypeInfo) :
 		tempSidebar,
 		new SidebarView(
 			typeInfo.typeInfo.name,
-			createInternalLink(typeInfo.typeInfo.unlocalizedName)
+			createInternalLink(typeInfo.typeInfo.unlocalizedName),
+			(typeInfo.isStatic ? "static," : "") + "type"
 		)
 	);
-	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.constructors);
-	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.fields);
-	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.staticFields);
-	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.properties);
-	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.staticProperties);
-	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.events);
-	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.staticEvents);
-	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.methods);
-	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.staticMethods);
-	tempSidebar = insertMember(typeInfo, tempSidebar, typeInfo.operators);
+	tempSidebar = insertMember("member,constructor", typeInfo, tempSidebar, typeInfo.constructors);
+	tempSidebar = insertMember("member,field", typeInfo, tempSidebar, typeInfo.fields);
+	tempSidebar = insertMember("member,static,field", typeInfo, tempSidebar, typeInfo.staticFields);
+	tempSidebar = insertMember("member,property", typeInfo, tempSidebar, typeInfo.properties);
+	tempSidebar = insertMember("member,static,property", typeInfo, tempSidebar, typeInfo.staticProperties);
+	tempSidebar = insertMember("member,event", typeInfo, tempSidebar, typeInfo.events);
+	tempSidebar = insertMember("member,static,event", typeInfo, tempSidebar, typeInfo.staticEvents);
+	tempSidebar = insertMember("member,method", typeInfo, tempSidebar, typeInfo.methods);
+	tempSidebar = insertMember("member,static,method", typeInfo, tempSidebar, typeInfo.staticMethods);
+	tempSidebar = insertMember("member,operator", typeInfo, tempSidebar, typeInfo.operators);
 	
 	return sidebar;
 }
@@ -234,7 +236,7 @@ function insertionSortChild(sidebar : SidebarView, newSidebar : SidebarView) : S
  * @param sidebar {SidebarView} - The sidebar to insert the member.
  * @param details {FieldInfo[] | PropertyInfo[] | EventInfo[] | MethodInfo[]} - The list of details to iterate through and generate the sidebar member content.
  * @returns Returns the sidebar with the inserted member.*/
-function insertMember(type : TypeInfo, sidebar : SidebarView, details : (FieldInfo[] | PropertyInfo[] | EventInfo[] | MethodInfo[])) : SidebarView {
+function insertMember(typeId : string, type : TypeInfo, sidebar : SidebarView, details : (FieldInfo[] | PropertyInfo[] | EventInfo[] | MethodInfo[])) : SidebarView {
 	// Variables
 	let name : string;
 	
@@ -256,7 +258,8 @@ function insertMember(type : TypeInfo, sidebar : SidebarView, details : (FieldIn
 		}
 		sidebar.children.push(new SidebarView(
 			name,
-			`${ createInternalLink(type.typeInfo.unlocalizedName) }#${ getIdFrom(details[i]) }`
+			`${ createInternalLink(type.typeInfo.unlocalizedName) }#${ getIdFrom(details[i]) }`,
+			typeId
 		));
 	}
 	

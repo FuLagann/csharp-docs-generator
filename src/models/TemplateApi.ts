@@ -21,12 +21,14 @@ export interface GenericParameterNameDescription extends NameDescription {
 
 export class SidebarView {
 	name : string;
+	tag : string;
 	link : string;
 	children : SidebarView[];
 	
-	constructor(name : string, link : string) {
+	constructor(name : string, link : string, tag : string) {
 		this.name = name;
 		this.link = link;
+		this.tag = tag;
 		this.children = [];
 	}
 }

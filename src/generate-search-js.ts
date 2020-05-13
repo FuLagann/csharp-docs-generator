@@ -16,11 +16,14 @@ export function saveSearchJs(filename : string, sidebar : SidebarView) {
 	let searchJson : {
 		[key : string] : {
 			link : string;
+			tags : string[];
 			types : {
 				[key : string] : {
 					link : string;
+					tags : string[];
 					members : {
 						link : string;
+						tags : string[];
 						name : string;
 					}[];
 				}
@@ -37,6 +40,7 @@ export function saveSearchJs(filename : string, sidebar : SidebarView) {
 		if(!searchJson[namespaceName]) {
 			searchJson[namespaceName] = {
 				link: namespace.link || namespace.name.toLowerCase() + args.outputExtension,
+				tags: namespace.tag.split(','),
 				types: {}
 			};
 		}
@@ -49,6 +53,7 @@ export function saveSearchJs(filename : string, sidebar : SidebarView) {
 			if(!searchJson[namespaceName].types[typeName]) {
 				searchJson[namespaceName].types[typeName] = {
 					link: type.link,
+					tags: type.tag.split(','),
 					members: []
 				};
 			}
@@ -56,6 +61,7 @@ export function saveSearchJs(filename : string, sidebar : SidebarView) {
 			for(let c = 0; c < type.children.length; c++) {
 				searchJson[namespaceName].types[typeName].members.push({
 					link: type.children[c].link,
+					tags: type.children[c].tag.split(','),
 					name: type.children[c].name.replace(/</g, "&lt;").replace(/>/g, "&gt;")
 				});
 			}
@@ -69,11 +75,14 @@ const SearchHelper = (function() {
 	/** @type {{
 			[key : string] : {
 				link : string;
+				tags : string[];
 				types : {
 					[key : string] : {
 						link : string;
+						tags : string[];
 						members : {
 							link : string;
+							tags : string[];
 							name : string;
 						}[];
 					}

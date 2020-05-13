@@ -38,7 +38,6 @@ export async function compileBase(args : InputArguments, typePath : string) : Pr
 	return prettier.format(ejs.render(
 		readFile(filename).replace(/(?<=\S)\s+(?=<\/code>)/gm, "").trim(),
 		{
-			createPartial: Helper.createPartial,
 			uris: {
 				css: getRelativeLinks("css/", args.templateUris.localCss || [], args.templateUris.globalCss || []),
 				scripts: getRelativeLinks("js/", args.templateUris.localScripts || [], args.templateUris.globalScripts || []),
@@ -50,6 +49,13 @@ export async function compileBase(args : InputArguments, typePath : string) : Pr
 			isNamespace: false,
 			typePath: typePath,
 			breadcrumbs: generatedTypeJson.typeInfo.fullName.split('.'),
+			createPartial: Helper.createPartial,
+			capitalize: Helper.capitalize,
+			getIdFrom: Helper.getIdFrom,
+			createLinkToType: Helper.createLinkToType,
+			createAnchorToType: Helper.createAnchorToType,
+			getParameterType: Helper.getParameterType,
+			isGenericType: Helper.isGenericType,
 			project: getProjectDetails()
 		}
 	), { parser: "html", endOfLine: "crlf", htmlWhitespaceSensitivity: "ignore", proseWrap: "never" });
@@ -67,7 +73,6 @@ export async function compileNamespace(args : InputArguments, namespace : string
 	return prettier.format(ejs.render(
 		readFile(filename).replace(/(?<=\S)\s+(?=<\/code>)/gm, "").trim(),
 		{
-			createPartial: Helper.createPartial,
 			uris: {
 				css: getRelativeLinks("css/", args.templateUris.localCss || [], args.templateUris.globalCss || []),
 				scripts: getRelativeLinks("js/", args.templateUris.localScripts || [], args.templateUris.globalScripts || []),
@@ -81,6 +86,13 @@ export async function compileNamespace(args : InputArguments, namespace : string
 			types: types,
 			typePath: namespace,
 			breadcrumbs: namespace.split('.'),
+			createPartial: Helper.createPartial,
+			capitalize: Helper.capitalize,
+			getIdFrom: Helper.getIdFrom,
+			createLinkToType: Helper.createLinkToType,
+			createAnchorToType: Helper.createAnchorToType,
+			getParameterType: Helper.getParameterType,
+			isGenericType: Helper.isGenericType,
 			project: getProjectDetails()
 		}
 	), { parser: "html", endOfLine: "crlf", htmlWhitespaceSensitivity: "ignore", proseWrap: "never" });
@@ -100,6 +112,13 @@ export function compileSidebar(args : InputArguments, sidebar : SidebarView) : s
 				scripts: getRelativeLinks("js/", args.templateUris.localScripts || [], args.templateUris.globalScripts || [])
 			},
 			sidebarView: sidebar,
+			createPartial: Helper.createPartial,
+			capitalize: Helper.capitalize,
+			getIdFrom: Helper.getIdFrom,
+			createLinkToType: Helper.createLinkToType,
+			createAnchorToType: Helper.createAnchorToType,
+			getParameterType: Helper.getParameterType,
+			isGenericType: Helper.isGenericType,
 			project: getProjectDetails()
 		}
 	), { parser: "html", endOfLine: "crlf", htmlWhitespaceSensitivity: "ignore", proseWrap: "never" });

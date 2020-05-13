@@ -17,6 +17,7 @@ v0.12 includes:
   * The searching will be delayed before actually searching so that the user doesn't see a "glitchy" looking search results window.
   * Search results get highlighted by the words that were queried, including regex results.
 * Added help tooltip for search bar about filters.
+* Added tags to the searchJson to affect filters such as only and exclude.
 
 v0.11 includes:
 * Added template content for namespace pages.
