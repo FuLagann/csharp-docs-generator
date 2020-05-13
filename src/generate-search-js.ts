@@ -32,9 +32,10 @@ export function saveSearchJs(filename : string, sidebar : SidebarView) {
 	for(let a = 0; a < sidebar.children.length; a++) {
 		// Variables
 		const namespace = sidebar.children[a];
+		const namespaceName = namespace.name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 		
-		if(!searchJson[namespace.name]) {
-			searchJson[namespace.name] = {
+		if(!searchJson[namespaceName]) {
+			searchJson[namespaceName] = {
 				link: namespace.link || namespace.name.toLowerCase() + args.outputExtension,
 				types: {}
 			};
@@ -43,18 +44,19 @@ export function saveSearchJs(filename : string, sidebar : SidebarView) {
 		for(let b = 0; b < namespace.children.length; b++) {
 			// Variables
 			const type = namespace.children[b];
+			const typeName = type.name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 			
-			if(!searchJson[namespace.name].types[type.name]) {
-				searchJson[namespace.name].types[type.name] = {
+			if(!searchJson[namespaceName].types[typeName]) {
+				searchJson[namespaceName].types[typeName] = {
 					link: type.link,
 					members: []
 				};
 			}
 			
 			for(let c = 0; c < type.children.length; c++) {
-				searchJson[namespace.name].types[type.name].members.push({
+				searchJson[namespaceName].types[typeName].members.push({
 					link: type.children[c].link,
-					name: type.children[c].name
+					name: type.children[c].name.replace(/</g, "&lt;").replace(/>/g, "&gt;")
 				});
 			}
 		}
@@ -477,15 +479,15 @@ const SearchHelper = (function() {
 		// Variables
 		let searchBar = document.getElementById(searchBarId);
 		if(!searchBar) { return; }
-		let help = "You can filter the search by using the following qualifiers:\n\n";
+		let help = "You can filter the search by using the following qualifiers:\\n\\n";
 		
-		help += "  only - Use namespace, type, or member to show search for only that kind of object.\n";
-		help += "      Example: only:type\n\n";
-		help += "  exclude - Use namespace, type, and member to exclude those objects from search, seperated by a comma ( , ).\n";
-		help += "      Example: exclude:namespace,type\n\n";
-		help += "  regex - Use this to search by using a regular expression string.\n";
-		help += "      Example: regex:mat\\d+\n\n";
-		help += "  acceptAll - Set this to true to search for every object.\n";
+		help += "  only - Use namespace, type, or member to show search for only that kind of object.\\n";
+		help += "      Example: only:type\\n\\n";
+		help += "  exclude - Use namespace, type, and member to exclude those objects from search, seperated by a comma ( , ).\\n";
+		help += "      Example: exclude:namespace,type\\n\\n";
+		help += "  regex - Use this to search by using a regular expression string.\\n";
+		help += "      Example: regex:mat\\\\d+\\n\\n";
+		help += "  acceptAll - Set this to true to search for every object.\\n";
 		help += "      Example: accepAll:true";
 		
 		searchBar.title = help;
