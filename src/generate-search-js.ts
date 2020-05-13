@@ -158,22 +158,22 @@ const SearchHelper = (function() {
 	 * @param windowId {string} - The id of the window to toggle on and off when searching.
 	 * @param listId {string} - The id of the list to output the search results.*/
 	const startSearch = function(value, windowId, listId) {
-	   if(timeout) {
-		   window.clearTimeout(timeout);
-	   }
-	   outputWindow = document.getElementById(windowId);
-	   if(value == "") {
+		if(timeout) {
+			window.clearTimeout(timeout);
+		}
+		outputWindow = document.getElementById(windowId);
+		if(value == "") {
 			outputWindow.classList.remove(outputWindowFocusClass);
-		   return;
-	   }
-	   getValuesAndFilter(value);
-	   outputList = document.getElementById(listId);
-	   outputList.innerHTML = searchingItem;
-	   outputWindow.classList.add(outputWindowFocusClass);
-	   namespaceIndex = (currNamespace && currType ? -1 : 0);
-	   typeIndex = 0;
-	   memberIndex = 0;
-	   timeout = setTimeout(search, startingSearchInterval);
+			return;
+		}
+		getValuesAndFilter(value);
+		outputList = document.getElementById(listId);
+		outputList.innerHTML = searchingItem;
+		outputWindow.classList.add(outputWindowFocusClass);
+		namespaceIndex = (currNamespace && currType ? -1 : 0);
+		typeIndex = 0;
+		memberIndex = 0;
+		timeout = setTimeout(search, startingSearchInterval);
 	};
 	/**Gets the value and filter content from the given input value.
 	 * @param value {string} - The input value from the user.*/
@@ -214,7 +214,7 @@ const SearchHelper = (function() {
 			}
 		}
 		
-		if(vals.length == 0 && (!filter.regex || filter.regex == "")) {
+		if(vals.length == 0 && (!filter.regex || filter.regex == "") && filter.acceptAll != false) {
 			filter.acceptAll = true;
 		}
 	};
@@ -254,9 +254,9 @@ const SearchHelper = (function() {
 			regexStr = regex;
 		}
 		if(values && values.length > 0) {
-			regexStr = (regexStr == "" ?
-				values.join('|') :
-				regexStr + "|" + values.join('|')
+			regexStr = (
+				(regexStr == "" ? "" : regexStr + "|") + 
+				escapeRegex(values.join('|'))
 			);
 		}
 		if(regexStr != "") {
@@ -274,6 +274,10 @@ const SearchHelper = (function() {
 			"</a></li>"
 		);
 	};
+	/**Escapes the regex to safely use the characters: ., *, +, -, ?, ^, $, {, }, (, ), [, ], and \.
+	 * @param regex {string} - The regex string to escape.
+	 * @returns {string} Returns the escaped regex string.*/
+	const escapeRegex = function(regex) { return regex.replace(/[.*+\-?^${}()[\]\\]/g, "\\$&"); }
 	/**Sets a custom format output list item.
 	 * @param func {formatOutputListItem} - The new formatting function to set.*/
 	const setFormatOutputListItem = function(func) { formatOutputListItem = func; };
@@ -318,7 +322,7 @@ const SearchHelper = (function() {
 		}
 		
 		for(let i = 0; i < vals.length; i++) {
-			if(lowerCaseValue.match(new RegExp(vals[i], "gi"))) {
+			if(lowerCaseValue.match(new RegExp(escapeRegex(vals[i]), "gi"))) {
 				return true;
 			}
 		}
@@ -469,10 +473,33 @@ const SearchHelper = (function() {
 		searchResultsId = searchResultsID;
 	};
 	
+	window.addEventListener("load", function() {
+		// Variables
+		let searchBar = document.getElementById(searchBarId);
+		if(!searchBar) { return; }
+		let help = "You can filter the search by using the following qualifiers:\n\n";
+		
+		help += "  only - Use namespace, type, or member to show search for only that kind of object.\n";
+		help += "      Example: only:type\n\n";
+		help += "  exclude - Use namespace, type, and member to exclude those objects from search, seperated by a comma ( , ).\n";
+		help += "      Example: exclude:namespace,type\n\n";
+		help += "  regex - Use this to search by using a regular expression string.\n";
+		help += "      Example: regex:mat\\d+\n\n";
+		help += "  acceptAll - Set this to true to search for every object.\n";
+		help += "      Example: accepAll:true";
+		
+		searchBar.title = help;
+	});
+	
 	window.addEventListener("click", function(args) {
 		// Variables
 		let target = args.target;
 		let results = document.getElementById(searchResultsId);
+		
+		if(target.tagName == "A" && target.href != "") {
+			results.classList.remove(outputWindowFocusClass);
+			return;
+		}
 		
 		if(target.id == searchBarId && target.value != "") {
 			results.classList.add(outputWindowFocusClass);
