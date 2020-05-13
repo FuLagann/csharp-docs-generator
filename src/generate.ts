@@ -158,7 +158,12 @@ export function assignTypeToSidebr(sidebar : SidebarView, typeInfo : TypeInfo) :
 		new SidebarView(
 			typeInfo.typeInfo.name,
 			createInternalLink(typeInfo.typeInfo.unlocalizedName),
-			(typeInfo.isStatic ? "static," : "") + "type"
+			(
+				(typeInfo.isNested ? "nested," : "") +
+				(typeInfo.isSealed ? "sealed," : "") +
+				(typeInfo.isStatic ? "static," : "") +
+				"type"
+			)
 		)
 	);
 	tempSidebar = insertMember("member,constructor", typeInfo, tempSidebar, typeInfo.constructors);
@@ -170,7 +175,7 @@ export function assignTypeToSidebr(sidebar : SidebarView, typeInfo : TypeInfo) :
 	tempSidebar = insertMember("member,static,event", typeInfo, tempSidebar, typeInfo.staticEvents);
 	tempSidebar = insertMember("member,method", typeInfo, tempSidebar, typeInfo.methods);
 	tempSidebar = insertMember("member,static,method", typeInfo, tempSidebar, typeInfo.staticMethods);
-	tempSidebar = insertMember("member,operator", typeInfo, tempSidebar, typeInfo.operators);
+	tempSidebar = insertMember("member,static,operator", typeInfo, tempSidebar, typeInfo.operators);
 	
 	return sidebar;
 }
@@ -236,7 +241,7 @@ function insertionSortChild(sidebar : SidebarView, newSidebar : SidebarView) : S
  * @param sidebar {SidebarView} - The sidebar to insert the member.
  * @param details {FieldInfo[] | PropertyInfo[] | EventInfo[] | MethodInfo[]} - The list of details to iterate through and generate the sidebar member content.
  * @returns Returns the sidebar with the inserted member.*/
-function insertMember(typeId : string, type : TypeInfo, sidebar : SidebarView, details : (FieldInfo[] | PropertyInfo[] | EventInfo[] | MethodInfo[])) : SidebarView {
+function insertMember(tags : string, type : TypeInfo, sidebar : SidebarView, details : (FieldInfo[] | PropertyInfo[] | EventInfo[] | MethodInfo[])) : SidebarView {
 	// Variables
 	let name : string;
 	
@@ -246,12 +251,21 @@ function insertMember(typeId : string, type : TypeInfo, sidebar : SidebarView, d
 			// Variables
 			const method = details[i] as MethodInfo;
 			
+			if(!method.isConstructor) {
+				if(method.isVirtual) { tags += ",virtual"; }
+			}
 			name = `${ name }${ method.genericDeclaration }(${ method.parameterDeclaration })`;
 		}
 		else if((details[i] as PropertyInfo).getSetDeclaration) {
 			// Variables
 			const property = details[i] as PropertyInfo;
 			
+			if(property.hasGetter) {
+				if(property.getter.isVirtual) { tags += ",virtual"; }
+			}
+			else {
+				if(property.setter.isVirtual) { tags += ",virtual"; }
+			}
 			if(property.parameters.length > 0) {
 				name = `${ name }(${ property.parameterDeclaration })`;
 			}
@@ -259,7 +273,7 @@ function insertMember(typeId : string, type : TypeInfo, sidebar : SidebarView, d
 		sidebar.children.push(new SidebarView(
 			name,
 			`${ createInternalLink(type.typeInfo.unlocalizedName) }#${ getIdFrom(details[i]) }`,
-			typeId
+			tags
 		));
 	}
 	
