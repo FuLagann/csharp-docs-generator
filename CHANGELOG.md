@@ -8,9 +8,10 @@ v0.12 includes:
 * Improved search.js with:
   * Spaces will look for more points of entry.
   * Filters have been added:
-    * acceptAll - Set to true if you want to accept every item.
+    * accept-all - Set to true if you want to accept every item.
     * regex - The regex query to search with.
-    * only - Set to "namespace", "type", or "member" to show only the given value.
+    * only - Set an array of "namespace", "type", "member", "constructor", "field", "event", "property", "method", "operator", and "static" to show only the given values. Multiples can be selected by a delimiter of ','.
+    * strict-only - Set an array of "namespace", "type", "member", "constructor", "field", "event", "property", "method", "operator", and "static" to show only the given values. Multiples can be selected by a delimiter of ','. Objects must fulfills all tags the user has provided.
     * exclude - Excludes the different types "namespace", "type", or "member". Multiples can be selected by a delimiter of ','.
   * If the user only types in filters, the acceptAll filter will automatically be set to true.
   * Clicking out of the search bar input or search results window will close the window.
