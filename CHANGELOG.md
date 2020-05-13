@@ -5,6 +5,18 @@ v0.12 includes:
 * Created an alpha version of a search.js file to easily search through the API.
 * Created usable version of a search.js file to easily search through the API.
 * Updated search.js functionanlity for more customization and smoother interface.
+* Improved search.js with:
+  * Spaces will look for more points of entry.
+  * Searches will be regex by default.
+  * Filters have been added:
+    * acceptAll - Set to true if you want to accept every item.
+    * regex - The regex to look with.
+    * only - Set to "namespace", "type", or "member" to show only the given value.
+    * exclude - Excludes the different types "namespace", "type", or "member". Multiples can be selected by a delimiter of ','.
+  * If the user only types in filters, the acceptAll filter will automatically be set to true.
+  * Clicking out of the search bar input or search results window will close the window.
+  * The searching will be delayed before actually searching so that the user doesn't see a "glitchy" looking search results window.
+  * Search results get highlighted by the words that were queried, including regex results.
 
 v0.11 includes:
 * Added template content for namespace pages.
