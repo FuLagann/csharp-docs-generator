@@ -19,6 +19,7 @@ v0.12 includes:
   * Search results get highlighted by the words that were queried, including regex results.
 * Added help tooltip for search bar about filters.
 * Added tags to the searchJson to affect filters such as only and exclude.
+* Added search help text with escaped html to be placed on the webpage (no title).
 
 v0.11 includes:
 * Added template content for namespace pages.
