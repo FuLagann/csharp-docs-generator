@@ -600,6 +600,8 @@ const SearchHelper = (function() {
 		let target = args.target;
 		let results = document.getElementById(searchResultsId);
 		
+		if(!results) { return; }
+		
 		if(target.tagName == "A" && target.href != "") {
 			results.classList.remove(outputWindowFocusClass);
 			return;
