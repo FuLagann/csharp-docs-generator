@@ -129,11 +129,11 @@ const SearchHelper = (function() {
 	/**@type {string} - The name of the class that will pop the output window into focus.*/
 	let outputWindowFocusClass = "active";
 	/**@type {number} - The search interval.*/
-	let searchInterval = 10;
+	let searchInterval = 150;
 	/**@type {number} - The starting search interval to make the user wait before the search starts.*/
 	let startingSearchInterval = 250;
 	/**@type {string} - The item that tells the user that it's searching.*/
-	let searchingItem = '<li style="text-align: center;">Searching...</li>';
+	let searchingItem = '<li id="--searching-display-in-window--" style="text-align: center;">Searching...</li>';
 	/**Sets the search interval. Make this number to small and you run the risk of freezing up the web app,
 	 * this is to make the search pseudo-asynchronous.
 	 * @param value {number} - The interval to wait between each iteration of the search.*/
@@ -248,9 +248,12 @@ const SearchHelper = (function() {
 	/**Removes the searching item telling the user they are searching.
 	 * @return Returns true if the searching item was the only item and was promptly removed.*/
 	const removeSearchingItem = function() {
-		if(outputList.innerHTML == searchingItem) {
-			outputList.innerHTML = "";
-			return true;
+		// Variables
+		let searchingItem = document.getElementById("--searching-display-in-window--");
+		
+		if(searchingItem) {
+			outputList.removeChild(searchingItem);
+			return (outputList.innerHTML == "");
 		}
 		return false;
 	};
@@ -367,94 +370,33 @@ const SearchHelper = (function() {
 	};
 	/**Searches through the entire API little by little.*/
 	const search = function() {
-		if(!namespaceList && namespaceIndex == 0) {
-			namespaceList = Object.keys(searchJson);
-		}
-		if(namespaceIndex >= 0 && typeIndex == 0) {
-			typeList = Object.keys(searchJson[namespaceList[namespaceIndex]].types);
-		}
+		for(let i = 0; i < 100; i++) {
+			if(!namespaceList && namespaceIndex == 0) {
+				namespaceList = Object.keys(searchJson);
+			}
+			if(namespaceIndex >= 0 && typeIndex == 0) {
+				typeList = Object.keys(searchJson[namespaceList[namespaceIndex]].types);
+			}
 		
-		if(namespaceIndex == -1) {
-			// Variables
-			const namespace = searchJson[currNamespace];
-			const type = namespace.types[currType];
-			const member = type.members[memberIndex];
-			let name;
-			
-			if(memberIndex == 0) {
-				if(isFulfillingCriteria(namespace.tags, currNamespace)) {
-					removeSearchingItem();
-					outputList.innerHTML += formatOutputListItem(
-						vals,
-						filter.regex,
-						namespace.link,
-						currNamespace,
-						markResult
-					);
-				}
-				name = currNamespace + "." + currType;
-				if(isFulfillingCriteria(type.tags, name)) {
-					removeSearchingItem();
-					outputList.innerHTML += formatOutputListItem(
-						vals,
-						filter.regex,
-						type.link,
-						name,
-						markResult
-					);
-				}
-			}
-			
-			name = currNamespace + "." + currType + "." + member.name;
-			if(isFulfillingCriteria(member.tags, name)) {
-				removeSearchingItem();
-				outputList.innerHTML += formatOutputListItem(
-					vals,
-					filter.regex,
-					member.link,
-					name,
-					markResult
-				);
-			}
-			
-			memberIndex++;
-			if(memberIndex >= type.members.length) {
-				memberIndex = 0;
-				namespaceIndex++;
-			}
-			
-			timeout = setTimeout(search, searchInterval);
-			return;
-		}
-		else {
-			// Variables
-			const namespace = searchJson[namespaceList[namespaceIndex]];
-			const type = namespace.types[typeList[typeIndex]];
-			const member = type.members[memberIndex];
-			let name;
-			
-			if(typeIndex == 0 && memberIndex == 0) {
-				if(!currNamespace || namespaceList[namespaceIndex] != currNamespace) {
-					if(!isCurrentType()) {
-						name = namespaceList[namespaceIndex];
-						if(isFulfillingCriteria(namespace.tags, name)) {
-							removeSearchingItem();
-							outputList.innerHTML += formatOutputListItem(
-								vals,
-								filter.regex,
-								namespace.link,
-								name,
-								markResult
-							);
-						}
+			if(namespaceIndex == -1) {
+				// Variables
+				const namespace = searchJson[currNamespace];
+				const type = namespace.types[currType];
+				const member = type.members[memberIndex];
+				let name;
+				
+				if(memberIndex == 0) {
+					if(isFulfillingCriteria(namespace.tags, currNamespace)) {
+						outputList.innerHTML += formatOutputListItem(
+							vals,
+							filter.regex,
+							namespace.link,
+							currNamespace,
+							markResult
+						);
 					}
-				}
-			}
-			if(memberIndex == 0) {
-				if(!isCurrentType()) {
-					name = namespaceList[namespaceIndex] + "." + typeList[typeIndex];
+					name = currNamespace + "." + currType;
 					if(isFulfillingCriteria(type.tags, name)) {
-						removeSearchingItem();
 						outputList.innerHTML += formatOutputListItem(
 							vals,
 							filter.regex,
@@ -464,13 +406,9 @@ const SearchHelper = (function() {
 						);
 					}
 				}
-			}
-			
-			
-			if(!isCurrentType()) {
-				name = namespaceList[namespaceIndex] + "." + typeList[typeIndex] + "." + member.name;
+				
+				name = currNamespace + "." + currType + "." + member.name;
 				if(isFulfillingCriteria(member.tags, name)) {
-					removeSearchingItem();
 					outputList.innerHTML += formatOutputListItem(
 						vals,
 						filter.regex,
@@ -479,25 +417,93 @@ const SearchHelper = (function() {
 						markResult
 					);
 				}
-			}
-			
-			memberIndex++;
-			if(memberIndex >= type.members.length) {
-				memberIndex = 0;
 				
-				typeIndex++;
-			}
-			if(typeIndex >= typeList.length) {
-				typeIndex = 0;
-				namespaceIndex++;
-			}
-			if(namespaceIndex < namespaceList.length) {
-				timeout = setTimeout(search, searchInterval);
+				memberIndex++;
+				if(memberIndex >= type.members.length) {
+					memberIndex = 0;
+					namespaceIndex++;
+				}
 			}
 			else {
-				if(removeSearchingItem()) {
-					outputList.innerHTML = '<li style="text-align: center;">No results found!</li>';
+				// Variables
+				const namespace = searchJson[namespaceList[namespaceIndex]];
+				const type = namespace.types[typeList[typeIndex]];
+				const member = type.members[memberIndex];
+				let name;
+				
+				if(typeIndex == 0 && memberIndex == 0) {
+					if(!currNamespace || namespaceList[namespaceIndex] != currNamespace) {
+						if(!isCurrentType() && namespace) {
+							name = namespaceList[namespaceIndex];
+							if(isFulfillingCriteria(namespace.tags, name)) {
+								outputList.innerHTML += formatOutputListItem(
+									vals,
+									filter.regex,
+									namespace.link,
+									name,
+									markResult
+								);
+							}
+						}
+					}
 				}
+				if(memberIndex == 0) {
+					if(!isCurrentType()) {
+						name = namespaceList[namespaceIndex] + "." + typeList[typeIndex];
+						if(isFulfillingCriteria(type.tags, name)) {
+							outputList.innerHTML += formatOutputListItem(
+								vals,
+								filter.regex,
+								type.link,
+								name,
+								markResult
+							);
+						}
+					}
+				}
+				
+				if(!isCurrentType() && member) {
+					name = namespaceList[namespaceIndex] + "." + typeList[typeIndex] + "." + member.name;
+					if(isFulfillingCriteria(member.tags, name)) {
+						outputList.innerHTML += formatOutputListItem(
+							vals,
+							filter.regex,
+							member.link,
+							name,
+							markResult
+						);
+					}
+				}
+				
+				memberIndex++;
+				if(type) {
+					if(memberIndex >= type.members.length) {
+						memberIndex = 0;
+						
+						typeIndex++;
+					}
+				}
+				else {
+					memberIndex = 0;
+					typeIndex++;
+				}
+				if(typeIndex >= typeList.length) {
+					typeIndex = 0;
+					namespaceIndex++;
+				}
+			}
+			
+			if(namespaceList && namespaceIndex >= namespaceList.length) {
+				break;
+			}
+		}
+		
+		if(namespaceIndex == -1 || namespaceIndex < namespaceList.length) {
+			timeout = setTimeout(search, searchInterval);
+		}
+		else {
+			if(removeSearchingItem()) {
+				outputList.innerHTML = '<li style="text-align: center;">No results found!</li>';
 			}
 		}
 	};

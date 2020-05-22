@@ -20,6 +20,7 @@ v0.12 includes:
 * Added help tooltip for search bar about filters.
 * Added tags to the searchJson to affect filters such as only and exclude.
 * Added search help text with escaped html to be placed on the webpage (no title).
+* Updated searching function to batch searches per interval.
 
 v0.11 includes:
 * Added template content for namespace pages.
