@@ -1,4 +1,8 @@
 
+v0.13 includes:
+* Removed prettier render to make html code look prettier, as a move to migrate that process as an input option.
+* Added namespace template compilation.
+
 v0.12 includes:
 * Updated QuickTypeInfo to reflect Sharp Checker.
 * Updated createAnchorToType to not create hyperlinks for generic types.

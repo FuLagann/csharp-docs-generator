@@ -35,7 +35,7 @@ export async function compileBase(args : InputArguments, typePath : string) : Pr
 	
 	generatedTypeJson = await generateTypeDetails(args, typePath);
 	
-	return prettier.format(ejs.render(
+	return ejs.render(
 		readFile(filename).replace(/(?<=\S)\s+(?=<\/code>)/gm, "").trim(),
 		{
 			uris: {
@@ -44,7 +44,8 @@ export async function compileBase(args : InputArguments, typePath : string) : Pr
 				type: args.templateUris.type,
 				header: args.templateUris.header,
 				footer: args.templateUris.footer,
-				navigation: "--navigation" + args.outputExtension
+				navigation: "--navigation" + args.outputExtension,
+				namespace: args.templateUris.namespace
 			},
 			isNamespace: false,
 			typePath: typePath,
@@ -58,7 +59,7 @@ export async function compileBase(args : InputArguments, typePath : string) : Pr
 			isGenericType: Helper.isGenericType,
 			project: getProjectDetails()
 		}
-	), { parser: "html", endOfLine: "crlf", htmlWhitespaceSensitivity: "ignore", proseWrap: "never" });
+	);
 }
 
 /**Compiles the namespace template, listing all the types.
@@ -66,11 +67,11 @@ export async function compileBase(args : InputArguments, typePath : string) : Pr
  * @param namespace {string} - The name of the namespace.
  * @param types {string[]} - The list of types witihn the namespace.
  * @returns Returns the compiled template code.*/
-export async function compileNamespace(args : InputArguments, namespace : string, types : NamespaceDetails[]) : Promise<string> {
+export async function compileBaseNamespace(args : InputArguments, namespace : string, types : NamespaceDetails[]) : Promise<string> {
 	// Variables
 	const filename = args.templateUris.base;
 	
-	return prettier.format(ejs.render(
+	return ejs.render(
 		readFile(filename).replace(/(?<=\S)\s+(?=<\/code>)/gm, "").trim(),
 		{
 			uris: {
@@ -79,7 +80,8 @@ export async function compileNamespace(args : InputArguments, namespace : string
 				type: args.templateUris.type,
 				header: args.templateUris.header,
 				footer: args.templateUris.footer,
-				navigation: "--navigation" + args.outputExtension
+				navigation: "--navigation" + args.outputExtension,
+				namespace: args.templateUris.namespace
 			},
 			isNamespace: true,
 			namespaceName: namespace,
@@ -95,7 +97,7 @@ export async function compileNamespace(args : InputArguments, namespace : string
 			isGenericType: Helper.isGenericType,
 			project: getProjectDetails()
 		}
-	), { parser: "html", endOfLine: "crlf", htmlWhitespaceSensitivity: "ignore", proseWrap: "never" });
+	);//, { parser: "html", endOfLine: "crlf", htmlWhitespaceSensitivity: "ignore", proseWrap: "never" });
 }
 
 /**Compiles the sidebar for it's own separate file.
@@ -163,6 +165,39 @@ export function compileFooter(filename : string) : string {
 				css: getRelativeLinks("css/", args.templateUris.localCss || [], args.templateUris.globalCss || []),
 				scripts: getRelativeLinks("js/", args.templateUris.localScripts || [], args.templateUris.globalScripts || [])
 			},
+			createPartial: Helper.createPartial,
+			capitalize: Helper.capitalize,
+			getIdFrom: Helper.getIdFrom,
+			createLinkToType: Helper.createLinkToType,
+			createAnchorToType: Helper.createAnchorToType,
+			getParameterType: Helper.getParameterType,
+			project: getProjectDetails()
+		}
+	);
+}
+
+/**Compiles the namespace template.
+ * @param filename {string} - The name of the file to get the template code from.
+ * @param
+ * @returns Returns the compiled namespace template code.*/
+export function compileNamespace(filename : string, context : { namespacePath : string, types : NamespaceDetails[] }) : string {
+	// Variables
+	const args : InputArguments = getArguments();
+	
+	return ejs.render(
+		readFile(filename),
+		{
+			uris: {
+				css: getRelativeLinks("css/", args.templateUris.localCss || [], args.templateUris.globalCss || []),
+				scripts: getRelativeLinks("js/", args.templateUris.localScripts || [], args.templateUris.globalScripts || []),
+				constructors: args.templateUris.constructors,
+				fields: args.templateUris.fields,
+				properties: args.templateUris.properties,
+				events: args.templateUris.events,
+				methods: args.templateUris.methods
+			},
+			types: context.types,
+			namespacePath: context.namespacePath,
 			createPartial: Helper.createPartial,
 			capitalize: Helper.capitalize,
 			getIdFrom: Helper.getIdFrom,

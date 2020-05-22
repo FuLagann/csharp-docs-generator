@@ -1,7 +1,7 @@
 
 // Models
 import { FieldInfo, PropertyInfo, EventInfo, MethodInfo, QuickTypeInfo, ParameterInfo } from "./models/SharpChecker";
-import { SidebarView, TemplateApiItems, ParameterNameDescription } from "./models/TemplateApi";
+import { NamespaceDetails, SidebarView, TemplateApiItems, ParameterNameDescription } from "./models/TemplateApi";
 // External functionalities
 import { readFile } from "./read-file";
 import { createSystemLink, createInternalLink } from "./read-xml";
@@ -68,6 +68,7 @@ export function createPartial(type : string, url : string, context : any = {}) :
 		case "method": return Templates.compileMethod(url, context as MethodInfo);
 		case "header": return Templates.compileHeader(url);
 		case "footer": return Templates.compileFooter(url);
+		case "namespace": return Templates.compileNamespace(url, context as { namespacePath : string, types : NamespaceDetails[] });
 	}
 	
 	return ejs.render(readFile(url), context);

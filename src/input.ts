@@ -113,7 +113,7 @@ function getTemplateToolLocation(templateID : string) : string {
 	if(!templateID.endsWith(".zip")) { templateZip = templateID + ".zip"; }
 	
 	// TODO: Check whether or not this even exists. If it doesn't then resort to a default.
-	return `https://github.com/FuLagann/csharp-docs-generator/raw/${ branch }/packages/${ templateZip }`;
+	return `https://github.com/FuLagann/csharp-docs-generator/raw/${ branch }/packages/templates/${ templateZip }`;
 }
 
 /**Gathers all the uris needed for templating the documentation.

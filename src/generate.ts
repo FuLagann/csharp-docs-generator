@@ -9,7 +9,7 @@ import { TEMP_FOLDER, getSharpCheckerExe, getArguments } from "./index";
 import { readFile } from "./read-file";
 import { createInternalLink } from "./read-xml";
 import { getIdFrom } from "./template-helpers";
-import { compileBase, compileNamespace, compileSidebar, getNamespaceTypes } from "./template";
+import { compileBase, compileBaseNamespace, compileSidebar, getNamespaceTypes } from "./template";
 // External libraries
 import { exec } from "@actions/exec";
 import fs = require("fs");
@@ -77,7 +77,7 @@ export async function generateHtmlDocumentation(args : InputArguments) {
 		const value : NamespaceDetails[] = namespaceTypes[key] as NamespaceDetails[];
 		
 		filename = args.outputPath + key + args.outputExtension;
-		html = (await compileNamespace(args, key, value)).replace(/(?<=>)\s+([\)\.]|<\/code>)/gm, "$1");
+		html = (await compileBaseNamespace(args, key, value)).replace(/(?<=>)\s+([\)\.]|<\/code>)/gm, "$1");
 		
 		fs.writeFileSync(filename.toLowerCase(), html);
 		console.log(`Created ${ filename }`);
