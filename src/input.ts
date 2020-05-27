@@ -19,7 +19,10 @@ export async function getInputs() : Promise<InputArguments> {
 	results.cleanUpTasks = splitString(core.getInput("cleanup-tasks") || "", ',');
 	results.binaries = splitString(core.getInput("binaries") || "", ",");
 	results.branchName = core.getInput("branch-name") || results.branchName;
-	results.outputPath = core.getInput("output-path") || results.outputPath;
+	results.outputPath = (core.getInput("output-path") || results.outputPath).trim();
+	if(!results.outputPath.endsWith("/") || !results.outputPath.endsWith("\\")) {
+		results.outputPath += "/";
+	}
 	results.user.name = core.getInput("user-name") || results.user.name;
 	results.user.email = core.getInput("user-email") || results.user.email;
 	results.outputExtension = core.getInput("output-extension") || results.outputExtension;
