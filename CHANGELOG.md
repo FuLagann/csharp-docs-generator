@@ -2,7 +2,8 @@
 v0.13 includes:
 * Removed prettier render to make html code look prettier, as a move to migrate that process as an input option.
 * Added namespace template compilation.
-* Fixed error when putting path without an ending / or \ for output-path input
+* Fixed error when putting path without an ending / or \ for output-path input.
+* Fixing template zip file presets to work in general.
 
 v0.12 includes:
 * Updated QuickTypeInfo to reflect Sharp Checker.

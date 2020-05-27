@@ -48,21 +48,25 @@ async function getTemplate(templateID : string, defaultUris : TemplateUris) : Pr
 		const unzipLocation : string = await tools.extractZip(zipLocation, TEMP_FOLDER);
 		let template : TemplateUris = JSON.parse(readFile(`${ unzipLocation }/template.json`)) as TemplateUris;
 		
-		template.base = path.join(TEMP_FOLDER, template.base);
-		template.namespace = path.join(TEMP_FOLDER, template.namespace);
-		template.type = path.join(TEMP_FOLDER, template.type);
-		template.header = path.join(TEMP_FOLDER, template.header);
-		template.footer = path.join(TEMP_FOLDER, template.footer);
-		template.navigation = path.join(TEMP_FOLDER, template.navigation);
-		template.constructors = updatePath(TEMP_FOLDER, template.constructors);
-		template.fields = updatePath(TEMP_FOLDER, template.fields);
-		template.properties = updatePath(TEMP_FOLDER, template.properties);
-		template.events = updatePath(TEMP_FOLDER, template.events);
-		template.methods = updatePath(TEMP_FOLDER, template.methods);
-		template.localCss = updatePathForArray(TEMP_FOLDER, template.localCss);
-		template.localScripts = updatePathForArray(TEMP_FOLDER, template.localScripts);
-		template.globalCss = updatePathForArray(TEMP_FOLDER, template.globalCss);
-		template.globalScripts = updatePathForArray(TEMP_FOLDER, template.globalScripts);
+		console.log(zipLocation);
+		console.log(unzipLocation);
+		console.log(template);
+		
+		template.base = path.join(TEMP_FOLDER, template.base || defaultUris.base);
+		template.namespace = path.join(TEMP_FOLDER, template.namespace || defaultUris.namespace);
+		template.type = path.join(TEMP_FOLDER, template.type || defaultUris.type);
+		template.header = path.join(TEMP_FOLDER, template.header || defaultUris.header);
+		template.footer = path.join(TEMP_FOLDER, template.footer || defaultUris.footer);
+		template.navigation = path.join(TEMP_FOLDER, template.navigation || defaultUris.navigation);
+		template.constructors = updatePath(TEMP_FOLDER, template.constructors || defaultUris.constructors);
+		template.fields = updatePath(TEMP_FOLDER, template.fields || defaultUris.fields);
+		template.properties = updatePath(TEMP_FOLDER, template.properties || defaultUris.properties);
+		template.events = updatePath(TEMP_FOLDER, template.events || defaultUris.events);
+		template.methods = updatePath(TEMP_FOLDER, template.methods || defaultUris.methods);
+		template.localCss = updatePathForArray(TEMP_FOLDER, template.localCss || defaultUris.localCss);
+		template.localScripts = updatePathForArray(TEMP_FOLDER, template.localScripts || defaultUris.localScripts);
+		template.globalCss = updatePathForArray(TEMP_FOLDER, template.globalCss || defaultUris.globalCss);
+		template.globalScripts = updatePathForArray(TEMP_FOLDER, template.globalScripts || defaultUris.globalScripts);
 		
 		return template;
 	} catch {
