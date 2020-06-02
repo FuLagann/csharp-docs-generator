@@ -94,6 +94,7 @@ export async function generateHtmlDocumentation(args : InputArguments) {
 export async function generateCssAndScriptFiles(args : InputArguments) {
 	await generateSupplementaryFile(path.join(args.outputPath, "/css/"), args.templateUris.localCss || []);
 	await generateSupplementaryFile(path.join(args.outputPath, "/js/"), args.templateUris.localScripts || []);
+	await generateSupplementaryFile(path.join(args.outputPath, "/images/"), args.templateUris.localImages || []);
 }
 
 /**Checks the type and returns it's info.

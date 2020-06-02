@@ -65,8 +65,10 @@ async function getTemplate(templateID : string, defaultUris : TemplateUris) : Pr
 		template.methods = updatePath(TEMP_FOLDER, template.methods || defaultUris.methods);
 		template.localCss = updatePathForArray(TEMP_FOLDER, template.localCss || defaultUris.localCss);
 		template.localScripts = updatePathForArray(TEMP_FOLDER, template.localScripts || defaultUris.localScripts);
+		template.localImages = updatePathForArray(TEMP_FOLDER, template.localImages || defaultUris.localImages);
 		template.globalCss = updatePathForArray(TEMP_FOLDER, template.globalCss || defaultUris.globalCss);
 		template.globalScripts = updatePathForArray(TEMP_FOLDER, template.globalScripts || defaultUris.globalScripts);
+		template.globalImages = updatePathForArray(TEMP_FOLDER, template.globalImages || defaultUris.globalImages);
 		
 		return template;
 	} catch(e) {
@@ -151,8 +153,15 @@ function gatherUris(templatePath : string, template : TemplateUris, yamlUri : st
 		yamlJson.localScripts,
 		template.localScripts
 	);
+	template.localImages = getFilenames(
+		template.includeDefaultImages,
+		basePath,
+		yamlJson.localImages,
+		template.localImages
+	);
 	template.globalCss = yamlJson.globalCss || [];
 	template.globalScripts = yamlJson.globalScripts || [];
+	template.globalImages = yamlJson.globalImages || [];
 	template.namespace = getFilename(basePath, yamlJson.namespace, template.namespace);
 	template.type = getFilename(basePath, yamlJson.type, template.type);
 	template.header = getFilename(basePath, yamlJson.header, template.header);

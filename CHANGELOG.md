@@ -4,6 +4,7 @@ v0.13 includes:
 * Added namespace template compilation.
 * Fixed error when putting path without an ending / or \ for output-path input.
 * Fixing template zip file presets to work in general.
+* Added local and global images to supplementary files and input template uris.
 
 v0.12 includes:
 * Updated QuickTypeInfo to reflect Sharp Checker.
