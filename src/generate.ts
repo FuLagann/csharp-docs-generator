@@ -190,14 +190,18 @@ async function generateSupplementaryFile(basePath : string, files : string[], us
 	for(let i = 0; i < files.length; i++) {
 		// Variables
 		const filename = files[i].replace(/.*[\\\/]([^\\\/]+)$/gm, "$1");
-		const content = readFile(files[i]);
+		const filepath = path.join(basePath, filename);
 		
-		if(!useBase64) {
-			fs.writeFileSync(path.join(basePath, filename), content);
-		}
-		else {
-			fs.writeFileSync(path.join(basePath, filename), content, "base64");
-		}
+		fs.copyFileSync(files[i], filepath);
+		
+		// const content = readFile(files[i]);
+		
+		// if(!useBase64) {
+		// 	fs.writeFileSync(path.join(basePath, filename), content);
+		// }
+		// else {
+		// 	fs.writeFileSync(path.join(basePath, filename), content, "base64");
+		// }
 	}
 }
 
