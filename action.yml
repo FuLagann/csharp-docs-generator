@@ -1,0 +1,59 @@
+
+name: "C# Documentation Generator"
+author: "Paul Gonzalez-Becerra"
+description: "A GitHub action that generates html documentation for C# projects."
+inputs:
+  build-tasks:
+    description: "The list of commands used to build the project prior to generating html documents."
+    required: true
+  cleanup-tasks:
+    description: "The list of commands used to clean up any building of project after generating html documents."
+    required: false
+  binaries:
+    description: "The list of binaries used to look into, must be named the same as the xml documentation."
+    required: true
+  dependencies:
+    description: "The list of binaries or xmls that your program uses to depend on."
+    required: false
+  user-name:
+    description: "The name of the user who will commit."
+    required: false
+    default: "C# Document Generator"
+  user-email:
+    description: "The email of the user who will commit."
+    required: false
+    default: "csharp.doc.gen@gmail.com"
+  template:
+    description: "The name of the template to use to generate the webpages from."
+    required: false
+    default: "default"
+  template-uris-json:
+    description: "The json to get all the template files used to generate the documentation."
+    required: false
+  output-path:
+    description: "The output path of the generated documents."
+    required: false
+    default: docs/api/
+  branch-name:
+    description: "The name of the branch that the generation will commit to (if not specified it will commit to the current branch)."
+    required: false
+  commit-message:
+    description: "The message of the commit that the generation will perform."
+    required: false
+    default: "Automated creation of documentation"
+  amend-no-edit:
+    description: "Set to true if you want the generation to append itself to the latest commit instead of creating a new commit."
+    required: false
+    default: false
+  output-extension:
+    description: "The output extension that every file built will contain."
+    default: ".html"
+  include-private:
+    description: "Set to true to include all the privates types and members."
+    default: false
+runs:
+  using: "node12"
+  main: "lib/index.js"
+branding:
+  color: "yellow"
+  icon: "book"
