@@ -94,7 +94,7 @@ export async function generateHtmlDocumentation(args : InputArguments) {
 export async function generateCssAndScriptFiles(args : InputArguments) {
 	await generateSupplementaryFile(path.join(args.outputPath, "/css/"), args.templateUris.localCss || []);
 	await generateSupplementaryFile(path.join(args.outputPath, "/js/"), args.templateUris.localScripts || []);
-	await generateSupplementaryFile(path.join(args.outputPath, "/images/"), args.templateUris.localImages || []);
+	await generateSupplementaryFile(path.join(args.outputPath, "/images/"), args.templateUris.localImages || [], true);
 }
 
 /**Checks the type and returns it's info.
@@ -184,15 +184,20 @@ export function assignTypeToSidebr(sidebar : SidebarView, typeInfo : TypeInfo) :
 /**Generates the supplementary files (used for creating css and js files from templates).
  * @param basePath {string} - The base path to build to.
  * @param files {string[]} - The files to copy from and into the base path.*/
-async function generateSupplementaryFile(basePath : string, files : string[]) {
+async function generateSupplementaryFile(basePath : string, files : string[], useBase64 : boolean = false) {
 	try { await io.mkdirP(basePath); } catch {}
 	
 	for(let i = 0; i < files.length; i++) {
 		// Variables
-		const content = readFile(files[i]);
 		const filename = files[i].replace(/.*[\\\/]([^\\\/]+)$/gm, "$1");
+		const content = readFile(files[i]);
 		
-		fs.writeFileSync(path.join(basePath, filename), content);
+		if(useBase64) {
+			fs.writeFileSync(path.join(basePath, filename), content);
+		}
+		else {
+			fs.writeFileSync(path.join(basePath, filename), content, "base64");
+		}
 	}
 }
 
