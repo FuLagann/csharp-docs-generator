@@ -192,7 +192,7 @@ async function generateSupplementaryFile(basePath : string, files : string[], us
 		const filename = files[i].replace(/.*[\\\/]([^\\\/]+)$/gm, "$1");
 		const content = readFile(files[i]);
 		
-		if(useBase64) {
+		if(!useBase64) {
 			fs.writeFileSync(path.join(basePath, filename), content);
 		}
 		else {
