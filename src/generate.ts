@@ -94,7 +94,7 @@ export async function generateHtmlDocumentation(args : InputArguments) {
 export async function generateCssAndScriptFiles(args : InputArguments) {
 	await generateSupplementaryFile(path.join(args.outputPath, "/css/"), args.templateUris.localCss || []);
 	await generateSupplementaryFile(path.join(args.outputPath, "/js/"), args.templateUris.localScripts || []);
-	await generateSupplementaryFile(path.join(args.outputPath, "/images/"), args.templateUris.localImages || [], true);
+	await generateSupplementaryFile(args.outputPath + "", args.templateUris.localFiles || [], true);
 }
 
 /**Checks the type and returns it's info.
@@ -183,25 +183,34 @@ export function assignTypeToSidebr(sidebar : SidebarView, typeInfo : TypeInfo) :
 
 /**Generates the supplementary files (used for creating css and js files from templates).
  * @param basePath {string} - The base path to build to.
- * @param files {string[]} - The files to copy from and into the base path.*/
-async function generateSupplementaryFile(basePath : string, files : string[], useBase64 : boolean = false) {
+ * @param files {string[]} - The files to copy from and into the base path.
+ * @param isGeneral {boolean} - Set to true to copy over the files generally, using the parent folder name to create in the local scope.*/
+async function generateSupplementaryFile(basePath : string, files : string[], isGeneral : boolean = false) {
 	try { await io.mkdirP(basePath); } catch {}
 	
 	for(let i = 0; i < files.length; i++) {
 		// Variables
-		const filename = files[i].replace(/.*[\\\/]([^\\\/]+)$/gm, "$1");
-		const filepath = path.join(basePath, filename);
+		let filename : string = "";
+		let filepath : string = "";
 		
+		if(isGeneral) {
+			let match = files[i].match(/[\/\\]?[^\/\\]*[\/\\]?[^\/\\]+$/);
+			
+			if(match) {
+				filename = match[0];
+				match = filename.match(/[\/\\][^\/\\][\/\\]/);
+				if(match) {
+					basePath = path.join(basePath, match[0]);
+					try { await io.mkdirP(basePath); } catch {}
+				}
+			}
+		}
+		if(!isGeneral || filename == "") {
+			filename = files[i].replace(/.*[\\\/]([^\\\/]+)$/gm, "$1");
+		}
+		
+		filepath = path.join(basePath, filename);
 		fs.copyFileSync(files[i], filepath);
-		
-		// const content = readFile(files[i]);
-		
-		// if(!useBase64) {
-		// 	fs.writeFileSync(path.join(basePath, filename), content);
-		// }
-		// else {
-		// 	fs.writeFileSync(path.join(basePath, filename), content, "base64");
-		// }
 	}
 }
 

@@ -8,13 +8,12 @@ export interface TemplateUris {
 	base : string;
 	includeDefaultCss : boolean;
 	includeDefaultScripts : boolean;
-	includeDefaultImages : boolean;
+	includeDefaultFiles : boolean;
 	localCss : string[];
 	globalCss : string[];
 	localScripts : string[];
 	globalScripts : string[];
-	localImages : string[];
-	globalImages : string[];
+	localFiles : string[];
 	namespace : string;
 	type : string;
 	constructors : CompactFullUris;
@@ -60,13 +59,12 @@ export class InputArguments {
 			base: "",
 			includeDefaultCss: true,
 			includeDefaultScripts: true,
-			includeDefaultImages: true,
+			includeDefaultFiles: true,
 			globalCss: [],
 			localCss: [],
 			globalScripts: [],
 			localScripts: [],
-			globalImages: [],
-			localImages: [],
+			localFiles: [],
 			namespace: "",
 			type: "",
 			navigation: "",
