@@ -198,14 +198,15 @@ async function generateSupplementaryFile(basePath : string, files : string[], is
 			
 			if(match) {
 				filename = match[0];
-				match = filename.match(/[\/\\][^\/\\][\/\\]/);
+				match = filename.match(/[\/\\][^\/\\]+[\/\\]/);
 				if(match) {
 					basePath = path.join(basePath, match[0]);
+					filename = filename.replace(/.*[\/\\]([^\\\/]+)$/gm, "$1");
 					try { await io.mkdirP(basePath); } catch {}
 				}
 			}
 		}
-		if(!isGeneral || filename == "") {
+		if(filename == "") {
 			filename = files[i].replace(/.*[\\\/]([^\\\/]+)$/gm, "$1");
 		}
 		
