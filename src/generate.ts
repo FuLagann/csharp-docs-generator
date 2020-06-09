@@ -190,6 +190,7 @@ async function generateSupplementaryFile(basePath : string, files : string[], is
 	
 	for(let i = 0; i < files.length; i++) {
 		// Variables
+		let baseLocalPath = basePath;
 		let filename : string = "";
 		let filepath : string = "";
 		
@@ -200,9 +201,9 @@ async function generateSupplementaryFile(basePath : string, files : string[], is
 				filename = match[0];
 				match = filename.match(/[\/\\][^\/\\]+[\/\\]/);
 				if(match) {
-					basePath = path.join(basePath, match[0]);
+					baseLocalPath = path.join(baseLocalPath, match[0]);
 					filename = filename.replace(/.*[\/\\]([^\\\/]+)$/gm, "$1");
-					try { await io.mkdirP(basePath); } catch {}
+					try { await io.mkdirP(baseLocalPath); } catch {}
 				}
 			}
 		}
@@ -210,7 +211,7 @@ async function generateSupplementaryFile(basePath : string, files : string[], is
 			filename = files[i].replace(/.*[\\\/]([^\\\/]+)$/gm, "$1");
 		}
 		
-		filepath = path.join(basePath, filename);
+		filepath = path.join(baseLocalPath, filename);
 		fs.copyFileSync(files[i], filepath);
 	}
 }
