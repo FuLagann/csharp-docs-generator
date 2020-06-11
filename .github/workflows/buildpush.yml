@@ -1,0 +1,14 @@
+on: [push]
+
+jobs:
+  build-push:
+    runs-on: ubuntu-latest
+    name: Builds Typescript
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Building Typescript
+        uses: FuLagann/tsc-build-push@v1
+        with:
+          user-name: "Paul G.B."
+          user-email: "fulagann@example.com"

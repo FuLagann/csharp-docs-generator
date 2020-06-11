@@ -2,7 +2,7 @@
 /**All the information of types with it's associated library or executable.*/
 export interface TypeList {
 	/**A hashmap of a library or executable mapping to a list of types it contains.*/
-	types : any;
+	types : { [key : string] : string[] };
 }
 
 /**A quick look into the information of the type.*/
@@ -20,6 +20,8 @@ export interface QuickTypeInfo {
 	namespaceName : string;
 	/**The list of generic parameters that the type contains.*/
 	genericParameters : GenericParametersInfo[];
+	/**Set to true if the type is a generic type.*/
+	isGenericType : boolean;
 }
 
 /**All the information relevant to types.*/
@@ -140,7 +142,7 @@ export interface FieldInfo {
 	/**The type the field is implemented in.*/
 	implementedType : QuickTypeInfo;
 	/**The declaration of the field as it is found witihn the code.*/
-	declaration : string;
+	fullDeclaration : string;
 }
 
 /**All the information relevant to the property.*/
@@ -192,6 +194,8 @@ export interface EventInfo {
 	modifier : string;
 	/**The information of the event's type.*/
 	typeInfo : QuickTypeInfo;
+	/**The attributes associated with the event.*/
+	attributes : AttributeInfo[];
 	/**The type the event is implemented in.*/
 	implementedType : QuickTypeInfo;
 	/**The information of the event's adding method.*/

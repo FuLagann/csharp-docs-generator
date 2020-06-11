@@ -10,9 +10,10 @@ import { readFile } from "./read-file";
 // External libraries
 import { DOMParser } from "xmldom";
 import markdownIt = require("markdown-it");
+import prism = require("markdown-it-prism");
 
 // Variables
-const md = markdownIt({ html: true });
+export const markdown = markdownIt({ html: true }).use(prism);
 const TEXT_CONTENTS : string[][] = [
 	["summary", "No description"],
 	["returns", ""],
@@ -55,10 +56,40 @@ export function getXmls(binaries : string[]) : string[] {
 	let results : string[] = [];
 	
 	for(let i = 0; i < binaries.length; i++) {
-		results.push(binaries[i].replace(/\.(dll|exe)/, ".xml").trim());
+		results.push(binaries[i].replace(/\.(dll|exe)$/, ".xml").trim());
 	}
 	
 	return results;
+}
+
+/**Creates a external link to the C# MSDN Library documentation of the given type.
+ * @param typePath {string} - The type path to create the link with.
+ * @returns Returns a link to the type found within the C# MSDN Library.*/
+export function createSystemLink(typePath : string) : string {
+	return `https://docs.microsoft.com/en-us/dotnet/api/${ typePath.toLowerCase() }`;
+}
+
+/**Creates an internal link to the given type.
+ * @param typePath {string} - The type path to create the link with.
+ * @return Returns a link to the type. If it's a dependent, then it will give a link to google,
+ * look up the type. It's not the best thing to do, but it's a viable option.*/
+export function createInternalLink(typePath : string) : string {
+	// Variables
+	const args : InputArguments = getArguments();
+	const list : TypeList = getTypeList();
+	
+	for(const key in list.types) {
+		// Variables
+		const value : string[] = list.types[key] as string[];
+		
+		for(let i = 0; i < value.length; i++) {
+			if(value[i] == typePath) {
+				return typePath.replace(/`/g, '-').replace(/\//g, '.').toLowerCase() + args.outputExtension;
+			}
+		}
+	}
+	
+	return `https://www.google.com/search?q=${ typePath.replace(/`/g, '-').replace(/\//g, ".").toLowerCase() }`;
 }
 
 /**Generates the documentation member from the given type path.
@@ -117,11 +148,9 @@ function gatherNameDescriptionList(members : (HTMLCollectionOf<Element> | NodeLi
 		// Variables
 		const name = members[i].getAttribute(attrName);
 		if(!name) { continue; }
-		let desc = (getTextContent(members[i], "No description")).trim();
+		let desc = trimTextContent(getTextContent(members[i], "No description"));
 		
-		if(desc != "" && !(desc.endsWith(".") || desc.endsWith('!') || desc.endsWith('?'))) { desc += "."; }
-		
-		results.push({ name: name, description: md.render(desc) });
+		results.push({ name: name, description: markdown.render(desc) });
 	}
 	
 	return results;
@@ -136,11 +165,27 @@ function getMarkdownTextContent(member : Element, id : string, defaultText : str
 	// Variables
 	const elems = member.getElementsByTagName(id);
 	if(elems.length == 0) { return defaultText; }
-	let desc = (getTextContent(elems[0], defaultText)).trim();
+	let desc = trimTextContent(getTextContent(elems[0], defaultText));
 	
-	if(desc != "" && !(desc.endsWith(".") || desc.endsWith('!') || desc.endsWith('?'))) { desc += "."; }
+	return markdown.render(desc);
+}
+
+/**Trims the text content to be friendly with markdown-it.
+ * @param content {string} - The content to trim.
+ * @returns Returns the trimmed text content.*/
+function trimTextContent(content : string) : string {
+	content = content.replace(/^[ ]{12}/gm, "");
+	content = content.trim();
+	if(content != "" && !(
+		content.endsWith(".") ||
+		content.endsWith("!") ||
+		content.endsWith("?") ||
+		content.endsWith("```")
+	)) {
+		content += ".";
+	}
 	
-	return md.render(desc);
+	return content;
 }
 
 /**Gets the text content from the given member.
@@ -193,34 +238,4 @@ function getTextContent(member : Element, defaultText : string) : string {
 	
 	
 	return results;
-}
-
-/**Creates a external link to the C# MSDN Library documentation of the given type.
- * @param typePath {string} - The type path to create the link with.
- * @returns Returns a link to the type found within the C# MSDN Library.*/
-function createSystemLink(typePath : string) : string {
-	return `https://docs.microsoft.com/en-us/dotnet/api/${ typePath.toLowerCase() }`;
-}
-
-/**Creates an internal link to the given type.
- * @param typePath {string} - The type path to create the link with.
- * @return Returns a link to the type. If it's a dependent, then it will give a link to google,
- * look up the type. It's not the best thing to do, but it's a viable option.*/
-function createInternalLink(typePath : string) : string {
-	// Variables
-	const args : InputArguments = getArguments();
-	const list : TypeList = getTypeList();
-	
-	for(const key in list.types) {
-		// Variables
-		const value : string[] = list.types[key] as string[];
-		
-		for(let i = 0; i < value.length; i++) {
-			if(value[i] == typePath) {
-				return typePath.replace(/`/g, '-').replace(/\//g, '.').toLowerCase() + args.outputExtension;
-			}
-		}
-	}
-	
-	return `https://www.google.com/search?q=${ typePath.replace(/`/g, '-').replace(/\//g, ".").toLowerCase() }`;
 }

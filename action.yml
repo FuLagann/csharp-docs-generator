@@ -30,6 +30,9 @@ inputs:
   template-uris-json:
     description: "The json to get all the template files used to generate the documentation."
     required: false
+  project-details-json:
+    description: "The json file that contains the details of the project, used for header and footer information."
+    required: false
   output-path:
     description: "The output path of the generated documents."
     required: false
@@ -41,9 +44,11 @@ inputs:
     description: "The message of the commit that the generation will perform."
     required: false
     default: "Automated creation of documentation"
-  amend-no-edit:
-    description: "Set to true if you want the generation to append itself to the latest commit instead of creating a new commit."
-    required: false
+  output-extension:
+    description: "The output extension that every file built will contain."
+    default: ".html"
+  include-private:
+    description: "Set to true to include all the privates types and members."
     default: false
   output-extension:
     description: "The output extension that every file built will contain."

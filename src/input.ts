@@ -19,14 +19,17 @@ export async function getInputs() : Promise<InputArguments> {
 	results.cleanUpTasks = splitString(core.getInput("cleanup-tasks") || "", ',');
 	results.binaries = splitString(core.getInput("binaries") || "", ",");
 	results.branchName = core.getInput("branch-name") || results.branchName;
-	results.amendNoEdit = Boolean(core.getInput("amend-no-edit") == "true" || results.amendNoEdit);
-	results.outputPath = core.getInput("output-path") || results.outputPath;
+	results.outputPath = (core.getInput("output-path") || results.outputPath).trim();
+	if(!results.outputPath.endsWith("/") || !results.outputPath.endsWith("\\")) {
+		results.outputPath += "/";
+	}
 	results.user.name = core.getInput("user-name") || results.user.name;
 	results.user.email = core.getInput("user-email") || results.user.email;
 	results.outputExtension = core.getInput("output-extension") || results.outputExtension;
 	results.includePrivate = Boolean(core.getInput("include-private") == "true" || results.includePrivate);
 	results.template = core.getInput("template") || results.template;
 	results.templatePath = core.getInput("template-uris-json") || results.templatePath;
+	results.projectDetails = core.getInput("project-details-json") || results.projectDetails;
 	console.log("Gathering template data.");
 	results.templateUris = await getTemplate(results.template, results.templateUris);
 	results.templateUris = gatherUris(results.templatePath, results.templateUris, results.templatePath);
@@ -45,21 +48,26 @@ async function getTemplate(templateID : string, defaultUris : TemplateUris) : Pr
 		const unzipLocation : string = await tools.extractZip(zipLocation, TEMP_FOLDER);
 		let template : TemplateUris = JSON.parse(readFile(`${ unzipLocation }/template.json`)) as TemplateUris;
 		
-		template.base = path.join(TEMP_FOLDER, template.base);
-		template.namespace = path.join(TEMP_FOLDER, template.namespace);
-		template.type = path.join(TEMP_FOLDER, template.type);
-		template.constructors = updatePath(TEMP_FOLDER, template.constructors);
-		template.fields = updatePath(TEMP_FOLDER, template.fields);
-		template.properties = updatePath(TEMP_FOLDER, template.properties);
-		template.events = updatePath(TEMP_FOLDER, template.events);
-		template.methods = updatePath(TEMP_FOLDER, template.methods);
-		template.localCss = updatePathForArray(TEMP_FOLDER, template.localCss);
-		template.localScripts = updatePathForArray(TEMP_FOLDER, template.localScripts);
-		template.globalCss = updatePathForArray(TEMP_FOLDER, template.globalCss);
-		template.globalScripts = updatePathForArray(TEMP_FOLDER, template.globalScripts);
+		template.base = path.join(TEMP_FOLDER, template.base || defaultUris.base);
+		template.namespace = path.join(TEMP_FOLDER, template.namespace || defaultUris.namespace);
+		template.type = path.join(TEMP_FOLDER, template.type || defaultUris.type);
+		template.header = path.join(TEMP_FOLDER, template.header || defaultUris.header);
+		template.footer = path.join(TEMP_FOLDER, template.footer || defaultUris.footer);
+		template.navigation = path.join(TEMP_FOLDER, template.navigation || defaultUris.navigation);
+		template.constructors = updatePath(TEMP_FOLDER, template.constructors || defaultUris.constructors);
+		template.fields = updatePath(TEMP_FOLDER, template.fields || defaultUris.fields);
+		template.properties = updatePath(TEMP_FOLDER, template.properties || defaultUris.properties);
+		template.events = updatePath(TEMP_FOLDER, template.events || defaultUris.events);
+		template.methods = updatePath(TEMP_FOLDER, template.methods || defaultUris.methods);
+		template.localCss = updatePathForArray(TEMP_FOLDER, template.localCss || defaultUris.localCss);
+		template.localScripts = updatePathForArray(TEMP_FOLDER, template.localScripts || defaultUris.localScripts);
+		template.localFiles = updatePathForArray(TEMP_FOLDER, template.localFiles || defaultUris.localFiles);
+		template.globalCss = updatePathForArray(TEMP_FOLDER, template.globalCss || defaultUris.globalCss);
+		template.globalScripts = updatePathForArray(TEMP_FOLDER, template.globalScripts || defaultUris.globalScripts);
 		
 		return template;
-	} catch {
+	} catch(e) {
+		console.log(e);
 		if(templateID == "default") { return defaultUris; }
 		return await getTemplate("default", defaultUris);
 	}
@@ -110,7 +118,7 @@ function getTemplateToolLocation(templateID : string) : string {
 	if(!templateID.endsWith(".zip")) { templateZip = templateID + ".zip"; }
 	
 	// TODO: Check whether or not this even exists. If it doesn't then resort to a default.
-	return `https://github.com/FuLagann/csharp-docs-generator/raw/${ branch }/packages/${ templateZip }`;
+	return `https://github.com/FuLagann/csharp-docs-generator/raw/${ branch }/packages/templates/${ templateZip }`;
 }
 
 /**Gathers all the uris needed for templating the documentation.
@@ -140,10 +148,19 @@ function gatherUris(templatePath : string, template : TemplateUris, yamlUri : st
 		yamlJson.localScripts,
 		template.localScripts
 	);
+	template.localFiles = getFilenames(
+		template.includeDefaultFiles,
+		basePath,
+		yamlJson.localFiles,
+		template.localFiles
+	);
 	template.globalCss = yamlJson.globalCss || [];
 	template.globalScripts = yamlJson.globalScripts || [];
 	template.namespace = getFilename(basePath, yamlJson.namespace, template.namespace);
 	template.type = getFilename(basePath, yamlJson.type, template.type);
+	template.header = getFilename(basePath, yamlJson.header, template.header);
+	template.footer = getFilename(basePath, yamlJson.footer, template.footer);
+	template.navigation = getFilename(basePath, yamlJson.navigation, template.navigation);
 	template.constructors = gatherCompactFullUri(basePath, template.constructors, yamlJson.constructors);
 	template.fields = gatherCompactFullUri(basePath, template.fields, yamlJson.fields);
 	template.properties = gatherCompactFullUri(basePath, template.properties, yamlJson.properties);

@@ -13,7 +13,7 @@ export class XmlFormat {
 	
 	constructor() {
 		this.type = "";
-		this.summary = "No description.";
+		this.summary = "<p>No description.</p>";
 		this.returns = "";
 		this.remarks = "";
 		this.example = "";
@@ -30,4 +30,28 @@ export class XmlFormat {
 			case "example": this.example = content; break;
 		}
 	}
+}
+
+export interface DependencyJson {
+	runtimeTarget : DependencyRuntimeTarget;
+	targets : { [key : string] : { [key : string] : DependencyTarget } }
+	libraries : { [key : string] : DependencyLibrary }
+}
+
+export interface DependencyRuntimeTarget {
+	name : string;
+	signiture : string;
+}
+
+export interface DependencyTarget {
+	dependencies : ({ [key : string] : string } | undefined);
+	runtime : ({ [key : string] : any } | undefined);
+}
+
+export interface DependencyLibrary {
+	type : string;
+	serviceable : boolean;
+	sha512 : string;
+	path : (string | undefined);
+	hasPath : (string | undefined);
 }

@@ -8,10 +8,12 @@ export interface TemplateUris {
 	base : string;
 	includeDefaultCss : boolean;
 	includeDefaultScripts : boolean;
+	includeDefaultFiles : boolean;
 	localCss : string[];
 	globalCss : string[];
 	localScripts : string[];
 	globalScripts : string[];
+	localFiles : string[];
 	namespace : string;
 	type : string;
 	constructors : CompactFullUris;
@@ -19,22 +21,36 @@ export interface TemplateUris {
 	properties : CompactFullUris;
 	events : CompactFullUris;
 	methods : CompactFullUris;
+	header : string;
+	footer : string;
+	navigation : string;
+}
+
+export interface ProjectDetails {
+	name : string | undefined;
+	version : string | undefined;
+	description : string | undefined;
+	license : string | undefined;
+	keywords : string | undefined;
+	team : string | undefined;
+	author : string | undefined;
+	copyrightYear : string | undefined;
+	favicon : string | undefined;
 }
 
 export class InputArguments {
 	buildTasks : string[];
 	cleanUpTasks : string[];
 	binaries : string[];
-	dependencies : string[];
 	commitMessage : string;
 	branchName : string;
-	amendNoEdit : boolean;
 	template : string;
 	templatePath : string;
 	templateUris : TemplateUris;
 	outputPath : string;
 	outputExtension : string;
 	includePrivate : boolean;
+	projectDetails : string;
 	user : {
 		name : string,
 		email : string
@@ -47,21 +63,26 @@ export class InputArguments {
 		this.commitMessage = "Automated creation of documentation";
 		this.outputPath = "docs/api/";
 		this.branchName = "";
-		this.amendNoEdit = false;
 		this.templatePath = "";
 		this.outputExtension = ".html";
 		this.includePrivate = false;
 		this.template = "default";
+		this.projectDetails = "";
 		this.templateUris = {
 			base: "",
 			includeDefaultCss: true,
 			includeDefaultScripts: true,
+			includeDefaultFiles: true,
 			globalCss: [],
 			localCss: [],
 			globalScripts: [],
 			localScripts: [],
+			localFiles: [],
 			namespace: "",
 			type: "",
+			navigation: "",
+			header: "",
+			footer: "",
 			constructors: {
 				compact: "",
 				full: ""
