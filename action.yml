@@ -12,6 +12,9 @@ inputs:
   binaries:
     description: "The list of binaries used to look into, must be named the same as the xml documentation."
     required: true
+  dependencies:
+    description: "The list of binaries or xmls that your program uses to depend on."
+    required: false
   user-name:
     description: "The name of the user who will commit."
     required: false
@@ -41,6 +44,12 @@ inputs:
     description: "The message of the commit that the generation will perform."
     required: false
     default: "Automated creation of documentation"
+  output-extension:
+    description: "The output extension that every file built will contain."
+    default: ".html"
+  include-private:
+    description: "Set to true to include all the privates types and members."
+    default: false
   output-extension:
     description: "The output extension that every file built will contain."
     default: ".html"
