@@ -1,6 +1,6 @@
 
 // Models
-import { InputArguments } from "./models/InputArguments";
+import { InputArguments, ProjectDetails } from "./models/InputArguments";
 import { TypeInfo, TypeList, FieldInfo, PropertyInfo, EventInfo, MethodInfo, QuickTypeInfo } from "./models/SharpChecker";
 import { SidebarView, NamespaceDetails } from "./models/TemplateApi";
 // External functionalities
@@ -29,7 +29,9 @@ export function getSidebarView() : SidebarView { return sidebarView; }
  * @param sidebar {SidebarView} - The new sidebar view to set.*/
 export function setSidebarView(sidebar : SidebarView) { sidebarView = sidebar; }
 
-export function getProjectDetails() : any { return projectDetails; }
+/**Gets the project details.
+ * @returns Returns the project details.*/
+export function getProjectDetails() : ProjectDetails { return projectDetails; }
 
 /**Generates the hmtl documentation, with the input arguments.
  * @param args {InputArguments} - The input arguments used for html documentation.*/
@@ -42,7 +44,7 @@ export async function generateHtmlDocumentation(args : InputArguments) {
 	let searchJs : string = path.join(TEMP_FOLDER, "js/search-types-members.js");
 	
 	if(args.projectDetails != "") {
-		projectDetails = JSON.parse(readFile(args.projectDetails));
+		projectDetails = JSON.parse(readFile(args.projectDetails)) as ProjectDetails;
 	}
 	
 	try { io.mkdirP(path.join(TEMP_FOLDER, "js/")); } catch {}

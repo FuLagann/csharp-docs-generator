@@ -1,4 +1,7 @@
 
+v0.14 includes:
+* Added default template in packages.
+
 v0.13 includes:
 * Removed prettier render to make html code look prettier, as a move to migrate that process as an input option.
 * Added namespace template compilation.

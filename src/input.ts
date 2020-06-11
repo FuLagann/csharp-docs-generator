@@ -44,13 +44,9 @@ async function getTemplate(templateID : string, defaultUris : TemplateUris) : Pr
 	try {
 		// Variables
 		const toolLocation : string = getTemplateToolLocation(templateID);
-		console.log(`Tool Location: ${ toolLocation }`);
 		const zipLocation : string = await tools.downloadTool(toolLocation);
-		console.log(`Zip Location: ${ zipLocation }`);
 		const unzipLocation : string = await tools.extractZip(zipLocation, TEMP_FOLDER);
-		console.log(`Unzip Location: ${ unzipLocation }`);
 		let template : TemplateUris = JSON.parse(readFile(`${ unzipLocation }/template.json`)) as TemplateUris;
-		console.log(`Template: ${ template }`);
 		
 		template.base = path.join(TEMP_FOLDER, template.base || defaultUris.base);
 		template.namespace = path.join(TEMP_FOLDER, template.namespace || defaultUris.namespace);

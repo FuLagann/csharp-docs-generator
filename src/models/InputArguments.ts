@@ -26,6 +26,18 @@ export interface TemplateUris {
 	navigation : string;
 }
 
+export interface ProjectDetails {
+	name : string | undefined;
+	version : string | undefined;
+	description : string | undefined;
+	license : string | undefined;
+	keywords : string | undefined;
+	team : string | undefined;
+	author : string | undefined;
+	copyrightYear : string | undefined;
+	favicon : string | undefined;
+}
+
 export class InputArguments {
 	buildTasks : string[];
 	cleanUpTasks : string[];
