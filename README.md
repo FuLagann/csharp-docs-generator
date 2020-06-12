@@ -1,133 +1,87 @@
 
 # C# Documentation Generator
 
-A GitHub action that generates html documentation for C# projects.
+This action generates a static html documentation for C# projects. It will create documentation within the repository and commit it once it's finished generating.
+
+**NOTE: This project will delete the folder listed under the `output-path` input. This is to delete old API content that no longer exists, but make sure to change the `output-path` variable is changed to an directory that won't delete files unnecessarily!**
 
 ## Inputs
 
-**`build-tasks`:** The list of commands used to build the project prior to generating html documents. **(REQUIRED).**
+**`binaries` as (string[]):** The list of binaries used to look into, must be named the same as the xml documentation. The list is separated by commas. **(Required)**
 
-**`binaries`:** The list of binaries used to look into, must be named the same as the xml documentation. **(REQUIRED).**
+**`branch-name` as (string):** The name of the branch that the generation will commit to (if not specified it will commit to the current branch).
 
-**`output-path`:** The output path of the generated documents. *(Default: `docs/api`).*
+**`build-tasks` as (string[]):** The list of commands used to build the project prior to generating html documents. The list is separated by commas. **(Required)**
 
-**`cleanup-tasks`:** The list of commands used to clean up any building of project after generating html documents.
+**`cleanup-tasks` as (string[]):** The list of commands used to clean up any building of project after generating html documents.The list is separated by commas.
 
-**`user-name`:** The name of the user who will commit. *(Default: `C# Document Generator`).*
+**`commit-message` as (string):** The message of the commit that the generation will perform. *(Default: "Automated creation of documentation")*
 
-**`user-email`:** The email of the user who will commit. *(Default: `csharp.doc.gen@gmail.com`).*
+**`include-private` as (boolean):** Set to true to include all the privates types and members. *(Default: false)*
 
-**`template-json`:** The json to get all the template files used to generate the documentation.
+**`project-details-json` as (string):** The json file that contains the details of the project, used for header and footer information.
 
-**`branch-name`:** The name of the branch that the generation will commit to (if not specified it will commit to the current branch).
+**`template` as (string):** The name of the template to use to generate the webpages from. *(Default: "default")*
 
-**`commit-message`:** The message of the commit that the generation will perform. *(Default: `Automated creation of documentation`).*
+**`template-uris-json` as (string):** The json to get all the template files used to generate the documentation.
 
-**`amend-no-edit`:** Set to true if you want the generation to append itself to the latest commit instead of creating a new commit. *(Default: `false`).*
+**`output-extension` as (string):** The output extension that every file built will contain. *(Default: ".html")*
 
-**`output-extension`:** The output extension that every file built will contain. *(Default: `.html`).*
+**`output-path` as (string):** The output path of the generated documents. *(Default: "docs/api/")*
 
-**`include-private`:** Set to true to include all the privates types and members. *(Default: `false`).*
+**`user-email` as (string):** The email of the user who will commit. *(Default: "csharp.doc.gen@gmail.com")*
 
-<details>
-<summary>Example yml</summary>
-<p>
+**`user-name` as (string):** The name of the user who will commit. *(Default: "C# Document Generator")*
 
-```yml
-on: [push]
-jobs:
-  generate-docs:
-    runs-on: ubuntu-latest
-    name: Generate Docs
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Buidling Docs
-        uses: FuLagann/csharp-docs/generator
-        id: generate-docs
-        with:
-          build-tasks: dotnet build -c Release -f netcoreapp3.1 src/Module1/Module1.csproj, dotnet build -c Debug -f netcoreapp3.1 src/Module2/Module2.csproj
-          binaries: src/Module1/bin/Release/netcoreapp3.1/Module1.dll, src/Module2/bin/Release/netcoreapp3.1/Module2.dll
-          output-path: docs/api/
-          template-json: docs/_template/template.json
-          branch-name: api-docs
-          commit-message: Automatically generated API docs
-          amend-no-edit: false
-          user-email: john.doe@email.com
-          user-name: John Doe
-          cleanup-tasks: dotnet clean, rm -r -f src/Module1/bin
-```
+## Formats
 
-</p>
-</details>
+There are various JSON formats to follow for various inputs, the following links will take you to a wiki where it describes it's specific format:
 
-## Template JSON Format
+* `project-details-json`
+* `template-uris-json`
+* Template API
+* Navigation Template API
+* Namespace Template API
+* Header Template API
+* Footer Template API
+* Base Template API
+* Type Template API
+* Field Template API
+* Property Template API
+* Event Template API
+* Constructor Template API
+* Method Template API
 
-### CompactFullUris
+## Using Templates
 
-An object used to give the compact and full versions of a member's information.
+The action uses premade templates to create web pages with themes without extra work from the end-user. This is done by setting the `template` variable to a known name of a template or a public link to a premade template. The following are the known-named templates that the action currently uses:
 
-**`compact` as (string):** The file location (local to the location of the template.json) or URL to the handlebars html template for a compact view of the member, used to give the user a quick view of what the member has in store.
+* default
 
-**`full` as (string):** The file location (local to the location of the template.json) or URL to the handlebars html template for a full view of the member, used to give the user a detailed view of what the member is.
+The following are templates that are in the works of being implemented:
 
-### TemplateJson
+* default-light
+* default-dark
+* architect
+* cayman
+* dinky
+* hacker
+* leap-day
+* merlot
+* midnight
+* minima
+* minimal
+* modernist
+* slate
+* tactile
+* time-machine
 
-The template JSON that contains all the file locations (relative to the template.json) / URLs used for templating and compiling together the documentation that will be generated for the API's documentation.
+If you would like to use your own premade template, then just place a public link to the template and the action will promptly use that template.
 
-**`baseUri` as (string):** The file location (local to the location of the template.json) or URL to the handlebars html template for the base view where everything will be rendered on top of.
+## Creating Your Own Templates
 
-**`cssUris` as (string[]):** The file locations (local to the html documents) or URLs to any CSS for the html documentation.
+If you would like to create your own template, please follow the wiki guide on creating your own.
 
-**`scriptUris` as (string[]):** The file locations (local to the html documents) or URLs to any javascript scripts for the html documentation.
+## License
 
-**`namespaceUri` as (string):** The file location (local to the location of the template.json) or URL to the handlebars template view of the namespace that will contain links to the contained types.
-
-**`typeUri` as (string):** The file location (local to the location of the template.json) or URL to the handlebars template view of the type that will contain links and views to it's contained members.
-
-**`constructorsUri` as ([CompactFullUris](#compactfulluris)).** The file locations (local to the location of the template.json) or URLs to the handlebars template view of the constructors' compact and full view.
-
-**`fieldsUri` as ([CompactFullUris](#compactfulluris)).** The file locations (local to the location of the template.json) or URLs to the handlebars template view of the fields' compact and full view.
-
-**`propertiesUri` as ([CompactFullUris](#compactfulluris)).** The file locations (local to the location of the template.json) or URLs to the handlebars template view of the properties' compact and full view.
-
-**`eventsUri` as ([CompactFullUris](#compactfulluris)).** The file locations (local to the location of the template.json) or URLs to the handlebars template view of the events' compact and full view.
-
-**`methodsUri` as ([CompactFullUris](#compactfulluris)).** The file locations (local to the location of the template.json) or URLs to the handlebars template view of the methods' compact and full view.
-
-<details>
-<summary>Example JSON</summary>
-<p>
-
-```json
-{
-    "baseUri": "base.hbs",
-    "cssUris": ["css/main.css", "css/api.css"],
-    "scriptUris": [],
-    "namespaceUri": "namespace.hbs",
-    "typeUri": "type.hbs",
-    "constructorsUri": {
-        "compact": "constructor-compact.hbs",
-        "full": "constructor-full.hbs"
-    },
-    "fieldsUri": {
-        "compact": "field-compact.hbs",
-        "full": "field-full.hbs"
-    },
-    "propertiesUri": {
-        "compact": "property-compact.hbs",
-        "full": "property-full.hbs"
-    },
-    "eventsUri": {
-        "compact": "event-compact.hbs",
-        "full": "event-full.hbs"
-    },
-    "methodsUri": {
-        "compact": "method-compact.hbs",
-        "full": "method-full.hbs"
-    }
-}
-```
-
-</p>
-</details>
+This project uses an [MIT](LICENSE) license that grants people to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies.
