@@ -26,15 +26,25 @@ export interface TemplateUris {
 	navigation : string;
 }
 
+/**The details of the project used for templates.*/
 export interface ProjectDetails {
+	/**The name of the project, normally the name of the repository.*/
 	name : string | undefined;
+	/**The version of the project.*/
 	version : string | undefined;
+	/**A short description of the project, normally place right underneath the name of the project in the header.*/
 	description : string | undefined;
+	/**The license of the project, normally a string that mentions and links to the license.*/
 	license : string | undefined;
-	keywords : string | undefined;
+	/**A list of keywords that are used for the meta data of each web page.*/
+	keywords : string[] | undefined;
+	/**The name of the team that worked on this project, omitting this will normally make the template use the `author` member instead.*/
 	team : string | undefined;
+	/**The name of the author(s) that worked on this project.*/
 	author : string | undefined;
+	/**A string that contains the copyright year, which can look like "2020" or "2014 - 2020".*/
 	copyrightYear : string | undefined;
+	/**A link to a thumbnail for use of the web page's icon thumbnail.*/
 	favicon : string | undefined;
 }
 

@@ -37,7 +37,7 @@ This action generates a static html documentation for C# projects. It will creat
 
 There are various JSON formats to follow for various inputs, the following links will take you to a wiki where it describes it's specific format:
 
-* `project-details-json`
+* [project-details-json](https://github.com/FuLagann/csharp-docs-generator/wiki/Project-Details-JSON-Format)
 * `template-uris-json`
 * Template API
 * Navigation Template API
