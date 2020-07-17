@@ -38,19 +38,20 @@ This action generates a static html documentation for C# projects. It will creat
 There are various JSON formats to follow for various inputs, the following links will take you to a wiki where it describes it's specific format:
 
 * [project-details-json](https://github.com/FuLagann/csharp-docs-generator/wiki/Project-Details-JSON-Format)
-* `template-uris-json`
-* Template API
-* Navigation Template API
-* Namespace Template API
-* Header Template API
-* Footer Template API
-* Base Template API
-* Type Template API
-* Field Template API
-* Property Template API
-* Event Template API
-* Constructor Template API
-* Method Template API
+* [template-uris-json](https://github.com/FuLagann/csharp-docs-generator/wiki/Template-URIs-JSON-Format)
+* [Template API](https://github.com/FuLagann/csharp-docs-generator/wiki/Template-API#base-namespace-template-api)
+* [Template API Helper Functions](https://github.com/FuLagann/csharp-docs-generator/wiki/Template-API-Helper-Functions)
+* [Base (Namespace) Template API](https://github.com/FuLagann/csharp-docs-generator/wiki/Template-API#base-namespace-template-api)
+* [Base (Type) Template API](https://github.com/FuLagann/csharp-docs-generator/wiki/Template-API#base-type-template-api)
+* [Event Template API](https://github.com/FuLagann/csharp-docs-generator/wiki/Template-API#event-template-api)
+* [Field Template API](https://github.com/FuLagann/csharp-docs-generator/wiki/Template-API#field-template-api)
+* [Footer Template API](https://github.com/FuLagann/csharp-docs-generator/wiki/Template-API#footer-template-api)
+* [Header Template API](https://github.com/FuLagann/csharp-docs-generator/wiki/Template-API#header-template-api)
+* [Method Template API](https://github.com/FuLagann/csharp-docs-generator/wiki/Template-API#method-template-api)
+* [Namespace Template API](https://github.com/FuLagann/csharp-docs-generator/wiki/Template-API#namespace-template-api)
+* [Navigation Template API](https://github.com/FuLagann/csharp-docs-generator/wiki/Template-API#navigation-template-api)
+* [Property Template API](https://github.com/FuLagann/csharp-docs-generator/wiki/Template-API#property-template-api)
+* [Type Template API](https://github.com/FuLagann/csharp-docs-generator/wiki/Template-API#type-template-api)
 
 ## Using Templates
 
@@ -78,9 +79,13 @@ The following are templates that are in the works of being implemented:
 
 If you would like to use your own premade template, then just place a public link to the template and the action will promptly use that template.
 
+## Customizing the Template
+
+If you would like to override and customize parts of the premade template you are using, please follow the [wiki guide on customizing the template](https://github.com/FuLagann/csharp-docs-generator/wiki/Customizing-the-Template).
+
 ## Creating Your Own Templates
 
-If you would like to create your own template, please follow the wiki guide on creating your own.
+If you would like to create your own template, please follow the [wiki guide on creating your own template](https://github.com/FuLagann/csharp-docs-generator/wiki/Creating-Your-Own-Premade-Template).
 
 ## License
 

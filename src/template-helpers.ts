@@ -1,7 +1,7 @@
 
 // Models
 import { FieldInfo, PropertyInfo, EventInfo, MethodInfo, QuickTypeInfo, ParameterInfo } from "./models/SharpChecker";
-import { NamespaceDetails, SidebarView, TemplateApiItems, ParameterNameDescription } from "./models/TemplateApi";
+import { NamespaceDetails, SidebarView, XmlDocItems, ParameterNameDescription } from "./models/TemplateApi";
 // External functionalities
 import { readFile } from "./read-file";
 import { createSystemLink, createInternalLink } from "./read-xml";
@@ -11,7 +11,7 @@ import ejs = require("ejs");
 
 /**Capitalizes the given string, turning hello-world to Hello World.
  * @param val {string} - The value used to capitalize.
- * @returns Returns the capitalized string*/
+ * @returns Returns the capitalized string.*/
 export function capitalize(val : string) : string {
 	return val.replace(/(?:^|\s|-)\w/g, function(v : string) {
 		return v.toUpperCase();
@@ -131,7 +131,10 @@ export function getParameterType(parameters : ParameterInfo[], name : string) : 
 }
 
 /**Generates the html code for the sidebar tree view.
- * @returns Returns the html code for the sidebar tree view*/
+ * @param treeview {SidebarView | SidebarView[]} - The sidebar tree view to traverse through and generate with.
+ * @param treeviewClass {string} - The class name for the top view of the list items. Defaults to "treeview".
+ * @param nestedviewClass {string} - The class name for the nested view of the list items. Defaults to "nested".
+ * @returns Returns the html code for the sidebar tree view.*/
 export function generateSidebar(
 	treeview : (SidebarView | SidebarView[]),
 	treeviewClass : string = "treeview",
@@ -174,9 +177,9 @@ export function generateSidebar(
 
 /**Finds if the given parameter's type is a generic type.
  * @param parameter {ParameterNameDescription} - The parameter to look into.
- * @param xmlDocs {TemplateApiItems} - The api docs to look into.
+ * @param xmlDocs {XmlDocItems} - The xml docs to look into.
  * @returns Returns true if the parameter's type is generic.*/
-export function isGenericType(parameter : ParameterNameDescription, xmlDocs : TemplateApiItems) : boolean {
+export function isGenericType(parameter : ParameterNameDescription, xmlDocs : XmlDocItems) : boolean {
 	if(!xmlDocs.typeParameters.exists) { return false; }
 	
 	// Variables
