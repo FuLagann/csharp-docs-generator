@@ -1,7 +1,7 @@
 
 name: "C# Documentation Generator"
 author: "Paul Gonzalez-Becerra"
-description: "A GitHub action that generates html documentation for C# projects."
+description: "This action generates a static html documentation for C# projects. "
 inputs:
   build-tasks:
     description: "The list of commands used to build the project prior to generating html documents."
@@ -12,9 +12,6 @@ inputs:
   binaries:
     description: "The list of binaries used to look into, must be named the same as the xml documentation."
     required: true
-  dependencies:
-    description: "The list of binaries or xmls that your program uses to depend on."
-    required: false
   user-name:
     description: "The name of the user who will commit."
     required: false
@@ -36,7 +33,7 @@ inputs:
   output-path:
     description: "The output path of the generated documents."
     required: false
-    default: docs/api/
+    default: "docs/api/"
   branch-name:
     description: "The name of the branch that the generation will commit to (if not specified it will commit to the current branch)."
     required: false
@@ -46,12 +43,7 @@ inputs:
     default: "Automated creation of documentation"
   output-extension:
     description: "The output extension that every file built will contain."
-    default: ".html"
-  include-private:
-    description: "Set to true to include all the privates types and members."
-    default: false
-  output-extension:
-    description: "The output extension that every file built will contain."
+    required: false
     default: ".html"
   include-private:
     description: "Set to true to include all the privates types and members."
