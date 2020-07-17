@@ -2,7 +2,7 @@
 // Models
 import { InputArguments } from "./models/InputArguments";
 import { TypeInfo, FieldInfo, PropertyInfo, EventInfo, MethodInfo, QuickTypeInfo, ParameterInfo, GenericParametersInfo } from "./models/SharpChecker";
-import { NamespaceDetails, TemplateApiItems, TemplateApiUris, MemberList, NameDescription, ParameterNameDescription, GenericParameterNameDescription } from "./models/TemplateApi";
+import { NamespaceDetails, XmlDocItems, TemplateApiUris, MemberList, NameDescription, ParameterNameDescription, GenericParameterNameDescription } from "./models/TemplateApi";
 import { SidebarView } from "./models/TemplateApi";
 import { XmlFormat } from "./models/XmlFormat";
 // External functionality
@@ -49,7 +49,8 @@ export async function compileBase(args : InputArguments, typePath : string) : Pr
 			},
 			isNamespace: false,
 			typePath: typePath,
-			breadcrumbs: generatedTypeJson.typeInfo.fullName.split('.'),
+			outputExtension: args.outputExtension,
+			// breadcrumbs: generatedTypeJson.typeInfo.fullName.split('.'),
 			createPartial: Helper.createPartial,
 			capitalize: Helper.capitalize,
 			getIdFrom: Helper.getIdFrom,
@@ -84,10 +85,10 @@ export async function compileBaseNamespace(args : InputArguments, namespace : st
 				namespace: args.templateUris.namespace
 			},
 			isNamespace: true,
-			namespaceName: namespace,
 			types: types,
 			typePath: namespace,
-			breadcrumbs: namespace.split('.'),
+			outputExtension: args.outputExtension,
+			// breadcrumbs: namespace.split('.'),
 			createPartial: Helper.createPartial,
 			capitalize: Helper.capitalize,
 			getIdFrom: Helper.getIdFrom,
@@ -190,11 +191,6 @@ export function compileNamespace(filename : string, context : { namespacePath : 
 			uris: {
 				css: getRelativeLinks("css/", args.templateUris.localCss || [], args.templateUris.globalCss || []),
 				scripts: getRelativeLinks("js/", args.templateUris.localScripts || [], args.templateUris.globalScripts || []),
-				constructors: args.templateUris.constructors,
-				fields: args.templateUris.fields,
-				properties: args.templateUris.properties,
-				events: args.templateUris.events,
-				methods: args.templateUris.methods
 			},
 			types: context.types,
 			namespacePath: context.namespacePath,
@@ -218,7 +214,7 @@ export function compileType(filename : string, typePath : string) : string {
 	const args : InputArguments = getArguments();
 	const xmlFormat = getApiDoc(`T:${ typePath }`, getDependencies());
 	const details = generatedTypeJson;
-	const xmlApi : TemplateApiItems = getApiItems(xmlFormat, details);
+	const xmlApi : XmlDocItems = getApiItems(xmlFormat, details);
 	const uris = {
 		constructors: args.templateUris.constructors,
 		fields: args.templateUris.fields,
@@ -245,6 +241,7 @@ export function compileType(filename : string, typePath : string) : string {
 			codeDeclaration: getMarkdownCodeDeclaration(details),
 			uris: uris,
 			members: members,
+			outputExtension: args.outputExtension,
 			createPartial: Helper.createPartial,
 			capitalize: Helper.capitalize,
 			getIdFrom: Helper.getIdFrom,
@@ -265,7 +262,7 @@ export function compileField(filename : string, details : FieldInfo) {
 	// Variables
 	const typePath = getTypePath(details.implementedType, details.name);
 	const xmlFormat = getApiDoc(`F:${ typePath }`, getDependencies());
-	const xmlApi : TemplateApiItems = getApiItems(xmlFormat, details);
+	const xmlApi : XmlDocItems = getApiItems(xmlFormat, details);
 	
 	return ejs.render(
 		readFile(filename).replace(/\s+\n/gm, "\n").replace(/\t/gm, "  ").trim(),
@@ -293,7 +290,7 @@ export function compilePropety(filename : string, details : PropertyInfo) {
 	// Variables
 	const typePath = getPropertyTypePath(details);
 	const xmlFormat = getApiDoc(`P:${ typePath }`, getDependencies());
-	const xmlApi : TemplateApiItems = getApiItems(xmlFormat, details);
+	const xmlApi : XmlDocItems = getApiItems(xmlFormat, details);
 	
 	return ejs.render(
 		readFile(filename).replace(/\s+\n/gm, "\n").replace(/\t/gm, "  ").trim(),
@@ -321,7 +318,7 @@ export function compileEvent(filename : string, details : EventInfo) {
 	// Variables
 	const typePath = getTypePath(details.implementedType, details.name);
 	const xmlFormat = getApiDoc(`E:${ typePath }`, getDependencies());
-	const xmlApi : TemplateApiItems = getApiItems(xmlFormat, details);
+	const xmlApi : XmlDocItems = getApiItems(xmlFormat, details);
 	
 	return ejs.render(
 		readFile(filename).replace(/\s+\n/gm, "\n").replace(/\t/gm, "  ").trim(),
@@ -349,7 +346,7 @@ export function compileMethod(filename : string, details : MethodInfo) {
 	// Variables
 	const typePath = getMethodTypePath(details);
 	const xmlFormat = getApiDoc(`M:${ typePath }`, getDependencies());
-	const xmlApi : TemplateApiItems = getApiItems(xmlFormat, details);
+	const xmlApi : XmlDocItems = getApiItems(xmlFormat, details);
 		
 	return ejs.render(
 		readFile(filename).replace(/\s+\n/gm, "\n").replace(/\t/gm, "  ").trim(),
@@ -517,7 +514,7 @@ function getTypePath(typeInfo : QuickTypeInfo, name : string) : string {
 /**Gets the api documentation items to be used by the template.
  * @param format {XmlFormat|undefined} - The format used to get the documentation from.
  * @return Returns the api documentation items.*/
-function getApiItems(format : (XmlFormat | undefined), details : (TypeInfo | MethodInfo | PropertyInfo | EventInfo | FieldInfo)) : TemplateApiItems {
+function getApiItems(format : (XmlFormat | undefined), details : (TypeInfo | MethodInfo | PropertyInfo | EventInfo | FieldInfo)) : XmlDocItems {
 	if(format == undefined) { format = new XmlFormat(); }
 	
 	return {
