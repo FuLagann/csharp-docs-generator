@@ -17,16 +17,18 @@ import tools = require("@actions/tool-cache");
 export async function downloadDependencyXmls(binaries : string[])  : Promise<string[]> {
 	// Variables
 	let results : string[] = [];
-	let temp : string[];
+	let temp : string[] = [];
+	let tempXml : string[];
 	let dependencies : DependencyJson;
 	let depsJson : string;
 	
 	for(let i = 0; i < binaries.length; i++) {
 		depsJson = binaries[i].replace(/\.(dll|exe)/, ".deps.json").trim();
 		dependencies = JSON.parse(readFile(depsJson, "{}")) as DependencyJson;
-		temp = await downloadDependencies(dependencies);
-		temp = removeDuplicates(results, temp);
-		results = results.concat(temp);
+		temp = await downloadDependencies(dependencies, temp);
+		tempXml = getXmls(temp);
+		tempXml = removeDuplicates(results, temp);
+		results = results.concat(tempXml);
 	}
 	
 	return results;
@@ -54,8 +56,9 @@ function removeDuplicates(results : string[], temp : string[]) : string[] {
 
 /**Downloads the dependencies from the dependency json file.
  * @param dependencies {DependencyJson} - The dependency json to look through.
+ * @param prevDependencies {string[]} - The list of previous dependencies to check for any dependencies.
  * @returns Returns the list of dependency xmls.*/
-async function downloadDependencies(dependencies : DependencyJson) : Promise<string[]> {
+async function downloadDependencies(dependencies : DependencyJson, prevDependencies : string[]) : Promise<string[]> {
 	// Variables
 	let target : string = dependencies.runtimeTarget.name;
 	let targ : DependencyTarget;
@@ -95,6 +98,10 @@ async function downloadDependencies(dependencies : DependencyJson) : Promise<str
 		if(dependencies.libraries[deps[i]]) {
 			lib = dependencies.libraries[deps[i]];
 			
+			if(prevDependencies.indexOf(path.join(unzipLocation, deps[i])) != -1) {
+				continue;
+			}
+			
 			if(lib.type == "project" || !lib.serviceable) {
 				continue;
 			}
@@ -117,5 +124,5 @@ async function downloadDependencies(dependencies : DependencyJson) : Promise<str
 		}
 	}
 	
-	return getXmls(results);
+	return results;
 }

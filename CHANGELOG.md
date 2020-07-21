@@ -2,6 +2,7 @@
 v1.0 includes:
 * Moved default.zip template to packages/templates
 * Updated README to detail how to use action.
+* Updated download dependencies to not download the same libraries from dependencies.
 
 v0.14 includes:
 * Added default template in packages.
