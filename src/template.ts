@@ -190,7 +190,7 @@ export function compileNamespace(filename : string, context : { namespacePath : 
 		{
 			uris: {
 				css: getRelativeLinks("css/", args.templateUris.localCss || [], args.templateUris.globalCss || []),
-				scripts: getRelativeLinks("js/", args.templateUris.localScripts || [], args.templateUris.globalScripts || [])
+				scripts: getRelativeLinks("js/", args.templateUris.localScripts || [], args.templateUris.globalScripts || []),
 			},
 			types: context.types,
 			namespacePath: context.namespacePath,

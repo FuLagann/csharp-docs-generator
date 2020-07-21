@@ -115,7 +115,7 @@ function getTemplateToolLocation(templateID : string) : string {
 		branch = templateID.substring(index + 1);
 	}
 	
-	if(!templateID.endsWith(".zip")) { templateZip = templateID + ".zip"; }
+	if(!templateZip.endsWith(".zip")) { templateZip = templateZip + ".zip"; }
 	
 	// TODO: Check whether or not this even exists. If it doesn't then resort to a default.
 	return `https://github.com/FuLagann/csharp-docs-generator/raw/${ branch }/packages/templates/${ templateZip }`;
