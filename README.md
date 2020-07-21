@@ -45,10 +45,13 @@ This action generates a static html documentation for C# projects. It will creat
 
 ## Sample Build YAML
 
-Below is a sample `build.yml` for generating documentation. If you want to copy and paste, then replace the `binaries`, `user-email`, and `user-name` inputs to something that is more accurate to you. Along with creating a `project-details.json`, that [can be found how to do in the wiki](https://github.com/FuLagann/csharp-docs-generator/wiki/Project-Details-JSON-Format).
+Below is a sample `build.yml` for generating documentation. If you want to copy and paste, then replace the `binaries`, `user-email`, and `user-name` inputs to something that is more accurate to you. Along with creating a `project-details.json`, that [can be found how to do in the wiki](https://github.com/FuLagann/csharp-docs-generator/wiki/Project-Details-JSON-Format). It is also recommended that the creation of documentation is only for pushing to master (when stable finalized code is being pushed).
 
 ```yml
-on: [push]
+on:
+  push:
+	branches:
+	  - master
 
 jobs:
   generate-docs:
