@@ -52,7 +52,6 @@ on:
   push:
     branches:
       - master
-
 jobs:
   generate-docs:
     runs-on: windows-latest

@@ -2,7 +2,7 @@
 // Models
 import { DependencyJson, DependencyTarget, DependencyLibrary } from "./models/XmlFormat";
 // External functionalities
-import { TEMP_FOLDER } from "./index";
+import { TEMP_FOLDER, generateUuid } from "./index";
 import { readFile } from "./read-file";
 import { getXmls } from "./read-xml";
 // External libraries
@@ -17,16 +17,18 @@ import tools = require("@actions/tool-cache");
 export async function downloadDependencyXmls(binaries : string[])  : Promise<string[]> {
 	// Variables
 	let results : string[] = [];
-	let temp : string[];
+	let temp : string[] = [];
+	let tempXml : string[];
 	let dependencies : DependencyJson;
 	let depsJson : string;
 	
 	for(let i = 0; i < binaries.length; i++) {
 		depsJson = binaries[i].replace(/\.(dll|exe)/, ".deps.json").trim();
 		dependencies = JSON.parse(readFile(depsJson, "{}")) as DependencyJson;
-		temp = await downloadDependencies(dependencies);
-		temp = removeDuplicates(results, temp);
-		results = results.concat(temp);
+		temp = await downloadDependencies(dependencies, temp);
+		tempXml = getXmls(temp);
+		tempXml = removeDuplicates(results, temp);
+		results = results.concat(tempXml);
 	}
 	
 	return results;
@@ -54,8 +56,9 @@ function removeDuplicates(results : string[], temp : string[]) : string[] {
 
 /**Downloads the dependencies from the dependency json file.
  * @param dependencies {DependencyJson} - The dependency json to look through.
+ * @param prevDependencies {string[]} - The list of previous dependencies to check for any dependencies.
  * @returns Returns the list of dependency xmls.*/
-async function downloadDependencies(dependencies : DependencyJson) : Promise<string[]> {
+async function downloadDependencies(dependencies : DependencyJson, prevDependencies : string[]) : Promise<string[]> {
 	// Variables
 	let target : string = dependencies.runtimeTarget.name;
 	let targ : DependencyTarget;
@@ -107,15 +110,24 @@ async function downloadDependencies(dependencies : DependencyJson) : Promise<str
 				if(libPath == "") { continue; }
 				libPath = `https://www.nuget.org/api/v2/package/${ libPath }`;
 				try { await io.mkdirP(extractPath); } catch {}
-				zipLocation = await tools.downloadTool(libPath);
-				unzipLocation = await tools.extractZip(zipLocation, extractPath);
-				list = runtimes.get(deps[i]) || [];
-				for(let j = 0; j < list.length; j++) {
-					results.push(path.join(unzipLocation, list[j]));
+				try {
+					zipLocation = await tools.downloadTool(libPath);
+					unzipLocation = await tools.extractZip(zipLocation, extractPath);
+					list = runtimes.get(deps[i]) || [];
+					for(let j = 0; j < list.length; j++) {
+						results.push(path.join(
+							unzipLocation,
+							generateUuid(),
+							list[j]
+						));
+					}
+				}
+				catch(error) {
+					console.log(error);
 				}
 			}
 		}
 	}
 	
-	return getXmls(results);
+	return results;
 }

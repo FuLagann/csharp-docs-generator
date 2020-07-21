@@ -19,7 +19,7 @@ import { downloadDependencyXmls } from "./read-deps-json";
 /**The list of files to artifact.*/
 export let artifactFiles : string[] = [];
 /**The temp folder where everything tool related will be placed (this is get completed deleted once completed)*/
-export const TEMP_FOLDER = "__temp/";
+export const TEMP_FOLDER = `__temp-${ generateUuid() }/`;
 /**The list of xmls used for netstandard documentation (it's chopped up into parts because it's such a huge file).*/
 export let NETSTANDARD_XMLS : string[]= [];
 const NETSTANDARD_API = "https://github.com/FuLagann/csharp-docs-generator/raw/paulsbranch/packages/netstandard.zip";
@@ -45,6 +45,21 @@ export function getDependencies() : string[] { return dependencies; }
 /**Gets the list of types to look into.
  * @returns Returns the list of types to look into.*/
 export function getTypeList() : TypeList { return typeList; }
+
+/**Generates a UUID (Unique User ID).
+ * @returns Returns a randomly generated UUID.*/
+export function generateUuid() {
+	return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(chr) {
+		// Variables
+		let rng = Math.random() * 16 | 0;
+		let variable = (chr == 'x' ?
+			rng :
+			(rng & 0x3 | 0x8)
+		);
+		
+		return variable.toString(16);
+	})
+}
 
 /**Catches any error and reports the action as a failed aciton*/
 async function onError(error : Error) {
