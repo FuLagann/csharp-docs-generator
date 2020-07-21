@@ -50,8 +50,8 @@ Below is a sample `build.yml` for generating documentation. If you want to copy 
 ```yml
 on:
   push:
-	branches:
-	  - master
+    branches:
+      - master
 
 jobs:
   generate-docs:
