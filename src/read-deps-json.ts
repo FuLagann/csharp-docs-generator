@@ -110,20 +110,20 @@ async function downloadDependencies(dependencies : DependencyJson, prevDependenc
 				if(libPath == "") { continue; }
 				libPath = `https://www.nuget.org/api/v2/package/${ libPath }`;
 				try { await io.mkdirP(extractPath); } catch {}
-				zipLocation = await tools.downloadTool(libPath);
-				unzipLocation = await tools.extractZip(zipLocation, extractPath);
-				list = runtimes.get(deps[i]) || [];
-				for(let j = 0; j < list.length; j++) {
-					console.log(path.join(
-						unzipLocation,
-						generateUuid(),
-						list[j]
-					));
-					results.push(path.join(
-						unzipLocation,
-						generateUuid(),
-						list[j]
-					));
+				try {
+					zipLocation = await tools.downloadTool(libPath);
+					unzipLocation = await tools.extractZip(zipLocation, extractPath);
+					list = runtimes.get(deps[i]) || [];
+					for(let j = 0; j < list.length; j++) {
+						results.push(path.join(
+							unzipLocation,
+							generateUuid(),
+							list[j]
+						));
+					}
+				}
+				catch(error) {
+					console.log(error);
 				}
 			}
 		}
