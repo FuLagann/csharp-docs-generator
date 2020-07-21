@@ -5,6 +5,16 @@ This action generates a static html documentation for C# projects. It will creat
 
 **NOTE: This project will delete the folder listed under the `output-path` input. This is to delete old API content that no longer exists, but make sure to change the `output-path` variable is changed to an directory that won't delete files unnecessarily!**
 
+## Table of Contents
+
+* [Inputs](#inputs)
+* [Sample Build XML](#sample-build-yaml)
+* [Formats](#formats)
+* [Using Templates](#using-templates)
+* [Customizing the Template](#customizing-the-template)
+* [Creating Your Own Templates](#creating-your-own-templates)
+* [License](#license)
+
 ## Inputs
 
 **`binaries` as (string[]):** The list of binaries used to look into, must be named the same as the xml documentation. The list is separated by commas. **(Required)**
@@ -32,6 +42,36 @@ This action generates a static html documentation for C# projects. It will creat
 **`user-email` as (string):** The email of the user who will commit. *(Default: "csharp.doc.gen@gmail.com")*
 
 **`user-name` as (string):** The name of the user who will commit. *(Default: "C# Document Generator")*
+
+## Sample Build YAML
+
+Below is a sample `build.yml` for generating documentation. If you want to copy and paste, then replace the `binaries`, `user-email`, and `user-name` inputs to something that is more accurate to you. Along with creating a `project-details.json`, that [can be found how to do in the wiki](https://github.com/FuLagann/csharp-docs-generator/wiki/Project-Details-JSON-Format).
+
+```yml
+on: [push]
+
+jobs:
+  generate-docs:
+    runs-on: windows-latest
+    name: Generate Docs
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup .NET Core 3.1
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "3.1.300"
+      - name: Generate Documentation
+        uses: FuLagann/csharp-docs-generator@v1
+        with:
+          build-tasks: dotnet build
+          cleanup-tasks: dotnet clean
+          binaries: src/Dummy.Library/bin/Debug/netstandard2.0/Dummy.Library.dll
+          output-path: docs/api
+          user-email: john.doe@gmail.com
+          user-name: John Doe
+          project-details-json: project-details.json
+```
 
 ## Formats
 
