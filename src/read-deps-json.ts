@@ -98,10 +98,6 @@ async function downloadDependencies(dependencies : DependencyJson, prevDependenc
 		if(dependencies.libraries[deps[i]]) {
 			lib = dependencies.libraries[deps[i]];
 			
-			if(prevDependencies.indexOf(path.join(unzipLocation, deps[i])) != -1) {
-				continue;
-			}
-			
 			if(lib.type == "project" || !lib.serviceable) {
 				continue;
 			}
@@ -118,7 +114,14 @@ async function downloadDependencies(dependencies : DependencyJson, prevDependenc
 				unzipLocation = await tools.extractZip(zipLocation, extractPath);
 				list = runtimes.get(deps[i]) || [];
 				for(let j = 0; j < list.length; j++) {
-					results.push(path.join(unzipLocation, list[j]));
+					// Variables
+					let fullPath = path.join(unzipLocation, list[j]);
+					
+					console.log("Pushing: " + fullPath);
+					if(prevDependencies.indexOf(fullPath) != -1) {
+						continue;
+					}
+					results.push(fullPath);
 				}
 			}
 		}
