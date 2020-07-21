@@ -2,7 +2,7 @@
 // Models
 import { DependencyJson, DependencyTarget, DependencyLibrary } from "./models/XmlFormat";
 // External functionalities
-import { TEMP_FOLDER } from "./index";
+import { TEMP_FOLDER, generateUuid } from "./index";
 import { readFile } from "./read-file";
 import { getXmls } from "./read-xml";
 // External libraries
@@ -114,14 +114,16 @@ async function downloadDependencies(dependencies : DependencyJson, prevDependenc
 				unzipLocation = await tools.extractZip(zipLocation, extractPath);
 				list = runtimes.get(deps[i]) || [];
 				for(let j = 0; j < list.length; j++) {
-					// Variables
-					let fullPath = path.join(unzipLocation, list[j]);
-					
-					console.log("Pushing: " + fullPath);
-					if(prevDependencies.indexOf(fullPath) != -1) {
-						continue;
-					}
-					results.push(fullPath);
+					console.log(path.join(
+						unzipLocation,
+						generateUuid(),
+						list[j]
+					));
+					results.push(path.join(
+						unzipLocation,
+						generateUuid(),
+						list[j]
+					));
 				}
 			}
 		}
