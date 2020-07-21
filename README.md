@@ -130,3 +130,4 @@ If you would like to create your own template, please follow the [wiki guide on 
 ## License
 
 This project uses an [MIT](LICENSE) license that grants people to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies.
+
