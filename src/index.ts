@@ -29,6 +29,15 @@ let args : InputArguments;
 let dependencies : string[];
 let sharpCheckerExe : string;
 let typeList : TypeList;
+let stdlog : any;
+let logged : any[][];
+let gitErrorState : string;
+const GIT_STATE_SETUP = "setup";
+const GIT_STATE_PULL = "pull";
+const GIT_STATE_CHECKOUT = "checkout";
+const GIT_STATE_ADD = "add";
+const GIT_STATE_COMMIT = "commit";
+const GIT_STATE_PUSH = "push";
 
 /**Gets the path to the SharpChecker program.
  * @returns Returns the path to the SharpChecker program.*/
@@ -69,6 +78,7 @@ async function onError(error : Error) {
 
 /**Catches an error when pushing to git, this will check the status and push if possible.*/
 async function onGitError() {
+	console.log(gitErrorState);
 	await exec("git status").catch(onError);
 	await exec("git pull").catch(onError);
 	await exec("git push").catch(onError);
@@ -154,16 +164,58 @@ async function cleanUp() {
 
 /**Pushes the new content into the repository.*/
 async function gitPush() {
+	// Setting up console to be readable by action
+	stdlog = console.log.bind(console);
+	logged = [];
+	console.log = function() {
+		logged.push(Array.from(arguments));
+		stdlog.apply(console, arguments);
+	};
+	gitErrorState = GIT_STATE_SETUP;
 	await exec("git", ["config", "--global", "user.name",  args.user.name]);
 	await exec("git", ["config", "--global", "user.email", args.user.email]);
-	await exec("git", ["pull"]);
+	
+	gitErrorState = GIT_STATE_PULL;
+	try {
+		await exec("git", ["pull"]);
+	}
+	catch(err) {
+		// Errors out here when in a detached head
+		// Variables
+		const lastLogged = logged[logged.length - 1];
+		
+		if(!lastLogged.includes("detached head")) {
+			throw err;
+		}
+	}
 	// Creates a new branch to merge with
 	if(args.branchName != "") {
-		await exec("git", ["switch", "--create", args.branchName]);
+		gitErrorState = GIT_STATE_CHECKOUT;
+		try {
+			// Experimental feature, don't mention it publically until I can verify this works properly
+			if(args.branchName == "<detached>") {
+				await exec("git", ["checkout", "--detach"]);
+			}
+			else {
+				await exec("git", ["checkout", "-b", args.branchName]);
+			}
+		}
+		catch(err) {
+			// Just in case git checkout doesn't work (happened to me once).
+			if(args.branchName == "<detached>") {
+				await exec("git", ["switch", "--detach"]);
+			}
+			else {
+				await exec("git", ["switch", "--create", args.branchName]);
+			}
+		}
 	}
+	gitErrorState = GIT_STATE_ADD;
 	await exec("git", ["add", "--all"]);
+	gitErrorState = GIT_STATE_COMMIT;
 	await exec("git", ["commit", "-m", args.commitMessage]);
 	// Pushing to a separate branch
+	gitErrorState = GIT_STATE_PUSH;
 	if(args.branchName != "") {
 		await exec("git", ["push", "--set-upstream", "origin", args.branchName]);
 	}
