@@ -197,7 +197,7 @@ async function gitPush() {
 				await exec("git", ["checkout", "--detach"]);
 			}
 			else {
-				await exec("git", ["checkout", "-b", args.branchName]);
+				await exec("git", ["checkout", "-B", args.branchName]);
 			}
 		}
 		catch(err) {
@@ -206,7 +206,7 @@ async function gitPush() {
 				await exec("git", ["switch", "--detach"]);
 			}
 			else {
-				await exec("git", ["switch", "--create", args.branchName]);
+				await exec("git", ["switch", "-C", args.branchName]);
 			}
 		}
 	}
