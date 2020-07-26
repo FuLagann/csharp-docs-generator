@@ -80,8 +80,10 @@ async function onError(error : Error) {
 async function onGitError() {
 	console.log(gitErrorState);
 	await exec("git status").catch(onError);
-	await exec("git pull").catch(onError);
-	await exec("git push").catch(onError);
+	if(!logged[logged.length - 1].includes("nothing to commit")) {
+		await exec("git pull").catch(onError);
+		await exec("git push").catch(onError);
+	}
 }
 
 /**Initiates the program, setting things up before everything starts up.*/
