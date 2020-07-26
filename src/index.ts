@@ -186,7 +186,7 @@ async function gitPush() {
 		// Variables
 		const lastLogged = logged[logged.length - 1];
 		
-		if(!lastLogged.includes("detached head")) {
+		if(!lastLogged.includes("not currently on a branch")) {
 			throw err;
 		}
 	}
