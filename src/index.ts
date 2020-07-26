@@ -168,6 +168,7 @@ async function cleanUp() {
 /**Pushes the new content into the repository.*/
 async function gitPush() {
 	// Setting up console to be readable by action
+	// Can't tell if this works
 	stdlog = console.log.bind(console);
 	logged = [];
 	console.log = function() {
@@ -187,9 +188,7 @@ async function gitPush() {
 		// Variables
 		const lastLogged = logged[logged.length - 1];
 		
-		if(!lastLogged.includes("not currently on a branch")) {
-			throw err;
-		}
+		console.log(lastLogged);
 	}
 	// Creates a new branch to merge with
 	if(args.branchName != "") {
