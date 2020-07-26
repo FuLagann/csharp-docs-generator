@@ -79,6 +79,7 @@ async function onError(error : Error) {
 /**Catches an error when pushing to git, this will check the status and push if possible.*/
 async function onGitError() {
 	console.log(gitErrorState);
+	stdlog.apply(console, logged);
 	await exec("git status").catch(onError);
 	if(!logged[logged.length - 1].includes("nothing to commit")) {
 		await exec("git pull").catch(onError);
