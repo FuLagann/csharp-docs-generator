@@ -78,12 +78,18 @@ async function onError(error : Error) {
 
 /**Catches an error when pushing to git, this will check the status and push if possible.*/
 async function onGitError() {
-	console.log(gitErrorState);
-	stdlog.apply(console, logged);
 	await exec("git status").catch(onError);
-	if(!logged[logged.length - 1].includes("nothing to commit")) {
-		await exec("git pull").catch(onError);
-		await exec("git push").catch(onError);
+	if(gitErrorState == GIT_STATE_COMMIT) {
+		// Nothing to commit, do nothing to complete action
+	}
+	else if(gitErrorState == GIT_STATE_PUSH) {
+		await exec("git", ["pull"]);
+		if(args.branchName != "") {
+			await exec("git", ["push", "--set-upstream", "origin", args.branchName]);
+		}
+		else {
+			await exec("git", ["push"]);
+		}
 	}
 }
 
@@ -167,29 +173,17 @@ async function cleanUp() {
 
 /**Pushes the new content into the repository.*/
 async function gitPush() {
-	// Setting up console to be readable by action
-	// Can't tell if this works
-	stdlog = console.log.bind(console);
-	logged = [];
-	console.log = function() {
-		logged.push(Array.from(arguments));
-		stdlog.apply(console, arguments);
-	};
+	// Variables
+	let isDetached = (args.branchName == "<detached>");
+	
 	gitErrorState = GIT_STATE_SETUP;
 	await exec("git", ["config", "--global", "user.name",  args.user.name]);
 	await exec("git", ["config", "--global", "user.email", args.user.email]);
 	
 	gitErrorState = GIT_STATE_PULL;
-	try {
-		await exec("git", ["pull"]);
-	}
-	catch(err) {
-		// Errors out here when in a detached head
-		// Variables
-		const lastLogged = logged[logged.length - 1];
-		
-		console.log(lastLogged);
-	}
+	try { await exec("git", ["pull"]); }
+	catch(err) { isDetached = true; }
+	
 	// Creates a new branch to merge with
 	if(args.branchName != "") {
 		gitErrorState = GIT_STATE_CHECKOUT;
