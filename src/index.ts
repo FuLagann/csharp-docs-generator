@@ -29,9 +29,8 @@ let args : InputArguments;
 let dependencies : string[];
 let sharpCheckerExe : string;
 let typeList : TypeList;
-let stdlog : any;
-let logged : any[][];
 let gitErrorState : string;
+let isDetached;
 const GIT_STATE_SETUP = "setup";
 const GIT_STATE_PULL = "pull";
 const GIT_STATE_CHECKOUT = "checkout";
@@ -83,11 +82,12 @@ async function onGitError() {
 		// Nothing to commit, do nothing to complete action
 	}
 	else if(gitErrorState == GIT_STATE_PUSH) {
-		await exec("git", ["pull"]);
 		if(args.branchName != "") {
+			await exec("git", ["pull", "origin", args.branchName]);
 			await exec("git", ["push", "--set-upstream", "origin", args.branchName]);
 		}
 		else {
+			await exec("git", ["pull"]);
 			await exec("git", ["push"]);
 		}
 	}
@@ -173,16 +173,23 @@ async function cleanUp() {
 
 /**Pushes the new content into the repository.*/
 async function gitPush() {
-	// Variables
-	let isDetached = (args.branchName == "<detached>");
-	
+	isDetached = (args.branchName == "<detached>");
 	gitErrorState = GIT_STATE_SETUP;
 	await exec("git", ["config", "--global", "user.name",  args.user.name]);
 	await exec("git", ["config", "--global", "user.email", args.user.email]);
 	
 	gitErrorState = GIT_STATE_PULL;
-	try { await exec("git", ["pull"]); }
+	try {
+		await exec("git", ["pull"]);
+	}
 	catch(err) { isDetached = true; }
+	
+	if(isDetached && args.branchName != "" && args.branchName != "<detached") {
+		args.branchName = "";
+	}
+	if(args.branchName != "") {
+		await exec("git", ["pull", "origin", args.branchName]);
+	}
 	
 	// Creates a new branch to merge with
 	if(args.branchName != "") {
