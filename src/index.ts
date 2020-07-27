@@ -30,7 +30,7 @@ let dependencies : string[];
 let sharpCheckerExe : string;
 let typeList : TypeList;
 let gitErrorState : string;
-let isDetached;
+let isDetached : boolean = false;
 const GIT_STATE_SETUP = "setup";
 const GIT_STATE_PULL = "pull";
 const GIT_STATE_CHECKOUT = "checkout";
@@ -84,7 +84,12 @@ async function onGitError() {
 	else if(gitErrorState == GIT_STATE_PUSH) {
 		if(args.branchName != "") {
 			await exec("git", ["pull", "origin", args.branchName]);
-			await exec("git", ["push", "--set-upstream", "origin", args.branchName]);
+			if(!isDetached) {
+				await exec("git", ["push", "--set-upstream", "origin", args.branchName]);
+			}
+			else {
+				await exec("git", ["push"]);
+			}
 		}
 		else {
 			await exec("git", ["pull"]);
@@ -184,10 +189,7 @@ async function gitPush() {
 	}
 	catch(err) { isDetached = true; }
 	
-	if(isDetached && args.branchName != "" && args.branchName != "<detached") {
-		args.branchName = "";
-	}
-	if(args.branchName != "") {
+	if(!isDetached && args.branchName != "") {
 		await exec("git", ["pull", "origin", args.branchName]);
 	}
 	
@@ -219,7 +221,7 @@ async function gitPush() {
 	await exec("git", ["commit", "-m", args.commitMessage]);
 	// Pushing to a separate branch
 	gitErrorState = GIT_STATE_PUSH;
-	if(args.branchName != "") {
+	if(!isDetached && args.branchName != "") {
 		await exec("git", ["push", "--set-upstream", "origin", args.branchName]);
 	}
 	else {
