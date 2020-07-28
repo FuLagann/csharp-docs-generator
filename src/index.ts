@@ -84,12 +84,7 @@ async function onGitError() {
 	else if(gitErrorState == GIT_STATE_PUSH) {
 		if(args.branchName != "") {
 			await exec("git", ["pull", "origin", args.branchName]);
-			if(!isDetached) {
-				await exec("git", ["push", "--set-upstream", "origin", args.branchName]);
-			}
-			else {
-				await exec("git", ["push"]);
-			}
+			await exec("git", ["push", "--set-upstream", "origin", args.branchName]);
 		}
 		else {
 			await exec("git", ["pull"]);
