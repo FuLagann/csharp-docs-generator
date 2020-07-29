@@ -189,10 +189,6 @@ async function gitPush() {
 	}
 	catch(err) { isDetached = true; }
 	
-	if(!isDetached && args.branchName != "") {
-		await exec("git", ["pull", "origin", args.branchName]);
-	}
-	
 	// Creates a new branch to merge with
 	if(args.branchName != "") {
 		gitErrorState = GIT_STATE_CHECKOUT;
