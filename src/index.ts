@@ -216,7 +216,7 @@ async function gitPush() {
 	await exec("git", ["commit", "-m", args.commitMessage]);
 	// Pushing to a separate branch
 	gitErrorState = GIT_STATE_PUSH;
-	if(!isDetached && args.branchName != "") {
+	if(args.branchName != "") {
 		await exec("git", ["push", "--set-upstream", "origin", args.branchName]);
 	}
 	else {
