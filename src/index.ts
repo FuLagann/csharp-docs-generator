@@ -83,8 +83,13 @@ async function onGitError() {
 	}
 	else if(gitErrorState == GIT_STATE_PUSH) {
 		if(args.branchName != "") {
-			await exec("git", ["pull", "origin", args.branchName]);
-			await exec("git", ["push", "--set-upstream", "origin", args.branchName]);
+			try {
+				await exec("git", ["pull", "origin", args.branchName]);
+				await exec("git", ["push", "--set-upstream", "origin", args.branchName]);
+			}
+			catch {
+				await exec("git", ["push", "--force", "--set-upstream", "origin", args.branchName]);
+			}
 		}
 		else {
 			await exec("git", ["pull"]);
