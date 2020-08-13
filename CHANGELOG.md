@@ -6,7 +6,8 @@ v1.0 includes:
 * Soft crash on downloading dependencies so that duplicates don't crash the entire action.
 * Making git integration more robust:
   * Checking for detached head (pull requests) for git commands, so that the action doesn't crash.
-  * Checked if nothing to commit and continued without a crash
+  * Checked if nothing to commit and continued without a crash.
+* Included note about pull request failing.
 
 v0.14 includes:
 * Added default template in packages.
