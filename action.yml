@@ -48,6 +48,9 @@ inputs:
   include-private:
     description: "Set to true to include all the privates types and members."
     default: false
+  skip-git:
+    description: "Set to true to completely skip the git pushing process. Only set to true if the one of the next process in the action is to push to git (from another action/library)."
+    default: false
 runs:
   using: "node12"
   main: "lib/index.js"

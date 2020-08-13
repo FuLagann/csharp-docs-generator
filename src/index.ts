@@ -178,6 +178,10 @@ async function cleanUp() {
 
 /**Pushes the new content into the repository.*/
 async function gitPush() {
+	if(args.skipGit) {
+		return;
+	}
+	
 	isDetached = (args.branchName == "<detached>");
 	gitErrorState = GIT_STATE_SETUP;
 	await exec("git", ["config", "--global", "user.name",  args.user.name]);
