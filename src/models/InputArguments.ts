@@ -97,6 +97,8 @@ export class InputArguments {
 	includePrivate : boolean;
 	/**The path to the project-details.json.*/
 	projectDetails : string;
+	/**Set to true to completely skip the git pushing process. Only set to true if the one of the next process in the action is to push to git (from another action/library).*/
+	skipGit : boolean;
 	/**The user information for git, used for committing.*/
 	user : {
 		/**The name of the user.*/
@@ -116,6 +118,7 @@ export class InputArguments {
 		this.includePrivate = false;
 		this.template = "default";
 		this.projectDetails = "";
+		this.skipGit = false;
 		this.templateUris = {
 			base: "",
 			includeDefaultCss: true,

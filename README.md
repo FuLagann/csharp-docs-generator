@@ -43,9 +43,13 @@ This action generates a static html documentation for C# projects. It will creat
 
 **`user-name` as (string):** The name of the user who will commit. *(Default: "C# Document Generator")*
 
+**`skip-git` as (boolean):** Set to true to completely skip the git pushing process. Only set to true if the one of the next process in the action is to push to git (from another action/library). If no other action is defined to push, none of the documentation will appear in the repo. *(Default: false)*
+
 ## Sample Build YAML
 
 Below is a sample `build.yml` for generating documentation. If you want to copy and paste, then replace the `binaries`, `user-email`, and `user-name` inputs to something that is more accurate to you. Along with creating a `project-details.json`, that [can be found how to do in the wiki](https://github.com/FuLagann/csharp-docs-generator/wiki/Project-Details-JSON-Format). It is also recommended that the creation of documentation is only for pushing to master (when stable finalized code is being pushed).
+
+**IMPORTANT NOTE:** When having the action activate on `pull_request`, you need to set the `branch-name` to the current branch where the workflow resides. So if you have this workflow on a separate branch called `develop`, you'd need to add/change the `branch-name` input to be `develop`. Otherwise, the action will fail because pull requests are detached heads and any other branch will cause an "unrelated history during pull" error.
 
 ```yml
 on:
