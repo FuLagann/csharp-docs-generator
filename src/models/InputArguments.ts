@@ -37,6 +37,8 @@ export interface TemplateUris {
 	namespace : string;
 	/**The `type` template that will generate all the information on the type.*/
 	type : string;
+	/**The `index` template that is used for creating the index page.*/
+	index : string;
 	/***The constructor template that will generate the compact and full views of all the constructors of the type.*/
 	constructors : CompactFullUris;
 	/**The field template that will generate all the compact and full views of all the fields of the type.*/
@@ -134,6 +136,7 @@ export class InputArguments {
 			navigation: "",
 			header: "",
 			footer: "",
+			index: "",
 			constructors: {
 				compact: "",
 				full: ""

@@ -61,6 +61,7 @@ export function getIdFrom(details : (FieldInfo | PropertyInfo | EventInfo | Meth
  * @returns Returns the compiled template code.*/
 export function createPartial(type : string, url : string, context : any = {}) : string {
 	switch(type) {
+		case "index": return Templates.compileIndex(url, context as string[]);
 		case "type": return Templates.compileType(url, context as string);
 		case "field": return Templates.compileField(url, context as FieldInfo);
 		case "property": return Templates.compilePropety(url, context as PropertyInfo);
