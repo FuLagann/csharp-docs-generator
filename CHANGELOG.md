@@ -9,6 +9,7 @@ v1.0 includes:
   * Checked if nothing to commit and continued without a crash.
 * Included note about pull request failing.
 * Added input to skip the git process.
+* Fixed error when no project file was specified
 
 v0.14 includes:
 * Added default template in packages.

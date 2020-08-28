@@ -31,7 +31,7 @@ export function setSidebarView(sidebar : SidebarView) { sidebarView = sidebar; }
 
 /**Gets the project details.
  * @returns Returns the project details.*/
-export function getProjectDetails() : ProjectDetails { return projectDetails; }
+export function getProjectDetails() : ProjectDetails { return projectDetails || {}; }
 
 /**Generates the hmtl documentation, with the input arguments.
  * @param args {InputArguments} - The input arguments used for html documentation.*/
