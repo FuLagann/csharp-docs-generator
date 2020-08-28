@@ -23,7 +23,7 @@ export async function getInputs() : Promise<InputArguments> {
 	if(!results.outputPath.endsWith("/") || !results.outputPath.endsWith("\\")) {
 		results.outputPath += "/";
 	}
-	results.skipGit = Boolean(core.getInput("skip-git") || results.skipGit);
+	results.skipGit = Boolean(core.getInput("skip-git") == "true" || results.skipGit);
 	results.user.name = core.getInput("user-name") || results.user.name;
 	results.user.email = core.getInput("user-email") || results.user.email;
 	results.outputExtension = core.getInput("output-extension") || results.outputExtension;
