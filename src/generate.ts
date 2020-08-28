@@ -92,7 +92,7 @@ export async function generateHtmlDocumentation(args : InputArguments) {
 	fs.writeFileSync(filename, html);
 	
 	html = await compileBaseIndex(args, namespaces);
-	filename = "index" + args.outputExtension;
+	filename = args.outputPath + "index" + args.outputExtension;
 	fs.writeFileSync(filename.toLowerCase(), html);
 	console.log(`Created index page!`);
 	
