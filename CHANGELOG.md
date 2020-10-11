@@ -11,6 +11,8 @@ v1.0 includes:
 * Added input to skip the git process.
 * Fixed error when no project file was specified.
 * Added index page generation that links to all the namespaces and acts as a landing page
+* Updated default theme
+* Added cayman and slate themes
 
 v0.14 includes:
 * Added default template in packages.
