@@ -1,6 +1,6 @@
 {
   "name": "csharp-docs-generator",
-  "version": "1.0.25",
+  "version": "1.0.26",
   "description": "A GitHub action that generates html documentation for C# projects.",
   "main": "lib/index.js",
   "scripts": {
@@ -36,6 +36,7 @@
     "@types/ejs": "^3.0.4",
     "@types/markdown-it": "0.0.9",
     "@types/prettier": "^2.1.2",
+    "@types/prismjs": "^1.16.1",
     "@types/punycode": "^2.1.0",
     "@types/xmldom": "^0.1.30",
     "ejs": "^3.1.5",
