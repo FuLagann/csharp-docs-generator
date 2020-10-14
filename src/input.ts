@@ -23,7 +23,7 @@ export async function getInputs() : Promise<InputArguments> {
 	if(!results.outputPath.endsWith("/") || !results.outputPath.endsWith("\\")) {
 		results.outputPath += "/";
 	}
-	results.skipGit = Boolean(core.getInput("skip-git") || results.skipGit);
+	results.skipGit = Boolean(core.getInput("skip-git") == "true" || results.skipGit);
 	results.user.name = core.getInput("user-name") || results.user.name;
 	results.user.email = core.getInput("user-email") || results.user.email;
 	results.outputExtension = core.getInput("output-extension") || results.outputExtension;
@@ -50,6 +50,7 @@ async function getTemplate(templateID : string, defaultUris : TemplateUris) : Pr
 		let template : TemplateUris = JSON.parse(readFile(`${ unzipLocation }/template.json`)) as TemplateUris;
 		
 		template.base = path.join(TEMP_FOLDER, template.base || defaultUris.base);
+		template.index = path.join(TEMP_FOLDER, template.index || defaultUris.index);
 		template.namespace = path.join(TEMP_FOLDER, template.namespace || defaultUris.namespace);
 		template.type = path.join(TEMP_FOLDER, template.type || defaultUris.type);
 		template.header = path.join(TEMP_FOLDER, template.header || defaultUris.header);
@@ -135,6 +136,7 @@ function gatherUris(templatePath : string, template : TemplateUris, yamlUri : st
 	);
 	
 	template.base = getFilename(basePath, yamlJson.base, template.base);
+	template.index = getFilename(basePath, yamlJson.index, template.index);
 	template.includeDefaultCss = yamlJson.includeDefaultCss || template.includeDefaultCss;
 	template.includeDefaultScripts = yamlJson.includeDefaultScripts || template.includeDefaultScripts;
 	template.localCss = getFilenames(

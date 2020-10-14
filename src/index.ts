@@ -178,7 +178,7 @@ async function cleanUp() {
 
 /**Pushes the new content into the repository.*/
 async function gitPush() {
-	if(args.skipGit) {
+	if(args.skipGit == true) {
 		return;
 	}
 	

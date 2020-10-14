@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta name="keywords" content="game engine,engine,b3,game-engine,game,fulagann"/>
+		<meta name="description" content="An API styled game engine made for programming games in C#."/>
+		<meta name="author" content="Paul Gonzalez-Becerra"/>
+		
+		
+		
+			<link rel="icon" href="https://cdn130.picsart.com/286630835017211.png?type=webp&amp;to=min&amp;r=640"/>
+		
+			
+		
+			<title>IUpdatable | B3Engine API</title>
+		
+		
+		
+			<link rel="stylesheet" type="text/css" href="css/default.css" />
+		
+			<link rel="stylesheet" type="text/css" href="css/prism-vs-and-material-dark.css" />
+		
+			<link rel="stylesheet" type="text/css" href="css/type-navigation.css" />
+		
+		
+		
+			<script src="js/main.js"></script>
+		
+			<script src="js/search-types-members.js"></script>
+		
+		
+	</head>
+	
+	<body>
+		
+		<header class="page-header">
+			
+<h1 class="project-name">B3Engine</h1>
+<h2 class="project-tagline">An API styled game engine made for programming games in C#.</h2>
+
+		</header>
+		
+		<nav class="side-content">
+			<div class="nav-modal">
+				<span class="exit">&Cross;</span>
+				<div class="block-on-mobile">
+					<div class="extra-side-content">
+						<details class="quick-links-menu">
+							<summary class="heading">Quick Links:</summary>
+							<div class="quick-links-content"></div>
+						</details>
+						<details class="help-menu">
+							<summary class="heading">Search Bar Help:</summary>
+							<div class="help-desc" id="search-help-desc"></div>
+						</details>
+					</div>
+					<div class="type-nav-label heading">Type Navigation:</div>
+					<iframe src="--navigation.html"></iframe>
+				</div>
+			</div>
+			<a class="btn hamburger open-nav-btn" id="open-nav"></a>
+			<a href="#" class="btn top-btn">Top</a>
+			<input
+				type="text"
+				class="search-bar"
+				id="search-bar"
+				autocomplete="off"
+				onkeyup="SearchHelper.search(this.value, 'search-results', 'search-output');"
+			/>
+			<div class="search-results" id="search-results">
+				<ul id="search-output"></ul>
+			</div>
+		</nav>
+		
+		<main class="main-content">
+			
+				<div class="description">
+  <h1>interface: IUpdatable</h1>
+  <blockquote>
+    <small>
+      <span class="namespace">Namespace:
+        <a href="b3.html">B3</a>
+      </span><br/>
+      <span class="assemblies">Assembly: <span>B3.Mathematics.dll</span></span>
+    </small>
+  </blockquote>
+  <div class="doc-desc type-description">
+    <p>An interface for when types are updatable.</p>
+
+  </div>
+</div>
+<aside class="declaration">
+  <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">IUpdatable</span></code></pre>
+
+</aside>
+
+
+
+
+<h2>Quick Links</h2>
+<div class="quick-links">
+  
+    <a class="quick-link" href="#quick-methods">Methods</a>
+  
+</div>
+<h2>Compact Summary</h2>
+<div class="member-details-compact">
+  
+    <div class="relative"><a id="quick-methods"></a></div>
+    <h3><span class="toggle-btn"></span>Methods</h3>
+    <div class="toggle-content">
+      
+        <table class="compact-member full-width modifier-description member-methods">
+          <tr>
+            <th>Modifier / Type</th>
+            <th>Name and Description</th>
+          </tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">abstract</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.void" class="defined-type">void</a>
+  </td>
+  <td>
+    <a class="name" href="#Update(System.Single)">Update(float delta)</a>
+    <p>Updates the object.</p>
+
+    
+  </td>
+</tr>
+          
+        </table>
+      
+    </div>
+  
+</div>
+<div class="member-details-full">
+  
+    <div class="relative"><a id="methods"></a></div>
+    <h2><span class="toggle-btn"></span>Methods</h2>
+    <div class="toggle-content">
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Update(System.Single)"></a></div>
+  <h3><span class="toggle-btn"></span>Update(float delta)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Updates the object.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">void</span> <span class="token function">Update</span><span class="token punctuation">(</span><span class="token keyword">float</span> delta<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Update(System.Single)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">delta</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The time elapsed between frames.</p>
+
+          </div>
+        
+      </div>
+    
+    
+    
+    
+    
+  </div>
+</div>
+      
+    </div>
+  
+</div>
+<script>
+  SearchHelper.setCurrent(
+    "B3",
+    "IUpdatable"
+  );
+</script>
+			
+		</main>
+		
+		<footer class="site-footer">
+			
+<div class="center-text">
+	
+		&copy; Paul Gonzalez-Becerra 2019 - 2020. All Rights Reserved.<br/>
+	
+</div>
+
+		</footer>
+		
+	</body>
+</html>

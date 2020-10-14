@@ -25,6 +25,41 @@ export function getNamespaceTypes() : { [key : string] : NamespaceDetails[] } {
 	return namespaceTypes;
 }
 
+/**Compiles the base template for the index page.
+ * @param args {InputArguments} - The input arguments to look into.
+ * @param namespaces {string[]} - The list of namespaces to display and link.
+ * @returns Returns the compiled template code of the index page.*/
+export async function compileBaseIndex(args : InputArguments, namespaces : string[]) : Promise<string> {
+	// Variables
+	const filename = args.templateUris.base;
+	
+	return ejs.render(
+		readFile(filename).replace(/(?<=\S)\s+(?=<\/code>)/gm, "").trim(),
+		{
+			uris: {
+				css: getRelativeLinks("css/", args.templateUris.localCss || [], args.templateUris.globalCss || []),
+				scripts: getRelativeLinks("js/", args.templateUris.localScripts || [], args.templateUris.globalScripts || []),
+				header: args.templateUris.header,
+				footer: args.templateUris.footer,
+				navigation: "--navigation" + args.outputExtension,
+				index: args.templateUris.index
+			},
+			derivedType: "index",
+			namespaces: namespaces,
+			outputExtension: args.outputExtension,
+			// breadcrumbs: namespace.split('.'),
+			createPartial: Helper.createPartial,
+			capitalize: Helper.capitalize,
+			getIdFrom: Helper.getIdFrom,
+			createLinkToType: Helper.createLinkToType,
+			createAnchorToType: Helper.createAnchorToType,
+			getParameterType: Helper.getParameterType,
+			isGenericType: Helper.isGenericType,
+			project: getProjectDetails()
+		}
+	);
+}
+
 /**Compiles the base template.
  * @param args {InputArguments} - The input arguments to look into.
  * @param typePath {string} - The path to the type to generate the documentation for.
@@ -47,7 +82,7 @@ export async function compileBase(args : InputArguments, typePath : string) : Pr
 				navigation: "--navigation" + args.outputExtension,
 				namespace: args.templateUris.namespace
 			},
-			isNamespace: false,
+			derivedType: "type",
 			typePath: typePath,
 			outputExtension: args.outputExtension,
 			// breadcrumbs: generatedTypeJson.typeInfo.fullName.split('.'),
@@ -84,7 +119,7 @@ export async function compileBaseNamespace(args : InputArguments, namespace : st
 				navigation: "--navigation" + args.outputExtension,
 				namespace: args.templateUris.namespace
 			},
-			isNamespace: true,
+			derivedType: "namespace",
 			types: types,
 			typePath: namespace,
 			outputExtension: args.outputExtension,
@@ -166,6 +201,34 @@ export function compileFooter(filename : string) : string {
 				css: getRelativeLinks("css/", args.templateUris.localCss || [], args.templateUris.globalCss || []),
 				scripts: getRelativeLinks("js/", args.templateUris.localScripts || [], args.templateUris.globalScripts || [])
 			},
+			createPartial: Helper.createPartial,
+			capitalize: Helper.capitalize,
+			getIdFrom: Helper.getIdFrom,
+			createLinkToType: Helper.createLinkToType,
+			createAnchorToType: Helper.createAnchorToType,
+			getParameterType: Helper.getParameterType,
+			project: getProjectDetails()
+		}
+	);
+}
+
+/**Compiles the index template.
+ * @param filename {string} - The name of the file to read from for the tempalte code.
+ * @param namespaces {string[]} - The list of namespaces to display and link.
+ * @returns Returns the compiled index template code.*/
+export function compileIndex(filename : string, namespaces : string[]) : string {
+	// Variables
+	const args : InputArguments = getArguments();
+	
+	return ejs.render(
+		readFile(filename),
+		{
+			uris: {
+				css: getRelativeLinks("css/", args.templateUris.localCss || [], args.templateUris.globalCss || []),
+				scripts: getRelativeLinks("js/", args.templateUris.localScripts || [], args.templateUris.globalScripts || []),
+			},
+			namespaces: namespaces,
+			outputExtension: args.outputExtension,
 			createPartial: Helper.createPartial,
 			capitalize: Helper.capitalize,
 			getIdFrom: Helper.getIdFrom,

@@ -9,7 +9,7 @@ import { TEMP_FOLDER, getSharpCheckerExe, getArguments } from "./index";
 import { readFile } from "./read-file";
 import { createInternalLink } from "./read-xml";
 import { getIdFrom } from "./template-helpers";
-import { compileBase, compileBaseNamespace, compileSidebar, getNamespaceTypes } from "./template";
+import { compileBase, compileBaseNamespace, compileBaseIndex, compileSidebar, getNamespaceTypes } from "./template";
 // External libraries
 import { exec } from "@actions/exec";
 import fs = require("fs");
@@ -31,7 +31,7 @@ export function setSidebarView(sidebar : SidebarView) { sidebarView = sidebar; }
 
 /**Gets the project details.
  * @returns Returns the project details.*/
-export function getProjectDetails() : ProjectDetails { return projectDetails; }
+export function getProjectDetails() : ProjectDetails { return projectDetails || {}; }
 
 /**Generates the hmtl documentation, with the input arguments.
  * @param args {InputArguments} - The input arguments used for html documentation.*/
@@ -41,6 +41,7 @@ export async function generateHtmlDocumentation(args : InputArguments) {
 	let filename : string;
 	let html : string;
 	let namespaceTypes : { [key : string] : NamespaceDetails[] };
+	let namespaces : string[] = [];
 	let searchJs : string = path.join(TEMP_FOLDER, "js/search-types-members.js");
 	
 	if(args.projectDetails != "") {
@@ -78,6 +79,7 @@ export async function generateHtmlDocumentation(args : InputArguments) {
 		// Variables
 		const value : NamespaceDetails[] = namespaceTypes[key] as NamespaceDetails[];
 		
+		namespaces.push(key);
 		filename = args.outputPath + key + args.outputExtension;
 		html = (await compileBaseNamespace(args, key, value)).replace(/(?<=>)\s+([\)\.]|<\/code>)/gm, "$1");
 		
@@ -88,6 +90,12 @@ export async function generateHtmlDocumentation(args : InputArguments) {
 	html = compileSidebar(args, sidebarView);
 	filename = args.outputPath + "--navigation" + args.outputExtension;
 	fs.writeFileSync(filename, html);
+	
+	html = await compileBaseIndex(args, namespaces);
+	filename = args.outputPath + "index" + args.outputExtension;
+	fs.writeFileSync(filename.toLowerCase(), html);
+	console.log(`Created index page!`);
+	
 	console.log("HTML generation complete!");
 }
 

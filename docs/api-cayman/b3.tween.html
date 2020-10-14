@@ -1,0 +1,1945 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta name="keywords" content="game engine,engine,b3,game-engine,game,fulagann"/>
+		<meta name="description" content="An API styled game engine made for programming games in C#."/>
+		<meta name="author" content="Paul Gonzalez-Becerra"/>
+		
+		
+		
+			<link rel="icon" href="https://cdn130.picsart.com/286630835017211.png?type=webp&amp;to=min&amp;r=640"/>
+		
+		
+		
+			<title>Tween | B3Engine API</title>
+		
+		
+		
+			<link rel="stylesheet" type="text/css" href="css/cayman-base.css" />
+		
+			<link rel="stylesheet" type="text/css" href="css/cayman-extra.css" />
+		
+			<link rel="stylesheet" type="text/css" href="css/prism-gh-colors.css" />
+		
+			<link rel="stylesheet" type="text/css" href="css/type-navigation.css" />
+		
+		
+		
+			<script src="js/main.js"></script>
+		
+			<script src="js/search-types-members.js"></script>
+		
+		
+	</head>
+	
+	<body>
+		
+		<header class="page-header">
+			
+<h1 class="project-name">B3Engine</h1>
+<h2 class="project-tagline">An API styled game engine made for programming games in C#.</h2>
+
+		</header>
+		
+		<nav class="side-content">
+			<div class="nav-modal">
+				<span class="exit">&Cross;</span>
+				<div class="block-on-mobile">
+					<div class="extra-side-content">
+						<details class="quick-links-menu">
+							<summary class="heading">Quick Links:</summary>
+							<div class="quick-links-content"></div>
+						</details>
+						<details class="help-menu">
+							<summary class="heading">Search Bar Help:</summary>
+							<div class="help-desc" id="search-help-desc"></div>
+						</details>
+					</div>
+					<div class="type-nav-label heading">Type Navigation:</div>
+					<iframe src="--navigation.html"></iframe>
+				</div>
+			</div>
+			<a class="btn hamburger open-nav-btn" id="open-nav"></a>
+			<a href="#" class="btn top-btn">Top</a>
+			<input
+				type="text"
+				class="search-bar"
+				id="search-bar"
+				autocomplete="off"
+				onkeyup="SearchHelper.search(this.value, 'search-results', 'search-output');"
+			/>
+			<div class="search-results" id="search-results">
+				<ul id="search-output"></ul>
+			</div>
+		</nav>
+		
+		<main class="main-content">
+			
+				<div class="description">
+  <h1>class: Tween</h1>
+  <blockquote>
+    <small>
+      <span class="namespace">Namespace:
+        <a href="b3.html">B3</a>
+      </span><br/>
+      <span class="assemblies">Assembly: <span>B3.Mathematics.dll</span></span>
+    </small>
+  </blockquote>
+  <div class="doc-desc type-description">
+    <p>A class for tweening (short for in-betweening) floating point numbers.</p>
+
+  </div>
+</div>
+<aside class="declaration">
+  <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Tween</span> <span class="token punctuation">:</span> <span class="token class-name">IEquatable</span><span class="token operator">&lt;</span>Tween<span class="token operator">></span><span class="token punctuation">,</span> IUpdatable
+</code></pre>
+
+</aside>
+
+
+  <h2>Interfaces</h2>
+  <div class="interfaces-used quick-links-content">
+    
+      <a href="https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1">System.IEquatable&lt;B3.Tween&gt;</a>
+    
+      <a href="b3.iupdatable.html">B3.IUpdatable</a>
+    
+  </div>
+
+
+
+<h2>Quick Links</h2>
+<div class="quick-links">
+  
+    <a class="quick-link" href="#quick-constructors">Constructors</a>
+  
+    <a class="quick-link" href="#quick-properties">Properties</a>
+  
+    <a class="quick-link" href="#quick-methods">Methods</a>
+  
+    <a class="quick-link" href="#quick-static-methods">Static Methods</a>
+  
+</div>
+<h2>Compact Summary</h2>
+<div class="member-details-compact">
+  
+    <div class="relative"><a id="quick-constructors"></a></div>
+    <h3><span class="toggle-btn"></span>Constructors</h3>
+    <div class="toggle-content">
+      
+        <table class="compact-member full-width constructor-description member-constructors">
+          <tr><th>Constructor Descriptions</th></tr>
+          
+            <tr>
+  <td>
+    <a class="name" href="#Tween(System.Single,System.Single,System.Single,B3.Tween/TweenCallback)">public Tween(float start, float end, float duration, Tween.TweenCallback callback)</a>
+    <p>A base constructor for a tween.</p>
+
+  </td>
+</tr>
+          
+        </table>
+      
+    </div>
+  
+    <div class="relative"><a id="quick-properties"></a></div>
+    <h3><span class="toggle-btn"></span>Properties</h3>
+    <div class="toggle-content">
+      
+        <table class="compact-member full-width modifier-description member-properties">
+          <tr>
+            <th>Modifier / Type</th>
+            <th>Name and Description</th>
+          </tr>
+          
+            <tr>
+  <td>
+    
+    
+    <a href="b3.tween.tweencallback.html" class="defined-type">Tween.TweenCallback</a>
+  </td>
+  <td>
+    <a class="name" href="#Callback">Callback</a>
+    <p>Gets and sets the callback delegate of the tween, cannot set this to null.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single" class="defined-type">float</a>
+  </td>
+  <td>
+    <a class="name" href="#Duration">Duration</a>
+    <p>Gets and sets the duration in seconds of the tween.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single" class="defined-type">float</a>
+  </td>
+  <td>
+    <a class="name" href="#End">End</a>
+    <p>Gets and sets the ending value of the tween for when t = 1.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.boolean" class="defined-type">bool</a>
+  </td>
+  <td>
+    <a class="name" href="#IsFinished">IsFinished</a>
+    <p>Gets if the tween has finished tweening.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+    <a href="b3.interpolationlooptype.html" class="defined-type">InterpolationLoopType</a>
+  </td>
+  <td>
+    <a class="name" href="#LoopType">LoopType</a>
+    <p>Gets and sets the looping type of the tween.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single" class="defined-type">float</a>
+  </td>
+  <td>
+    <a class="name" href="#Start">Start</a>
+    <p>Gets and sets the starting value of the tween for when t = 0.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single" class="defined-type">float</a>
+  </td>
+  <td>
+    <a class="name" href="#Time">Time</a>
+    <p>Gets and sets the time value of the tween, is between 0 and 1.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single" class="defined-type">float</a>
+  </td>
+  <td>
+    <a class="name" href="#Value">Value</a>
+    <p>Gets the value calculated by the tween.</p>
+
+    
+  </td>
+</tr>
+          
+        </table>
+      
+    </div>
+  
+    <div class="relative"><a id="quick-methods"></a></div>
+    <h3><span class="toggle-btn"></span>Methods</h3>
+    <div class="toggle-content">
+      
+        <table class="compact-member full-width modifier-description member-methods">
+          <tr>
+            <th>Modifier / Type</th>
+            <th>Name and Description</th>
+          </tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">virtual</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.boolean" class="defined-type">bool</a>
+  </td>
+  <td>
+    <a class="name" href="#Equals(B3.Tween)">Equals(Tween other)</a>
+    <p>Finds if the two tweens are equal to each other.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">override</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.boolean" class="defined-type">bool</a>
+  </td>
+  <td>
+    <a class="name" href="#Equals(System.Object)">Equals(object other)</a>
+    <p>Finds if the two tweens are equal to each other.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+      <span class="langword">protected</span>
+    
+    
+      <span class="langword">virtual</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.void" class="defined-type">void</a>
+  </td>
+  <td>
+    <a class="name" href="#Finalize">Finalize()</a>
+    <p>Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.</p>
+
+    
+      (Inherited from <a href="https://docs.microsoft.com/en-us/dotnet/api/system.object">object</a>)
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">override</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.int32" class="defined-type">int</a>
+  </td>
+  <td>
+    <a class="name" href="#GetHashCode">GetHashCode()</a>
+    <p>Gets the hash code from the tween.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.type" class="defined-type">Type</a>
+  </td>
+  <td>
+    <a class="name" href="#GetType">GetType()</a>
+    <p>Gets the <a href="https://docs.microsoft.com/en-us/dotnet/api/system.type">Type</a> of the current instance.</p>
+
+    
+      (Inherited from <a href="https://docs.microsoft.com/en-us/dotnet/api/system.object">object</a>)
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+      <span class="langword">protected</span>
+    
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.object" class="defined-type">object</a>
+  </td>
+  <td>
+    <a class="name" href="#MemberwiseClone">MemberwiseClone()</a>
+    <p>Creates a shallow copy of the current <a href="https://docs.microsoft.com/en-us/dotnet/api/system.object">Object</a>.</p>
+
+    
+      (Inherited from <a href="https://docs.microsoft.com/en-us/dotnet/api/system.object">object</a>)
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.void" class="defined-type">void</a>
+  </td>
+  <td>
+    <a class="name" href="#Reset">Reset()</a>
+    <p>Resets the tween (setting the time back to 0).</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">override</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.string" class="defined-type">string</a>
+  </td>
+  <td>
+    <a class="name" href="#ToString">ToString()</a>
+    <p>Gets the tween in string form.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">virtual</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.void" class="defined-type">void</a>
+  </td>
+  <td>
+    <a class="name" href="#Update(System.Single)">Update(float deltaTime)</a>
+    <p>Updates the tween with a given elapsed time.</p>
+
+    
+  </td>
+</tr>
+          
+        </table>
+      
+    </div>
+  
+    <div class="relative"><a id="quick-static-methods"></a></div>
+    <h3><span class="toggle-btn"></span>Static Methods</h3>
+    <div class="toggle-content">
+      
+        <table class="compact-member full-width modifier-description member-static-methods">
+          <tr>
+            <th>Modifier / Type</th>
+            <th>Name and Description</th>
+          </tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single" class="defined-type">float</a>
+  </td>
+  <td>
+    <a class="name" href="#EaseInCirc(System.Single,System.Single,System.Single)">EaseInCirc(float start, float end, float t)</a>
+    <p>A circular easing in tweening function for making the value go from start to end in a slow start fast end motion.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single" class="defined-type">float</a>
+  </td>
+  <td>
+    <a class="name" href="#EaseInExpo(System.Single,System.Single,System.Single)">EaseInExpo(float start, float end, float t)</a>
+    <p>An exponential easing in tweening function for making the value go from start to end in a slow start fast end motion.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single" class="defined-type">float</a>
+  </td>
+  <td>
+    <a class="name" href="#EaseInOutCirc(System.Single,System.Single,System.Single)">EaseInOutCirc(float start, float end, float t)</a>
+    <p>A circular easing in-out tweening function for making the value go from start to end in a slow start slow end motion.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single" class="defined-type">float</a>
+  </td>
+  <td>
+    <a class="name" href="#EaseInOutExpo(System.Single,System.Single,System.Single)">EaseInOutExpo(float start, float end, float t)</a>
+    <p>A exponential easing in-out tweening function for making the value go from start to end in a slow start slow end motion.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single" class="defined-type">float</a>
+  </td>
+  <td>
+    <a class="name" href="#EaseInOutQuad(System.Single,System.Single,System.Single)">EaseInOutQuad(float start, float end, float t)</a>
+    <p>A quatratic easing in-out tweening function for making the value go from start to end in a slow start slow end motion.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single" class="defined-type">float</a>
+  </td>
+  <td>
+    <a class="name" href="#EaseInQuad(System.Single,System.Single,System.Single)">EaseInQuad(float start, float end, float t)</a>
+    <p>A quadratic easing in tweening function for making the value go from start to end in a slow start fast end motion.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single" class="defined-type">float</a>
+  </td>
+  <td>
+    <a class="name" href="#EaseOutCirc(System.Single,System.Single,System.Single)">EaseOutCirc(float start, float end, float t)</a>
+    <p>A circular easing out tweening function for making the value go from start to end in a fast start slow end motion.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single" class="defined-type">float</a>
+  </td>
+  <td>
+    <a class="name" href="#EaseOutExpo(System.Single,System.Single,System.Single)">EaseOutExpo(float start, float end, float t)</a>
+    <p>An exponential easing out tweening function for making the value go from start to end in a fast start slow end motion.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single" class="defined-type">float</a>
+  </td>
+  <td>
+    <a class="name" href="#EaseOutQuad(System.Single,System.Single,System.Single)">EaseOutQuad(float start, float end, float t)</a>
+    <p>A quadratic easing out tweening function for making the value go from start to end in a fast start slow end motion.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single" class="defined-type">float</a>
+  </td>
+  <td>
+    <a class="name" href="#Linear(System.Single,System.Single,System.Single)">Linear(float start, float end, float t)</a>
+    <p>A linearly interpolation tweening function for making the value go from start to end linearly.</p>
+
+    
+  </td>
+</tr>
+          
+        </table>
+      
+    </div>
+  
+</div>
+<div class="member-details-full">
+  
+    <div class="relative"><a id="constructors"></a></div>
+    <h2><span class="toggle-btn"></span>Constructors</h2>
+    <div class="toggle-content">
+      
+        <div class="member-details member-constructor">
+  <div class="relative"><a id="Tween(System.Single,System.Single,System.Single,B3.Tween/TweenCallback)"></a></div>
+  <h3><span class="toggle-btn"></span>Tween(float start, float end, float duration, Tween.TweenCallback callback)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>A base constructor for a tween.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token function">Tween</span><span class="token punctuation">(</span><span class="token keyword">float</span> start<span class="token punctuation">,</span> <span class="token keyword">float</span> end<span class="token punctuation">,</span> <span class="token keyword">float</span> duration<span class="token punctuation">,</span> <span class="token class-name">Tween<span class="token punctuation">.</span>TweenCallback</span> callback<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Tween(System.Single,System.Single,System.Single,B3.Tween/TweenCallback)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="parameter">
+            <div class="param-id">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+              start
+            </div>
+            <div class="doc-desc parameter">
+              <p>The starting value that the tween uses when t = 0.</p>
+
+            </div>
+          </div>
+        
+          <div class="parameter">
+            <div class="param-id">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+              end
+            </div>
+            <div class="doc-desc parameter">
+              <p>The ending value that the tween uses when t = 1.</p>
+
+            </div>
+          </div>
+        
+          <div class="parameter">
+            <div class="param-id">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+              duration
+            </div>
+            <div class="doc-desc parameter">
+              <p>The duration in seconds.</p>
+
+            </div>
+          </div>
+        
+          <div class="parameter">
+            <div class="param-id">
+              <a href="b3.tween.tweencallback.html">Tween.TweenCallback</a>
+              callback
+            </div>
+            <div class="doc-desc parameter">
+              <p>The tweening function for getting the value, setting it to null will default to a linear tween.</p>
+
+            </div>
+          </div>
+        
+      </div>
+    
+    
+    
+    
+    
+  </div>
+</div>
+      
+    </div>
+  
+    <div class="relative"><a id="properties"></a></div>
+    <h2><span class="toggle-btn"></span>Properties</h2>
+    <div class="toggle-content">
+      
+        <div class="member-details member-property">
+  <div class="relative"><a id="Callback"></a></div>
+  <h3><span class="toggle-btn"></span>Callback</h3>
+  <div class="padded-content toggle-content">
+    <div class="member-type">
+      <span class="mini-header">Property Type</span>
+      <a href="b3.tween.tweencallback.html">B3.Tween.TweenCallback</a>
+    </div>
+    <div class="doc-desc member">
+      <p>Gets and sets the callback delegate of the tween, cannot set this to null.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token class-name">Tween<span class="token punctuation">.</span>TweenCallback</span> Callback <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-property">
+  <div class="relative"><a id="Duration"></a></div>
+  <h3><span class="toggle-btn"></span>Duration</h3>
+  <div class="padded-content toggle-content">
+    <div class="member-type">
+      <span class="mini-header">Property Type</span>
+      <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">System.Single</a>
+    </div>
+    <div class="doc-desc member">
+      <p>Gets and sets the duration in seconds of the tween.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">float</span> Duration <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-property">
+  <div class="relative"><a id="End"></a></div>
+  <h3><span class="toggle-btn"></span>End</h3>
+  <div class="padded-content toggle-content">
+    <div class="member-type">
+      <span class="mini-header">Property Type</span>
+      <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">System.Single</a>
+    </div>
+    <div class="doc-desc member">
+      <p>Gets and sets the ending value of the tween for when t = 1.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">float</span> End <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-property">
+  <div class="relative"><a id="IsFinished"></a></div>
+  <h3><span class="toggle-btn"></span>IsFinished</h3>
+  <div class="padded-content toggle-content">
+    <div class="member-type">
+      <span class="mini-header">Property Type</span>
+      <a href="https://docs.microsoft.com/en-us/dotnet/api/system.boolean">System.Boolean</a>
+    </div>
+    <div class="doc-desc member">
+      <p>Gets if the tween has finished tweening.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">bool</span> IsFinished <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-property">
+  <div class="relative"><a id="LoopType"></a></div>
+  <h3><span class="toggle-btn"></span>LoopType</h3>
+  <div class="padded-content toggle-content">
+    <div class="member-type">
+      <span class="mini-header">Property Type</span>
+      <a href="b3.interpolationlooptype.html">B3.InterpolationLoopType</a>
+    </div>
+    <div class="doc-desc member">
+      <p>Gets and sets the looping type of the tween.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token class-name">InterpolationLoopType</span> LoopType <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-property">
+  <div class="relative"><a id="Start"></a></div>
+  <h3><span class="toggle-btn"></span>Start</h3>
+  <div class="padded-content toggle-content">
+    <div class="member-type">
+      <span class="mini-header">Property Type</span>
+      <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">System.Single</a>
+    </div>
+    <div class="doc-desc member">
+      <p>Gets and sets the starting value of the tween for when t = 0.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">float</span> Start <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-property">
+  <div class="relative"><a id="Time"></a></div>
+  <h3><span class="toggle-btn"></span>Time</h3>
+  <div class="padded-content toggle-content">
+    <div class="member-type">
+      <span class="mini-header">Property Type</span>
+      <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">System.Single</a>
+    </div>
+    <div class="doc-desc member">
+      <p>Gets and sets the time value of the tween, is between 0 and 1.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">float</span> Time <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-property">
+  <div class="relative"><a id="Value"></a></div>
+  <h3><span class="toggle-btn"></span>Value</h3>
+  <div class="padded-content toggle-content">
+    <div class="member-type">
+      <span class="mini-header">Property Type</span>
+      <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">System.Single</a>
+    </div>
+    <div class="doc-desc member">
+      <p>Gets the value calculated by the tween.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">float</span> Value <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+    </div>
+  
+    <div class="relative"><a id="methods"></a></div>
+    <h2><span class="toggle-btn"></span>Methods</h2>
+    <div class="toggle-content">
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Equals(B3.Tween)"></a></div>
+  <h3><span class="toggle-btn"></span>Equals(Tween other)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Finds if the two tweens are equal to each other.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">virtual</span> <span class="token keyword">bool</span> <span class="token function">Equals</span><span class="token punctuation">(</span><span class="token class-name">Tween</span> other<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Equals(B3.Tween)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.tween.html">Tween</a>
+            </span>
+            <span class="param-name">other</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The other tween.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="Equals(B3.Tween)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="https://docs.microsoft.com/en-us/dotnet/api/system.boolean">System.Boolean</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns true if the two tweens are equal to each other.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Equals(System.Object)"></a></div>
+  <h3><span class="toggle-btn"></span>Equals(object other)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Finds if the two tweens are equal to each other.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">bool</span> <span class="token function">Equals</span><span class="token punctuation">(</span><span class="token keyword">object</span> other<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Equals(System.Object)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.object">object</a>
+            </span>
+            <span class="param-name">other</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The other tween.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="Equals(System.Object)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="https://docs.microsoft.com/en-us/dotnet/api/system.boolean">System.Boolean</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns true if the two tweens are equal to each other.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Finalize"></a></div>
+  <h3><span class="toggle-btn"></span>Finalize()</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token punctuation">[</span><span class="token class-name">System<span class="token punctuation">.</span>Runtime<span class="token punctuation">.</span>Versioning<span class="token punctuation">.</span>NonVersionableAttribute</span><span class="token punctuation">]</span>
+<span class="token keyword">protected</span> <span class="token keyword">virtual</span> <span class="token keyword">void</span> <span class="token function">Finalize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="GetHashCode"></a></div>
+  <h3><span class="toggle-btn"></span>GetHashCode()</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Gets the hash code from the tween.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">int</span> <span class="token function">GetHashCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+    
+      <div class="relative"><a id="GetHashCode-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="https://docs.microsoft.com/en-us/dotnet/api/system.int32">System.Int32</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the hash code from the tween.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="GetType"></a></div>
+  <h3><span class="toggle-btn"></span>GetType()</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Gets the <a href="https://docs.microsoft.com/en-us/dotnet/api/system.type">Type</a> of the current instance.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token punctuation">[</span><span class="token class-name">System<span class="token punctuation">.</span>Runtime<span class="token punctuation">.</span>CompilerServices<span class="token punctuation">.</span>NullableContextAttribute</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token class-name">Type</span> <span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+    
+      <div class="relative"><a id="GetType-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="https://docs.microsoft.com/en-us/dotnet/api/system.type">System.Type</a>
+        </span>
+        <div class="doc-desc return">
+          <p>The exact runtime type of the current instance.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="MemberwiseClone"></a></div>
+  <h3><span class="toggle-btn"></span>MemberwiseClone()</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Creates a shallow copy of the current <a href="https://docs.microsoft.com/en-us/dotnet/api/system.object">Object</a>.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token punctuation">[</span><span class="token class-name">System<span class="token punctuation">.</span>Runtime<span class="token punctuation">.</span>CompilerServices<span class="token punctuation">.</span>NullableContextAttribute</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">protected</span> <span class="token keyword">object</span> <span class="token function">MemberwiseClone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+    
+      <div class="relative"><a id="MemberwiseClone-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="https://docs.microsoft.com/en-us/dotnet/api/system.object">System.Object</a>
+        </span>
+        <div class="doc-desc return">
+          <p>A shallow copy of the current <a href="https://docs.microsoft.com/en-us/dotnet/api/system.object">Object</a>.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Reset"></a></div>
+  <h3><span class="toggle-btn"></span>Reset()</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Resets the tween (setting the time back to 0).</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Reset</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="ToString"></a></div>
+  <h3><span class="toggle-btn"></span>ToString()</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Gets the tween in string form.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">string</span> <span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+    
+      <div class="relative"><a id="ToString-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="https://docs.microsoft.com/en-us/dotnet/api/system.string">System.String</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the tween in string form.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Update(System.Single)"></a></div>
+  <h3><span class="toggle-btn"></span>Update(float deltaTime)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Updates the tween with a given elapsed time.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">virtual</span> <span class="token keyword">void</span> <span class="token function">Update</span><span class="token punctuation">(</span><span class="token keyword">float</span> deltaTime<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Update(System.Single)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">deltaTime</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The time elapsed between frames.</p>
+
+          </div>
+        
+      </div>
+    
+    
+    
+    
+    
+  </div>
+</div>
+      
+    </div>
+  
+    <div class="relative"><a id="static-methods"></a></div>
+    <h2><span class="toggle-btn"></span>Static Methods</h2>
+    <div class="toggle-content">
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="EaseInCirc(System.Single,System.Single,System.Single)"></a></div>
+  <h3><span class="toggle-btn"></span>EaseInCirc(float start, float end, float t)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>A circular easing in tweening function for making the value go from start to end in a slow start fast end motion.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">float</span> <span class="token function">EaseInCirc</span><span class="token punctuation">(</span><span class="token keyword">float</span> start<span class="token punctuation">,</span> <span class="token keyword">float</span> end<span class="token punctuation">,</span> <span class="token keyword">float</span> t<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="EaseInCirc(System.Single,System.Single,System.Single)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">start</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The starting value for when t = 0.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">end</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The ending value for when t = 1.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">t</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The time value that is between 0 and 1.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="EaseInCirc(System.Single,System.Single,System.Single)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">System.Single</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the value that has been circularly interpolated.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="EaseInExpo(System.Single,System.Single,System.Single)"></a></div>
+  <h3><span class="toggle-btn"></span>EaseInExpo(float start, float end, float t)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>An exponential easing in tweening function for making the value go from start to end in a slow start fast end motion.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">float</span> <span class="token function">EaseInExpo</span><span class="token punctuation">(</span><span class="token keyword">float</span> start<span class="token punctuation">,</span> <span class="token keyword">float</span> end<span class="token punctuation">,</span> <span class="token keyword">float</span> t<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="EaseInExpo(System.Single,System.Single,System.Single)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">start</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The starting value for when t = 0.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">end</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The ending value for when t = 1.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">t</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The time value that is between 0 and 1.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="EaseInExpo(System.Single,System.Single,System.Single)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">System.Single</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the value that has been exponentially interpolated.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="EaseInOutCirc(System.Single,System.Single,System.Single)"></a></div>
+  <h3><span class="toggle-btn"></span>EaseInOutCirc(float start, float end, float t)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>A circular easing in-out tweening function for making the value go from start to end in a slow start slow end motion.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">float</span> <span class="token function">EaseInOutCirc</span><span class="token punctuation">(</span><span class="token keyword">float</span> start<span class="token punctuation">,</span> <span class="token keyword">float</span> end<span class="token punctuation">,</span> <span class="token keyword">float</span> t<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="EaseInOutCirc(System.Single,System.Single,System.Single)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">start</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The starting value for when t = 0.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">end</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The ending value for when t = 1.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">t</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The time value that is between 0 and 1.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="EaseInOutCirc(System.Single,System.Single,System.Single)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">System.Single</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the value that has been circular interpolated.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="EaseInOutExpo(System.Single,System.Single,System.Single)"></a></div>
+  <h3><span class="toggle-btn"></span>EaseInOutExpo(float start, float end, float t)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>A exponential easing in-out tweening function for making the value go from start to end in a slow start slow end motion.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">float</span> <span class="token function">EaseInOutExpo</span><span class="token punctuation">(</span><span class="token keyword">float</span> start<span class="token punctuation">,</span> <span class="token keyword">float</span> end<span class="token punctuation">,</span> <span class="token keyword">float</span> t<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="EaseInOutExpo(System.Single,System.Single,System.Single)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">start</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The starting value for when t = 0.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">end</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The ending value for when t = 1.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">t</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The time value that is between 0 and 1.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="EaseInOutExpo(System.Single,System.Single,System.Single)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">System.Single</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the value that has been exponentially interpolated.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="EaseInOutQuad(System.Single,System.Single,System.Single)"></a></div>
+  <h3><span class="toggle-btn"></span>EaseInOutQuad(float start, float end, float t)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>A quatratic easing in-out tweening function for making the value go from start to end in a slow start slow end motion.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">float</span> <span class="token function">EaseInOutQuad</span><span class="token punctuation">(</span><span class="token keyword">float</span> start<span class="token punctuation">,</span> <span class="token keyword">float</span> end<span class="token punctuation">,</span> <span class="token keyword">float</span> t<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="EaseInOutQuad(System.Single,System.Single,System.Single)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">start</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The starting value for when t = 0.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">end</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The ending value for when t = 1.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">t</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The time value that is between 0 and 1.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="EaseInOutQuad(System.Single,System.Single,System.Single)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">System.Single</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the value that has been quadratically interpolated.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="EaseInQuad(System.Single,System.Single,System.Single)"></a></div>
+  <h3><span class="toggle-btn"></span>EaseInQuad(float start, float end, float t)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>A quadratic easing in tweening function for making the value go from start to end in a slow start fast end motion.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">float</span> <span class="token function">EaseInQuad</span><span class="token punctuation">(</span><span class="token keyword">float</span> start<span class="token punctuation">,</span> <span class="token keyword">float</span> end<span class="token punctuation">,</span> <span class="token keyword">float</span> t<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="EaseInQuad(System.Single,System.Single,System.Single)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">start</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The starting value for when t = 0.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">end</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The ending value for when t = 1.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">t</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The time value that is between 0 and 1.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="EaseInQuad(System.Single,System.Single,System.Single)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">System.Single</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the value that has been quadratically interpolated.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="EaseOutCirc(System.Single,System.Single,System.Single)"></a></div>
+  <h3><span class="toggle-btn"></span>EaseOutCirc(float start, float end, float t)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>A circular easing out tweening function for making the value go from start to end in a fast start slow end motion.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">float</span> <span class="token function">EaseOutCirc</span><span class="token punctuation">(</span><span class="token keyword">float</span> start<span class="token punctuation">,</span> <span class="token keyword">float</span> end<span class="token punctuation">,</span> <span class="token keyword">float</span> t<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="EaseOutCirc(System.Single,System.Single,System.Single)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">start</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The starting value for when t = 0.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">end</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The ending value for when t = 1.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">t</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The time value that is between 0 and 1.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="EaseOutCirc(System.Single,System.Single,System.Single)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">System.Single</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the value that has been circularly interpolated.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="EaseOutExpo(System.Single,System.Single,System.Single)"></a></div>
+  <h3><span class="toggle-btn"></span>EaseOutExpo(float start, float end, float t)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>An exponential easing out tweening function for making the value go from start to end in a fast start slow end motion.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">float</span> <span class="token function">EaseOutExpo</span><span class="token punctuation">(</span><span class="token keyword">float</span> start<span class="token punctuation">,</span> <span class="token keyword">float</span> end<span class="token punctuation">,</span> <span class="token keyword">float</span> t<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="EaseOutExpo(System.Single,System.Single,System.Single)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">start</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The starting value for when t = 0.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">end</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The ending value for when t = 1.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">t</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The time value that is between 0 and 1.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="EaseOutExpo(System.Single,System.Single,System.Single)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">System.Single</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the value that has been exponentially interpolated.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="EaseOutQuad(System.Single,System.Single,System.Single)"></a></div>
+  <h3><span class="toggle-btn"></span>EaseOutQuad(float start, float end, float t)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>A quadratic easing out tweening function for making the value go from start to end in a fast start slow end motion.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">float</span> <span class="token function">EaseOutQuad</span><span class="token punctuation">(</span><span class="token keyword">float</span> start<span class="token punctuation">,</span> <span class="token keyword">float</span> end<span class="token punctuation">,</span> <span class="token keyword">float</span> t<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="EaseOutQuad(System.Single,System.Single,System.Single)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">start</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The starting value for when t = 0.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">end</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The ending value for when t = 1.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">t</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The time value that is between 0 and 1.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="EaseOutQuad(System.Single,System.Single,System.Single)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">System.Single</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the value that has been quadratically interpolated.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Linear(System.Single,System.Single,System.Single)"></a></div>
+  <h3><span class="toggle-btn"></span>Linear(float start, float end, float t)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>A linearly interpolation tweening function for making the value go from start to end linearly.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">float</span> <span class="token function">Linear</span><span class="token punctuation">(</span><span class="token keyword">float</span> start<span class="token punctuation">,</span> <span class="token keyword">float</span> end<span class="token punctuation">,</span> <span class="token keyword">float</span> t<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Linear(System.Single,System.Single,System.Single)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">start</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The starting value for when t = 0.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">end</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The ending value for when t = 1.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">t</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The time value that is between 0 and 1.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="Linear(System.Single,System.Single,System.Single)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">System.Single</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the value that has been linearly interpolated.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+    </div>
+  
+</div>
+<script>
+  SearchHelper.setCurrent(
+    "B3",
+    "Tween"
+  );
+</script>
+			
+		</main>
+		
+		<footer class="site-footer">
+			
+<div class="center-text">
+	&copy; Paul Gonzalez-Becerra . All Rights Reserved.<br/>
+</div>
+
+		</footer>
+		
+	</body>
+</html>

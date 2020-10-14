@@ -1,0 +1,4838 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta name="keywords" content="game engine,engine,b3,game-engine,game,fulagann"/>
+		<meta name="description" content="An API styled game engine made for programming games in C#."/>
+		<meta name="author" content="Paul Gonzalez-Becerra"/>
+		
+		
+		
+			<link rel="icon" href="https://cdn130.picsart.com/286630835017211.png?type=webp&amp;to=min&amp;r=640"/>
+		
+			
+		
+			<title>Color | B3Engine API</title>
+		
+		
+		
+			<link rel="stylesheet" type="text/css" href="css/default.css" />
+		
+			<link rel="stylesheet" type="text/css" href="css/prism-vs-and-material-dark.css" />
+		
+			<link rel="stylesheet" type="text/css" href="css/type-navigation.css" />
+		
+		
+		
+			<script src="js/main.js"></script>
+		
+			<script src="js/search-types-members.js"></script>
+		
+		
+	</head>
+	
+	<body>
+		
+		<header class="page-header">
+			
+<h1 class="project-name">B3Engine</h1>
+<h2 class="project-tagline">An API styled game engine made for programming games in C#.</h2>
+
+		</header>
+		
+		<nav class="side-content">
+			<div class="nav-modal">
+				<span class="exit">&Cross;</span>
+				<div class="block-on-mobile">
+					<div class="extra-side-content">
+						<details class="quick-links-menu">
+							<summary class="heading">Quick Links:</summary>
+							<div class="quick-links-content"></div>
+						</details>
+						<details class="help-menu">
+							<summary class="heading">Search Bar Help:</summary>
+							<div class="help-desc" id="search-help-desc"></div>
+						</details>
+					</div>
+					<div class="type-nav-label heading">Type Navigation:</div>
+					<iframe src="--navigation.html"></iframe>
+				</div>
+			</div>
+			<a class="btn hamburger open-nav-btn" id="open-nav"></a>
+			<a href="#" class="btn top-btn">Top</a>
+			<input
+				type="text"
+				class="search-bar"
+				id="search-bar"
+				autocomplete="off"
+				onkeyup="SearchHelper.search(this.value, 'search-results', 'search-output');"
+			/>
+			<div class="search-results" id="search-results">
+				<ul id="search-output"></ul>
+			</div>
+		</nav>
+		
+		<main class="main-content">
+			
+				<div class="description">
+  <h1>struct: Color</h1>
+  <blockquote>
+    <small>
+      <span class="namespace">Namespace:
+        <a href="b3.html">B3</a>
+      </span><br/>
+      <span class="assemblies">Assembly: <span>B3.Mathematics.dll</span></span>
+    </small>
+  </blockquote>
+  <div class="doc-desc type-description">
+    <p>A structure for color with floats going from 0 to 1.</p>
+
+  </div>
+</div>
+<aside class="declaration">
+  <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">struct</span> Color <span class="token punctuation">:</span> IEquatable<span class="token operator">&lt;</span>Color<span class="token operator">></span></code></pre>
+
+</aside>
+
+
+  <h2>Interfaces</h2>
+  <div class="interfaces-used quick-links-content">
+    
+      <a href="https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1">System.IEquatable&lt;B3.Color&gt;</a>
+    
+  </div>
+
+
+
+<h2>Quick Links</h2>
+<div class="quick-links">
+  
+    <a class="quick-link" href="#quick-constructors">Constructors</a>
+  
+    <a class="quick-link" href="#quick-static-fields">Static Fields</a>
+  
+    <a class="quick-link" href="#quick-properties">Properties</a>
+  
+    <a class="quick-link" href="#quick-methods">Methods</a>
+  
+    <a class="quick-link" href="#quick-static-methods">Static Methods</a>
+  
+    <a class="quick-link" href="#quick-operators">Operators</a>
+  
+</div>
+<h2>Compact Summary</h2>
+<div class="member-details-compact">
+  
+    <div class="relative"><a id="quick-constructors"></a></div>
+    <h3><span class="toggle-btn"></span>Constructors</h3>
+    <div class="toggle-content">
+      
+        <table class="compact-member full-width constructor-description member-constructors">
+          <tr><th>Constructor Descriptions</th></tr>
+          
+            <tr>
+  <td>
+    <a class="name" href="#Color(System.Int32,System.Int32,System.Int32,System.Int32)">public Color(int red, int green, int blue, int alpha)</a>
+    <p>A base constructor where the red, green, blue, and alpha channels are set in integer form.</p>
+
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    <a class="name" href="#Color(System.Int32,System.Int32,System.Int32)">public Color(int red, int green, int blue)</a>
+    <p>A constructor where the red, green, and blue channels are set in integer form.</p>
+
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    <a class="name" href="#Color(System.Int32,System.Int32)">public Color(int rgb, int alpha)</a>
+    <p>A base constructor where the red, green, and blue channels are set in hexidecimal form (0x123456).</p>
+
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    <a class="name" href="#Color(System.Int32)">public Color(int rgb)</a>
+    <p>A constructor where the red, green, and blue channels are set in hexidecimal form (0x123456).</p>
+
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    <a class="name" href="#Color(System.Single,System.Single,System.Single,System.Single)">public Color(float red, float green, float blue, float alpha)</a>
+    <p>A base constructor where the red, green, blue, and alpha channels are set in float form.</p>
+
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    <a class="name" href="#Color(System.Single,System.Single,System.Single)">public Color(float red, float green, float blue)</a>
+    <p>A constructor where the red, green, and blue channels are set in float form.</p>
+
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    <a class="name" href="#Color(System.String)">public Color(string hex)</a>
+    <p>A base constructor where the red, green, and blue channels are set in hexidecimal form (#123456).
+Optionally an alpha channel can be added to the end of the hexidecimal number (#12345678).</p>
+
+  </td>
+</tr>
+          
+        </table>
+      
+    </div>
+  
+    <div class="relative"><a id="quick-static-fields"></a></div>
+    <h3><span class="toggle-btn"></span>Static Fields</h3>
+    <div class="toggle-content">
+      
+        <table class="compact-member full-width modifier-description member-static-fields">
+          <tr>
+            <th>Modifier / Type</th>
+            <th>Name and Description</th>
+          </tr>
+          
+            <tr>
+  <td class="type field">
+    
+    
+      <span class="langword">static readonly</span>
+    
+    <a href="b3.color.html" class="defined-type">Color</a>
+  </td>
+  <td class="description field">
+    <a class="name" href="#Black">Black</a>
+    <p>The color black (#000000).</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td class="type field">
+    
+    
+      <span class="langword">static readonly</span>
+    
+    <a href="b3.color.html" class="defined-type">Color</a>
+  </td>
+  <td class="description field">
+    <a class="name" href="#Blue">Blue</a>
+    <p>The color blue (#0000FF).</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td class="type field">
+    
+    
+      <span class="langword">static readonly</span>
+    
+    <a href="b3.color.html" class="defined-type">Color</a>
+  </td>
+  <td class="description field">
+    <a class="name" href="#Cyan">Cyan</a>
+    <p>The color cyan (#00FFFF).</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td class="type field">
+    
+    
+      <span class="langword">static readonly</span>
+    
+    <a href="b3.color.html" class="defined-type">Color</a>
+  </td>
+  <td class="description field">
+    <a class="name" href="#Green">Green</a>
+    <p>The color green (#00FF00).</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td class="type field">
+    
+    
+      <span class="langword">static readonly</span>
+    
+    <a href="b3.color.html" class="defined-type">Color</a>
+  </td>
+  <td class="description field">
+    <a class="name" href="#Magenta">Magenta</a>
+    <p>The color magenta (#FF00FF).</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td class="type field">
+    
+    
+      <span class="langword">static readonly</span>
+    
+    <a href="b3.color.html" class="defined-type">Color</a>
+  </td>
+  <td class="description field">
+    <a class="name" href="#Red">Red</a>
+    <p>The color red (#FF0000).</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td class="type field">
+    
+    
+      <span class="langword">static readonly</span>
+    
+    <a href="b3.color.html" class="defined-type">Color</a>
+  </td>
+  <td class="description field">
+    <a class="name" href="#White">White</a>
+    <p>The color white (#FFFFFF).</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td class="type field">
+    
+    
+      <span class="langword">static readonly</span>
+    
+    <a href="b3.color.html" class="defined-type">Color</a>
+  </td>
+  <td class="description field">
+    <a class="name" href="#Yellow">Yellow</a>
+    <p>The color yellow (#FFFF00).</p>
+
+    
+  </td>
+</tr>
+          
+        </table>
+      
+    </div>
+  
+    <div class="relative"><a id="quick-properties"></a></div>
+    <h3><span class="toggle-btn"></span>Properties</h3>
+    <div class="toggle-content">
+      
+        <table class="compact-member full-width modifier-description member-properties">
+          <tr>
+            <th>Modifier / Type</th>
+            <th>Name and Description</th>
+          </tr>
+          
+            <tr>
+  <td>
+    
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.byte" class="defined-type">byte</a>
+  </td>
+  <td>
+    <a class="name" href="#A">A</a>
+    <p>Gets and sets the alpha channel in byte form.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single" class="defined-type">float</a>
+  </td>
+  <td>
+    <a class="name" href="#Alphaf">Alphaf</a>
+    <p>Gets and sets the alpha channel in float form (from 0 to 1).</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.byte" class="defined-type">byte</a>
+  </td>
+  <td>
+    <a class="name" href="#B">B</a>
+    <p>Gets and sets the blue channel in bytre form.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single" class="defined-type">float</a>
+  </td>
+  <td>
+    <a class="name" href="#Bluef">Bluef</a>
+    <p>Gets and sets the blue channel in float form (from 0 to 1).</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.byte" class="defined-type">byte</a>
+  </td>
+  <td>
+    <a class="name" href="#G">G</a>
+    <p>Gets and sets the green channel in byte form.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single" class="defined-type">float</a>
+  </td>
+  <td>
+    <a class="name" href="#Greenf">Greenf</a>
+    <p>Gets and sets the green channel in float form (from 0 to 1).</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.byte" class="defined-type">byte</a>
+  </td>
+  <td>
+    <a class="name" href="#R">R</a>
+    <p>Gets and sets the red channel in byte form.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single" class="defined-type">float</a>
+  </td>
+  <td>
+    <a class="name" href="#Redf">Redf</a>
+    <p>Gets and sets the red channel in float form (from 0 to 1).</p>
+
+    
+  </td>
+</tr>
+          
+        </table>
+      
+    </div>
+  
+    <div class="relative"><a id="quick-methods"></a></div>
+    <h3><span class="toggle-btn"></span>Methods</h3>
+    <div class="toggle-content">
+      
+        <table class="compact-member full-width modifier-description member-methods">
+          <tr>
+            <th>Modifier / Type</th>
+            <th>Name and Description</th>
+          </tr>
+          
+            <tr>
+  <td>
+    
+    
+    <a href="b3.color.html" class="defined-type">Color</a>
+  </td>
+  <td>
+    <a class="name" href="#Add(B3.Color)">Add(Color other)</a>
+    <p>Adds this color with the other color.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+    <a href="b3.color.html" class="defined-type">Color</a>
+  </td>
+  <td>
+    <a class="name" href="#Divide(System.Single)">Divide(float scalar)</a>
+    <p>Divides the color with the scalar.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">virtual</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.boolean" class="defined-type">bool</a>
+  </td>
+  <td>
+    <a class="name" href="#Equals(B3.Color)">Equals(Color other)</a>
+    <p>Finds if the given color is equal to this color.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">override</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.boolean" class="defined-type">bool</a>
+  </td>
+  <td>
+    <a class="name" href="#Equals(System.Object)">Equals(object obj)</a>
+    <p>Finds if the given color is equal to this color.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+      <span class="langword">protected</span>
+    
+    
+      <span class="langword">virtual</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.void" class="defined-type">void</a>
+  </td>
+  <td>
+    <a class="name" href="#Finalize">Finalize()</a>
+    <p>Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.</p>
+
+    
+      (Inherited from <a href="https://docs.microsoft.com/en-us/dotnet/api/system.object">object</a>)
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">override</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.int32" class="defined-type">int</a>
+  </td>
+  <td>
+    <a class="name" href="#GetHashCode">GetHashCode()</a>
+    <p>Gets the hash code from the color.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.type" class="defined-type">Type</a>
+  </td>
+  <td>
+    <a class="name" href="#GetType">GetType()</a>
+    <p>Gets the <a href="https://docs.microsoft.com/en-us/dotnet/api/system.type">Type</a> of the current instance.</p>
+
+    
+      (Inherited from <a href="https://docs.microsoft.com/en-us/dotnet/api/system.object">object</a>)
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+    <a href="b3.color.html" class="defined-type">Color</a>
+  </td>
+  <td>
+    <a class="name" href="#Grayscale">Grayscale()</a>
+    <p>Creates a grayscale version of this color.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+    <a href="b3.color.html" class="defined-type">Color</a>
+  </td>
+  <td>
+    <a class="name" href="#Invert">Invert()</a>
+    <p>Inverts the color.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+    <a href="b3.color.html" class="defined-type">Color</a>
+  </td>
+  <td>
+    <a class="name" href="#LerpClamped(B3.Color,System.Single)">LerpClamped(Color other, float t)</a>
+    <p>Linearly interpolates between the this color with another color.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+      <span class="langword">protected</span>
+    
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.object" class="defined-type">object</a>
+  </td>
+  <td>
+    <a class="name" href="#MemberwiseClone">MemberwiseClone()</a>
+    <p>Creates a shallow copy of the current <a href="https://docs.microsoft.com/en-us/dotnet/api/system.object">Object</a>.</p>
+
+    
+      (Inherited from <a href="https://docs.microsoft.com/en-us/dotnet/api/system.object">object</a>)
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+    <a href="b3.color.html" class="defined-type">Color</a>
+  </td>
+  <td>
+    <a class="name" href="#Multiply(System.Single)">Multiply(float scalar)</a>
+    <p>Multiplies the color with the scalar.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+    <a href="b3.color.html" class="defined-type">Color</a>
+  </td>
+  <td>
+    <a class="name" href="#Subtract(B3.Color)">Subtract(Color other)</a>
+    <p>Subtracts the this color with the other color.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.string" class="defined-type">string</a>
+  </td>
+  <td>
+    <a class="name" href="#ToHex">ToHex()</a>
+    <p>Gets the color in hexadecimal string form.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.int32" class="defined-type">int</a>
+  </td>
+  <td>
+    <a class="name" href="#ToInt32">ToInt32()</a>
+    <p>Gets the color in hexadecimal integer form.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">override</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.string" class="defined-type">string</a>
+  </td>
+  <td>
+    <a class="name" href="#ToString">ToString()</a>
+    <p>Gets the color in string form.</p>
+
+    
+  </td>
+</tr>
+          
+        </table>
+      
+    </div>
+  
+    <div class="relative"><a id="quick-static-methods"></a></div>
+    <h3><span class="toggle-btn"></span>Static Methods</h3>
+    <div class="toggle-content">
+      
+        <table class="compact-member full-width modifier-description member-static-methods">
+          <tr>
+            <th>Modifier / Type</th>
+            <th>Name and Description</th>
+          </tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.void" class="defined-type">void</a>
+  </td>
+  <td>
+    <a class="name" href="#Add(B3.Color,B3.Color,B3.Color)">Add(ref Color a, ref Color b, out Color result)</a>
+    <p>Adds the two colors together.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.void" class="defined-type">void</a>
+  </td>
+  <td>
+    <a class="name" href="#Add(B3.Color,B3.Color,B3.Color)">Add(Color a, Color b, out Color result)</a>
+    <p>Adds the two colors together.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="b3.color.html" class="defined-type">Color</a>
+  </td>
+  <td>
+    <a class="name" href="#Add(B3.Color,B3.Color)">Add(ref Color a, ref Color b)</a>
+    <p>Adds the two colors together.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="b3.color.html" class="defined-type">Color</a>
+  </td>
+  <td>
+    <a class="name" href="#Add(B3.Color,B3.Color)">Add(Color a, Color b)</a>
+    <p>Adds the two colors together.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.void" class="defined-type">void</a>
+  </td>
+  <td>
+    <a class="name" href="#Divide(System.Single,B3.Color,B3.Color)">Divide(float scalar, Color color, out Color result)</a>
+    <p>Divides the color with the scalar.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.void" class="defined-type">void</a>
+  </td>
+  <td>
+    <a class="name" href="#Divide(System.Single,B3.Color,B3.Color)">Divide(float scalar, ref Color color, out Color result)</a>
+    <p>Divides the color with the scalar.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="b3.color.html" class="defined-type">Color</a>
+  </td>
+  <td>
+    <a class="name" href="#Divide(System.Single,B3.Color)">Divide(float scalar, ref Color color)</a>
+    <p>Divides the color with the scalar.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="b3.color.html" class="defined-type">Color</a>
+  </td>
+  <td>
+    <a class="name" href="#Divide(System.Single,B3.Color)">Divide(float scalar, Color color)</a>
+    <p>Divides the color with the scalar.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.void" class="defined-type">void</a>
+  </td>
+  <td>
+    <a class="name" href="#Grayscale(B3.Color,B3.Color)">Grayscale(Color color, out Color result)</a>
+    <p>Creates a grayscale version of the color.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.void" class="defined-type">void</a>
+  </td>
+  <td>
+    <a class="name" href="#Grayscale(B3.Color,B3.Color)">Grayscale(ref Color color, out Color result)</a>
+    <p>Creates a grayscale version of the color.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="b3.color.html" class="defined-type">Color</a>
+  </td>
+  <td>
+    <a class="name" href="#Grayscale(B3.Color)">Grayscale(Color color)</a>
+    <p>Creates a grayscale version of the color.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="b3.color.html" class="defined-type">Color</a>
+  </td>
+  <td>
+    <a class="name" href="#Grayscale(B3.Color)">Grayscale(ref Color color)</a>
+    <p>Creates a grayscale version of the color.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="b3.color.html" class="defined-type">Color</a>
+  </td>
+  <td>
+    <a class="name" href="#Invert(B3.Color)">Invert(Color color)</a>
+    <p>Inverts the color.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="b3.color.html" class="defined-type">Color</a>
+  </td>
+  <td>
+    <a class="name" href="#Invert(B3.Color)">Invert(ref Color color)</a>
+    <p>Inverts the color.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.void" class="defined-type">void</a>
+  </td>
+  <td>
+    <a class="name" href="#Invert(B3.Color,B3.Color)">Invert(ref Color color, out Color result)</a>
+    <p>Inverts the color.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.void" class="defined-type">void</a>
+  </td>
+  <td>
+    <a class="name" href="#Invert(B3.Color,B3.Color)">Invert(Color color, out Color result)</a>
+    <p>Inverts the color.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="b3.color.html" class="defined-type">Color</a>
+  </td>
+  <td>
+    <a class="name" href="#LerpClamped(B3.Color,B3.Color,System.Single)">LerpClamped(Color a, Color b, float t)</a>
+    <p>Linearly interpolates between the two colors together.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="b3.color.html" class="defined-type">Color</a>
+  </td>
+  <td>
+    <a class="name" href="#LerpClamped(B3.Color,B3.Color,System.Single)">LerpClamped(ref Color a, ref Color b, float t)</a>
+    <p>Linearly interpolates between the two colors together.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.void" class="defined-type">void</a>
+  </td>
+  <td>
+    <a class="name" href="#LerpClamped(B3.Color,B3.Color,System.Single,B3.Color)">LerpClamped(Color a, Color b, float t, out Color result)</a>
+    <p>Linearly interpolates between the two colors together.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.void" class="defined-type">void</a>
+  </td>
+  <td>
+    <a class="name" href="#LerpClamped(B3.Color,B3.Color,System.Single,B3.Color)">LerpClamped(ref Color a, ref Color b, float t, out Color result)</a>
+    <p>Linearly interpolates between the two colors together.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.void" class="defined-type">void</a>
+  </td>
+  <td>
+    <a class="name" href="#Multiply(System.Single,B3.Color,B3.Color)">Multiply(float scalar, ref Color color, out Color result)</a>
+    <p>Multiplies the color with the scalar.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.void" class="defined-type">void</a>
+  </td>
+  <td>
+    <a class="name" href="#Multiply(System.Single,B3.Color,B3.Color)">Multiply(float scalar, Color color, out Color result)</a>
+    <p>Multiplies the color with the scalar.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="b3.color.html" class="defined-type">Color</a>
+  </td>
+  <td>
+    <a class="name" href="#Multiply(System.Single,B3.Color)">Multiply(float scalar, ref Color color)</a>
+    <p>Multiplies the color with the scalar.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="b3.color.html" class="defined-type">Color</a>
+  </td>
+  <td>
+    <a class="name" href="#Multiply(System.Single,B3.Color)">Multiply(float scalar, Color color)</a>
+    <p>Multiplies the color with the scalar.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="b3.color.html" class="defined-type">Color</a>
+  </td>
+  <td>
+    <a class="name" href="#Subtract(B3.Color,B3.Color)">Subtract(Color a, Color b)</a>
+    <p>Subtracts the first color with the second color.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.void" class="defined-type">void</a>
+  </td>
+  <td>
+    <a class="name" href="#Subtract(B3.Color,B3.Color,B3.Color)">Subtract(Color a, Color b, out Color result)</a>
+    <p>Subtracts the first color with the second color.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.void" class="defined-type">void</a>
+  </td>
+  <td>
+    <a class="name" href="#Subtract(B3.Color,B3.Color,B3.Color)">Subtract(ref Color a, ref Color b, out Color result)</a>
+    <p>Subtracts the first color with the second color.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static</span>
+    
+    <a href="b3.color.html" class="defined-type">Color</a>
+  </td>
+  <td>
+    <a class="name" href="#Subtract(B3.Color,B3.Color)">Subtract(ref Color a, ref Color b)</a>
+    <p>Subtracts the first color with the second color.</p>
+
+    
+  </td>
+</tr>
+          
+        </table>
+      
+    </div>
+  
+    <div class="relative"><a id="quick-operators"></a></div>
+    <h3><span class="toggle-btn"></span>Operators</h3>
+    <div class="toggle-content">
+      
+        <table class="compact-member full-width modifier-description member-operators">
+          <tr>
+            <th>Modifier / Type</th>
+            <th>Name and Description</th>
+          </tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static operator</span>
+    
+    <a href="b3.color.html" class="defined-type">Color</a>
+  </td>
+  <td>
+    <a class="name" href="#Addition(B3.Color,B3.Color)">Addition(Color left, Color right)</a>
+    <p>Adds the two colors together using the operator.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static operator</span>
+    
+    <a href="b3.color.html" class="defined-type">Color</a>
+  </td>
+  <td>
+    <a class="name" href="#Division(B3.Color,System.Single)">Division(Color left, float right)</a>
+    <p>Divides the color with the scalar.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static operator</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.boolean" class="defined-type">bool</a>
+  </td>
+  <td>
+    <a class="name" href="#Equality(B3.Color,B3.Color)">Equality(Color left, Color right)</a>
+    <p>Finds if the two colors are equal to each other.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static operator</span>
+    
+    <a href="https://docs.microsoft.com/en-us/dotnet/api/system.boolean" class="defined-type">bool</a>
+  </td>
+  <td>
+    <a class="name" href="#Inequality(B3.Color,B3.Color)">Inequality(Color left, Color right)</a>
+    <p>Finds if the two colors are not equal to each other.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static operator</span>
+    
+    <a href="b3.color.html" class="defined-type">Color</a>
+  </td>
+  <td>
+    <a class="name" href="#Multiply(System.Single,B3.Color)">Multiply(float left, Color right)</a>
+    <p>Multiplies the color with the scalar.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static operator</span>
+    
+    <a href="b3.color.html" class="defined-type">Color</a>
+  </td>
+  <td>
+    <a class="name" href="#Multiply(B3.Color,System.Single)">Multiply(Color left, float right)</a>
+    <p>Multiplies the color with the scalar.</p>
+
+    
+  </td>
+</tr>
+          
+            <tr>
+  <td>
+    
+    
+      <span class="langword">static operator</span>
+    
+    <a href="b3.color.html" class="defined-type">Color</a>
+  </td>
+  <td>
+    <a class="name" href="#Subtraction(B3.Color,B3.Color)">Subtraction(Color left, Color right)</a>
+    <p>Subtracts the first color with the second color.</p>
+
+    
+  </td>
+</tr>
+          
+        </table>
+      
+    </div>
+  
+</div>
+<div class="member-details-full">
+  
+    <div class="relative"><a id="constructors"></a></div>
+    <h2><span class="toggle-btn"></span>Constructors</h2>
+    <div class="toggle-content">
+      
+        <div class="member-details member-constructor">
+  <div class="relative"><a id="Color(System.Int32,System.Int32,System.Int32,System.Int32)"></a></div>
+  <h3><span class="toggle-btn"></span>Color(int red, int green, int blue, int alpha)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>A base constructor where the red, green, blue, and alpha channels are set in integer form.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token function">Color</span><span class="token punctuation">(</span><span class="token keyword">int</span> red<span class="token punctuation">,</span> <span class="token keyword">int</span> green<span class="token punctuation">,</span> <span class="token keyword">int</span> blue<span class="token punctuation">,</span> <span class="token keyword">int</span> alpha<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Color(System.Int32,System.Int32,System.Int32,System.Int32)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="parameter">
+            <div class="param-id">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.int32">int</a>
+              red
+            </div>
+            <div class="doc-desc parameter">
+              <p>The red channel, with min being 0 and max being 255.</p>
+
+            </div>
+          </div>
+        
+          <div class="parameter">
+            <div class="param-id">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.int32">int</a>
+              green
+            </div>
+            <div class="doc-desc parameter">
+              <p>The green channel, with min being 0 and max being 255.</p>
+
+            </div>
+          </div>
+        
+          <div class="parameter">
+            <div class="param-id">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.int32">int</a>
+              blue
+            </div>
+            <div class="doc-desc parameter">
+              <p>The blue channel, with min being 0 and max being 255.</p>
+
+            </div>
+          </div>
+        
+          <div class="parameter">
+            <div class="param-id">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.int32">int</a>
+              alpha
+            </div>
+            <div class="doc-desc parameter">
+              <p>The alpha channel, with min being 0 and max being 255.</p>
+
+            </div>
+          </div>
+        
+      </div>
+    
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-constructor">
+  <div class="relative"><a id="Color(System.Int32,System.Int32,System.Int32)"></a></div>
+  <h3><span class="toggle-btn"></span>Color(int red, int green, int blue)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>A constructor where the red, green, and blue channels are set in integer form.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token function">Color</span><span class="token punctuation">(</span><span class="token keyword">int</span> red<span class="token punctuation">,</span> <span class="token keyword">int</span> green<span class="token punctuation">,</span> <span class="token keyword">int</span> blue<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Color(System.Int32,System.Int32,System.Int32)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="parameter">
+            <div class="param-id">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.int32">int</a>
+              red
+            </div>
+            <div class="doc-desc parameter">
+              <p>The red channel, with min being 0 and max being 255.</p>
+
+            </div>
+          </div>
+        
+          <div class="parameter">
+            <div class="param-id">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.int32">int</a>
+              green
+            </div>
+            <div class="doc-desc parameter">
+              <p>The green channel, with min being 0 and max being 255.</p>
+
+            </div>
+          </div>
+        
+          <div class="parameter">
+            <div class="param-id">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.int32">int</a>
+              blue
+            </div>
+            <div class="doc-desc parameter">
+              <p>The blue channel, with min being 0 and max being 255.</p>
+
+            </div>
+          </div>
+        
+      </div>
+    
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-constructor">
+  <div class="relative"><a id="Color(System.Int32,System.Int32)"></a></div>
+  <h3><span class="toggle-btn"></span>Color(int rgb, int alpha)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>A base constructor where the red, green, and blue channels are set in hexidecimal form (0x123456).</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token function">Color</span><span class="token punctuation">(</span><span class="token keyword">int</span> rgb<span class="token punctuation">,</span> <span class="token keyword">int</span> alpha<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Color(System.Int32,System.Int32)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="parameter">
+            <div class="param-id">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.int32">int</a>
+              rgb
+            </div>
+            <div class="doc-desc parameter">
+              <p>The red, green, and blue channels as a hexidecimal number (0x123456).</p>
+
+            </div>
+          </div>
+        
+          <div class="parameter">
+            <div class="param-id">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.int32">int</a>
+              alpha
+            </div>
+            <div class="doc-desc parameter">
+              <p>The alpha channel, with min being 0 and max being 255.</p>
+
+            </div>
+          </div>
+        
+      </div>
+    
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-constructor">
+  <div class="relative"><a id="Color(System.Int32)"></a></div>
+  <h3><span class="toggle-btn"></span>Color(int rgb)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>A constructor where the red, green, and blue channels are set in hexidecimal form (0x123456).</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token function">Color</span><span class="token punctuation">(</span><span class="token keyword">int</span> rgb<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Color(System.Int32)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="parameter">
+            <div class="param-id">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.int32">int</a>
+              rgb
+            </div>
+            <div class="doc-desc parameter">
+              <p>The red, green, and blue channels as a hexidecimal number (0x123456)
+with the alpha channel being 255.</p>
+
+            </div>
+          </div>
+        
+      </div>
+    
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-constructor">
+  <div class="relative"><a id="Color(System.Single,System.Single,System.Single,System.Single)"></a></div>
+  <h3><span class="toggle-btn"></span>Color(float red, float green, float blue, float alpha)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>A base constructor where the red, green, blue, and alpha channels are set in float form.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token function">Color</span><span class="token punctuation">(</span><span class="token keyword">float</span> red<span class="token punctuation">,</span> <span class="token keyword">float</span> green<span class="token punctuation">,</span> <span class="token keyword">float</span> blue<span class="token punctuation">,</span> <span class="token keyword">float</span> alpha<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Color(System.Single,System.Single,System.Single,System.Single)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="parameter">
+            <div class="param-id">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+              red
+            </div>
+            <div class="doc-desc parameter">
+              <p>The red channel, with min being 0 and max being 1.</p>
+
+            </div>
+          </div>
+        
+          <div class="parameter">
+            <div class="param-id">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+              green
+            </div>
+            <div class="doc-desc parameter">
+              <p>The green channel, with min being 0 and max being 1.</p>
+
+            </div>
+          </div>
+        
+          <div class="parameter">
+            <div class="param-id">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+              blue
+            </div>
+            <div class="doc-desc parameter">
+              <p>The blue channel, with min being 0 and max being 1.</p>
+
+            </div>
+          </div>
+        
+          <div class="parameter">
+            <div class="param-id">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+              alpha
+            </div>
+            <div class="doc-desc parameter">
+              <p>The alpha channel, with min being 0 and max being 1.</p>
+
+            </div>
+          </div>
+        
+      </div>
+    
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-constructor">
+  <div class="relative"><a id="Color(System.Single,System.Single,System.Single)"></a></div>
+  <h3><span class="toggle-btn"></span>Color(float red, float green, float blue)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>A constructor where the red, green, and blue channels are set in float form.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token function">Color</span><span class="token punctuation">(</span><span class="token keyword">float</span> red<span class="token punctuation">,</span> <span class="token keyword">float</span> green<span class="token punctuation">,</span> <span class="token keyword">float</span> blue<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Color(System.Single,System.Single,System.Single)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="parameter">
+            <div class="param-id">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+              red
+            </div>
+            <div class="doc-desc parameter">
+              <p>The red channel, with min being 0 and max being 1.</p>
+
+            </div>
+          </div>
+        
+          <div class="parameter">
+            <div class="param-id">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+              green
+            </div>
+            <div class="doc-desc parameter">
+              <p>The green channel, with min being 0 and max being 1.</p>
+
+            </div>
+          </div>
+        
+          <div class="parameter">
+            <div class="param-id">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+              blue
+            </div>
+            <div class="doc-desc parameter">
+              <p>The blue channel, with min being 0 and max being 1.</p>
+
+            </div>
+          </div>
+        
+      </div>
+    
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-constructor">
+  <div class="relative"><a id="Color(System.String)"></a></div>
+  <h3><span class="toggle-btn"></span>Color(string hex)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>A base constructor where the red, green, and blue channels are set in hexidecimal form (#123456).
+Optionally an alpha channel can be added to the end of the hexidecimal number (#12345678).</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token function">Color</span><span class="token punctuation">(</span><span class="token keyword">string</span> hex<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Color(System.String)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="parameter">
+            <div class="param-id">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.string">string</a>
+              hex
+            </div>
+            <div class="doc-desc parameter">
+              <p>The red, green, and blue channels as a hexidecimal number (#123456).
+Optionally an alpha channel can be added to the end of the hexidecimal number (#12345678).
+Omitting the alpha channel will set the alpha channel to 255.</p>
+
+            </div>
+          </div>
+        
+      </div>
+    
+    
+    
+    
+    
+  </div>
+</div>
+      
+    </div>
+  
+    <div class="relative"><a id="static-fields"></a></div>
+    <h2><span class="toggle-btn"></span>Static Fields</h2>
+    <div class="toggle-content">
+      
+        <div class="member-details member-field">
+  <div class="relative"><a id="Black"></a></div>
+  <h3><span class="toggle-btn"></span>Black</h3>
+  <div class="padded-content toggle-content">
+    <div class="member-type">
+      <span class="mini-header">Field Type</span>
+      <a href="b3.color.html">B3.Color</a>
+    </div>
+    <div class="doc-desc member">
+      <p>The color black (#000000).</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">readonly</span> <span class="token class-name">Color</span> Black<span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-field">
+  <div class="relative"><a id="Blue"></a></div>
+  <h3><span class="toggle-btn"></span>Blue</h3>
+  <div class="padded-content toggle-content">
+    <div class="member-type">
+      <span class="mini-header">Field Type</span>
+      <a href="b3.color.html">B3.Color</a>
+    </div>
+    <div class="doc-desc member">
+      <p>The color blue (#0000FF).</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">readonly</span> <span class="token class-name">Color</span> Blue<span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-field">
+  <div class="relative"><a id="Cyan"></a></div>
+  <h3><span class="toggle-btn"></span>Cyan</h3>
+  <div class="padded-content toggle-content">
+    <div class="member-type">
+      <span class="mini-header">Field Type</span>
+      <a href="b3.color.html">B3.Color</a>
+    </div>
+    <div class="doc-desc member">
+      <p>The color cyan (#00FFFF).</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">readonly</span> <span class="token class-name">Color</span> Cyan<span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-field">
+  <div class="relative"><a id="Green"></a></div>
+  <h3><span class="toggle-btn"></span>Green</h3>
+  <div class="padded-content toggle-content">
+    <div class="member-type">
+      <span class="mini-header">Field Type</span>
+      <a href="b3.color.html">B3.Color</a>
+    </div>
+    <div class="doc-desc member">
+      <p>The color green (#00FF00).</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">readonly</span> <span class="token class-name">Color</span> Green<span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-field">
+  <div class="relative"><a id="Magenta"></a></div>
+  <h3><span class="toggle-btn"></span>Magenta</h3>
+  <div class="padded-content toggle-content">
+    <div class="member-type">
+      <span class="mini-header">Field Type</span>
+      <a href="b3.color.html">B3.Color</a>
+    </div>
+    <div class="doc-desc member">
+      <p>The color magenta (#FF00FF).</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">readonly</span> <span class="token class-name">Color</span> Magenta<span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-field">
+  <div class="relative"><a id="Red"></a></div>
+  <h3><span class="toggle-btn"></span>Red</h3>
+  <div class="padded-content toggle-content">
+    <div class="member-type">
+      <span class="mini-header">Field Type</span>
+      <a href="b3.color.html">B3.Color</a>
+    </div>
+    <div class="doc-desc member">
+      <p>The color red (#FF0000).</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">readonly</span> <span class="token class-name">Color</span> Red<span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-field">
+  <div class="relative"><a id="White"></a></div>
+  <h3><span class="toggle-btn"></span>White</h3>
+  <div class="padded-content toggle-content">
+    <div class="member-type">
+      <span class="mini-header">Field Type</span>
+      <a href="b3.color.html">B3.Color</a>
+    </div>
+    <div class="doc-desc member">
+      <p>The color white (#FFFFFF).</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">readonly</span> <span class="token class-name">Color</span> White<span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-field">
+  <div class="relative"><a id="Yellow"></a></div>
+  <h3><span class="toggle-btn"></span>Yellow</h3>
+  <div class="padded-content toggle-content">
+    <div class="member-type">
+      <span class="mini-header">Field Type</span>
+      <a href="b3.color.html">B3.Color</a>
+    </div>
+    <div class="doc-desc member">
+      <p>The color yellow (#FFFF00).</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">readonly</span> <span class="token class-name">Color</span> Yellow<span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+  </div>
+</div>
+      
+    </div>
+  
+    <div class="relative"><a id="properties"></a></div>
+    <h2><span class="toggle-btn"></span>Properties</h2>
+    <div class="toggle-content">
+      
+        <div class="member-details member-property">
+  <div class="relative"><a id="A"></a></div>
+  <h3><span class="toggle-btn"></span>A</h3>
+  <div class="padded-content toggle-content">
+    <div class="member-type">
+      <span class="mini-header">Property Type</span>
+      <a href="https://docs.microsoft.com/en-us/dotnet/api/system.byte">System.Byte</a>
+    </div>
+    <div class="doc-desc member">
+      <p>Gets and sets the alpha channel in byte form.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">byte</span> A <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-property">
+  <div class="relative"><a id="Alphaf"></a></div>
+  <h3><span class="toggle-btn"></span>Alphaf</h3>
+  <div class="padded-content toggle-content">
+    <div class="member-type">
+      <span class="mini-header">Property Type</span>
+      <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">System.Single</a>
+    </div>
+    <div class="doc-desc member">
+      <p>Gets and sets the alpha channel in float form (from 0 to 1).</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">float</span> Alphaf <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-property">
+  <div class="relative"><a id="B"></a></div>
+  <h3><span class="toggle-btn"></span>B</h3>
+  <div class="padded-content toggle-content">
+    <div class="member-type">
+      <span class="mini-header">Property Type</span>
+      <a href="https://docs.microsoft.com/en-us/dotnet/api/system.byte">System.Byte</a>
+    </div>
+    <div class="doc-desc member">
+      <p>Gets and sets the blue channel in bytre form.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">byte</span> B <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-property">
+  <div class="relative"><a id="Bluef"></a></div>
+  <h3><span class="toggle-btn"></span>Bluef</h3>
+  <div class="padded-content toggle-content">
+    <div class="member-type">
+      <span class="mini-header">Property Type</span>
+      <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">System.Single</a>
+    </div>
+    <div class="doc-desc member">
+      <p>Gets and sets the blue channel in float form (from 0 to 1).</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">float</span> Bluef <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-property">
+  <div class="relative"><a id="G"></a></div>
+  <h3><span class="toggle-btn"></span>G</h3>
+  <div class="padded-content toggle-content">
+    <div class="member-type">
+      <span class="mini-header">Property Type</span>
+      <a href="https://docs.microsoft.com/en-us/dotnet/api/system.byte">System.Byte</a>
+    </div>
+    <div class="doc-desc member">
+      <p>Gets and sets the green channel in byte form.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">byte</span> G <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-property">
+  <div class="relative"><a id="Greenf"></a></div>
+  <h3><span class="toggle-btn"></span>Greenf</h3>
+  <div class="padded-content toggle-content">
+    <div class="member-type">
+      <span class="mini-header">Property Type</span>
+      <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">System.Single</a>
+    </div>
+    <div class="doc-desc member">
+      <p>Gets and sets the green channel in float form (from 0 to 1).</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">float</span> Greenf <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-property">
+  <div class="relative"><a id="R"></a></div>
+  <h3><span class="toggle-btn"></span>R</h3>
+  <div class="padded-content toggle-content">
+    <div class="member-type">
+      <span class="mini-header">Property Type</span>
+      <a href="https://docs.microsoft.com/en-us/dotnet/api/system.byte">System.Byte</a>
+    </div>
+    <div class="doc-desc member">
+      <p>Gets and sets the red channel in byte form.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">byte</span> R <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-property">
+  <div class="relative"><a id="Redf"></a></div>
+  <h3><span class="toggle-btn"></span>Redf</h3>
+  <div class="padded-content toggle-content">
+    <div class="member-type">
+      <span class="mini-header">Property Type</span>
+      <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">System.Single</a>
+    </div>
+    <div class="doc-desc member">
+      <p>Gets and sets the red channel in float form (from 0 to 1).</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">float</span> Redf <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+    </div>
+  
+    <div class="relative"><a id="methods"></a></div>
+    <h2><span class="toggle-btn"></span>Methods</h2>
+    <div class="toggle-content">
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Add(B3.Color)"></a></div>
+  <h3><span class="toggle-btn"></span>Add(Color other)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Adds this color with the other color.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token class-name">Color</span> <span class="token function">Add</span><span class="token punctuation">(</span><span class="token class-name">Color</span> other<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Add(B3.Color)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">other</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The other color to add with.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="Add(B3.Color)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="b3.color.html">B3.Color</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the resulting added color.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Divide(System.Single)"></a></div>
+  <h3><span class="toggle-btn"></span>Divide(float scalar)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Divides the color with the scalar.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token class-name">Color</span> <span class="token function">Divide</span><span class="token punctuation">(</span><span class="token keyword">float</span> scalar<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Divide(System.Single)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">scalar</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The floating point number to divide the color with.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="Divide(System.Single)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="b3.color.html">B3.Color</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the resulting scaled color.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Equals(B3.Color)"></a></div>
+  <h3><span class="toggle-btn"></span>Equals(Color other)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Finds if the given color is equal to this color.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">virtual</span> <span class="token keyword">bool</span> <span class="token function">Equals</span><span class="token punctuation">(</span><span class="token class-name">Color</span> other<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Equals(B3.Color)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">other</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The other color to find if it equals.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="Equals(B3.Color)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="https://docs.microsoft.com/en-us/dotnet/api/system.boolean">System.Boolean</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns true if the two colors are equal to each other.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Equals(System.Object)"></a></div>
+  <h3><span class="toggle-btn"></span>Equals(object obj)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Finds if the given color is equal to this color.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">bool</span> <span class="token function">Equals</span><span class="token punctuation">(</span><span class="token keyword">object</span> obj<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Equals(System.Object)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.object">object</a>
+            </span>
+            <span class="param-name">obj</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The other color to find if it equals.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="Equals(System.Object)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="https://docs.microsoft.com/en-us/dotnet/api/system.boolean">System.Boolean</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns true if the two colors are equal to each other.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Finalize"></a></div>
+  <h3><span class="toggle-btn"></span>Finalize()</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token punctuation">[</span><span class="token class-name">System<span class="token punctuation">.</span>Runtime<span class="token punctuation">.</span>Versioning<span class="token punctuation">.</span>NonVersionableAttribute</span><span class="token punctuation">]</span>
+<span class="token keyword">protected</span> <span class="token keyword">virtual</span> <span class="token keyword">void</span> <span class="token function">Finalize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="GetHashCode"></a></div>
+  <h3><span class="toggle-btn"></span>GetHashCode()</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Gets the hash code from the color.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">int</span> <span class="token function">GetHashCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+    
+      <div class="relative"><a id="GetHashCode-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="https://docs.microsoft.com/en-us/dotnet/api/system.int32">System.Int32</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the hash code from the color.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="GetType"></a></div>
+  <h3><span class="toggle-btn"></span>GetType()</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Gets the <a href="https://docs.microsoft.com/en-us/dotnet/api/system.type">Type</a> of the current instance.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token punctuation">[</span><span class="token class-name">System<span class="token punctuation">.</span>Runtime<span class="token punctuation">.</span>CompilerServices<span class="token punctuation">.</span>NullableContextAttribute</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token class-name">Type</span> <span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+    
+      <div class="relative"><a id="GetType-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="https://docs.microsoft.com/en-us/dotnet/api/system.type">System.Type</a>
+        </span>
+        <div class="doc-desc return">
+          <p>The exact runtime type of the current instance.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Grayscale"></a></div>
+  <h3><span class="toggle-btn"></span>Grayscale()</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Creates a grayscale version of this color.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token class-name">Color</span> <span class="token function">Grayscale</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+    
+      <div class="relative"><a id="Grayscale-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="b3.color.html">B3.Color</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the resulting grayscale color.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Invert"></a></div>
+  <h3><span class="toggle-btn"></span>Invert()</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Inverts the color.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token class-name">Color</span> <span class="token function">Invert</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+    
+      <div class="relative"><a id="Invert-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="b3.color.html">B3.Color</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the resulting inverted color.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="LerpClamped(B3.Color,System.Single)"></a></div>
+  <h3><span class="toggle-btn"></span>LerpClamped(Color other, float t)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Linearly interpolates between the this color with another color.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token class-name">Color</span> <span class="token function">LerpClamped</span><span class="token punctuation">(</span><span class="token class-name">Color</span> other<span class="token punctuation">,</span> <span class="token keyword">float</span> t<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="LerpClamped(B3.Color,System.Single)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">other</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The other color to linearly interpolate with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">t</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The floating point number to give weight which color being a stronger linearly interpolate (goes from 0 to 1).</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="LerpClamped(B3.Color,System.Single)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="b3.color.html">B3.Color</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the resulting linearly interpolated color.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="MemberwiseClone"></a></div>
+  <h3><span class="toggle-btn"></span>MemberwiseClone()</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Creates a shallow copy of the current <a href="https://docs.microsoft.com/en-us/dotnet/api/system.object">Object</a>.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token punctuation">[</span><span class="token class-name">System<span class="token punctuation">.</span>Runtime<span class="token punctuation">.</span>CompilerServices<span class="token punctuation">.</span>NullableContextAttribute</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">protected</span> <span class="token keyword">object</span> <span class="token function">MemberwiseClone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+    
+      <div class="relative"><a id="MemberwiseClone-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="https://docs.microsoft.com/en-us/dotnet/api/system.object">System.Object</a>
+        </span>
+        <div class="doc-desc return">
+          <p>A shallow copy of the current <a href="https://docs.microsoft.com/en-us/dotnet/api/system.object">Object</a>.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Multiply(System.Single)"></a></div>
+  <h3><span class="toggle-btn"></span>Multiply(float scalar)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Multiplies the color with the scalar.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token class-name">Color</span> <span class="token function">Multiply</span><span class="token punctuation">(</span><span class="token keyword">float</span> scalar<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Multiply(System.Single)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">scalar</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The floating point number to multiply the color with.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="Multiply(System.Single)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="b3.color.html">B3.Color</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the resulting scaled color.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Subtract(B3.Color)"></a></div>
+  <h3><span class="toggle-btn"></span>Subtract(Color other)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Subtracts the this color with the other color.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token class-name">Color</span> <span class="token function">Subtract</span><span class="token punctuation">(</span><span class="token class-name">Color</span> other<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Subtract(B3.Color)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">other</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The other color to subtract with.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="Subtract(B3.Color)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="b3.color.html">B3.Color</a>
+        </span>
+        <div class="doc-desc return">
+          <p>The resulting subtracted color.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="ToHex"></a></div>
+  <h3><span class="toggle-btn"></span>ToHex()</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Gets the color in hexadecimal string form.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">string</span> <span class="token function">ToHex</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+    
+      <div class="relative"><a id="ToHex-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="https://docs.microsoft.com/en-us/dotnet/api/system.string">System.String</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the color in hexadecimal form.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="ToInt32"></a></div>
+  <h3><span class="toggle-btn"></span>ToInt32()</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Gets the color in hexadecimal integer form.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">ToInt32</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+    
+      <div class="relative"><a id="ToInt32-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="https://docs.microsoft.com/en-us/dotnet/api/system.int32">System.Int32</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the color in hexadecimal form.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="ToString"></a></div>
+  <h3><span class="toggle-btn"></span>ToString()</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Gets the color in string form.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">string</span> <span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+    
+      <div class="relative"><a id="ToString-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="https://docs.microsoft.com/en-us/dotnet/api/system.string">System.String</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the color in string form.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+    </div>
+  
+    <div class="relative"><a id="static-methods"></a></div>
+    <h2><span class="toggle-btn"></span>Static Methods</h2>
+    <div class="toggle-content">
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Add(B3.Color,B3.Color,B3.Color)"></a></div>
+  <h3><span class="toggle-btn"></span>Add(ref Color a, ref Color b, out Color result)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Adds the two colors together.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Add</span><span class="token punctuation">(</span><span class="token keyword">ref</span> <span class="token class-name">Color</span> a<span class="token punctuation">,</span> <span class="token keyword">ref</span> <span class="token class-name">Color</span> b<span class="token punctuation">,</span> <span class="token keyword">out</span> <span class="token class-name">Color</span> result<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Add(B3.Color,B3.Color,B3.Color)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">a</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The first color to add with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">b</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The second color to add with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">result</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The resulting added color.</p>
+
+          </div>
+        
+      </div>
+    
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Add(B3.Color,B3.Color,B3.Color)"></a></div>
+  <h3><span class="toggle-btn"></span>Add(Color a, Color b, out Color result)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Adds the two colors together.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Add</span><span class="token punctuation">(</span><span class="token class-name">Color</span> a<span class="token punctuation">,</span> <span class="token class-name">Color</span> b<span class="token punctuation">,</span> <span class="token keyword">out</span> <span class="token class-name">Color</span> result<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Add(B3.Color,B3.Color,B3.Color)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">a</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The first color to add with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">b</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The second color to add with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">result</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The resulting added color.</p>
+
+          </div>
+        
+      </div>
+    
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Add(B3.Color,B3.Color)"></a></div>
+  <h3><span class="toggle-btn"></span>Add(ref Color a, ref Color b)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Adds the two colors together.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">Color</span> <span class="token function">Add</span><span class="token punctuation">(</span><span class="token keyword">ref</span> <span class="token class-name">Color</span> a<span class="token punctuation">,</span> <span class="token keyword">ref</span> <span class="token class-name">Color</span> b<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Add(B3.Color,B3.Color)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">a</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The first color to add with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">b</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The second color to add with.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="Add(B3.Color,B3.Color)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="b3.color.html">B3.Color</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the resulting added color.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Add(B3.Color,B3.Color)"></a></div>
+  <h3><span class="toggle-btn"></span>Add(Color a, Color b)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Adds the two colors together.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">Color</span> <span class="token function">Add</span><span class="token punctuation">(</span><span class="token class-name">Color</span> a<span class="token punctuation">,</span> <span class="token class-name">Color</span> b<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Add(B3.Color,B3.Color)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">a</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The first color to add with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">b</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The second color to add with.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="Add(B3.Color,B3.Color)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="b3.color.html">B3.Color</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the resulting added color.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Divide(System.Single,B3.Color,B3.Color)"></a></div>
+  <h3><span class="toggle-btn"></span>Divide(float scalar, Color color, out Color result)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Divides the color with the scalar.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Divide</span><span class="token punctuation">(</span><span class="token keyword">float</span> scalar<span class="token punctuation">,</span> <span class="token class-name">Color</span> color<span class="token punctuation">,</span> <span class="token keyword">out</span> <span class="token class-name">Color</span> result<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Divide(System.Single,B3.Color,B3.Color)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">scalar</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The floating point number to divide the color with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">color</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The color to divide with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">result</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The resulting scaled color.</p>
+
+          </div>
+        
+      </div>
+    
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Divide(System.Single,B3.Color,B3.Color)"></a></div>
+  <h3><span class="toggle-btn"></span>Divide(float scalar, ref Color color, out Color result)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Divides the color with the scalar.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Divide</span><span class="token punctuation">(</span><span class="token keyword">float</span> scalar<span class="token punctuation">,</span> <span class="token keyword">ref</span> <span class="token class-name">Color</span> color<span class="token punctuation">,</span> <span class="token keyword">out</span> <span class="token class-name">Color</span> result<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Divide(System.Single,B3.Color,B3.Color)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">scalar</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The floating point number to divide the color with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">color</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The color to divide with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">result</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The resulting scaled color.</p>
+
+          </div>
+        
+      </div>
+    
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Divide(System.Single,B3.Color)"></a></div>
+  <h3><span class="toggle-btn"></span>Divide(float scalar, ref Color color)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Divides the color with the scalar.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">Color</span> <span class="token function">Divide</span><span class="token punctuation">(</span><span class="token keyword">float</span> scalar<span class="token punctuation">,</span> <span class="token keyword">ref</span> <span class="token class-name">Color</span> color<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Divide(System.Single,B3.Color)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">scalar</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The floating point number to divide the color with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">color</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The color to divide with.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="Divide(System.Single,B3.Color)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="b3.color.html">B3.Color</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the resulting scaled color.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Divide(System.Single,B3.Color)"></a></div>
+  <h3><span class="toggle-btn"></span>Divide(float scalar, Color color)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Divides the color with the scalar.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">Color</span> <span class="token function">Divide</span><span class="token punctuation">(</span><span class="token keyword">float</span> scalar<span class="token punctuation">,</span> <span class="token class-name">Color</span> color<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Divide(System.Single,B3.Color)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">scalar</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The floating point number to divide the color with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">color</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The color to divide with.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="Divide(System.Single,B3.Color)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="b3.color.html">B3.Color</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the resulting scaled color.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Grayscale(B3.Color,B3.Color)"></a></div>
+  <h3><span class="toggle-btn"></span>Grayscale(Color color, out Color result)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Creates a grayscale version of the color.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Grayscale</span><span class="token punctuation">(</span><span class="token class-name">Color</span> color<span class="token punctuation">,</span> <span class="token keyword">out</span> <span class="token class-name">Color</span> result<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Grayscale(B3.Color,B3.Color)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">color</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The color to grayscale.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">result</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The resulting grayscaled color.</p>
+
+          </div>
+        
+      </div>
+    
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Grayscale(B3.Color,B3.Color)"></a></div>
+  <h3><span class="toggle-btn"></span>Grayscale(ref Color color, out Color result)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Creates a grayscale version of the color.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Grayscale</span><span class="token punctuation">(</span><span class="token keyword">ref</span> <span class="token class-name">Color</span> color<span class="token punctuation">,</span> <span class="token keyword">out</span> <span class="token class-name">Color</span> result<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Grayscale(B3.Color,B3.Color)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">color</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The color to grayscale.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">result</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The resulting grayscaled color.</p>
+
+          </div>
+        
+      </div>
+    
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Grayscale(B3.Color)"></a></div>
+  <h3><span class="toggle-btn"></span>Grayscale(Color color)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Creates a grayscale version of the color.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">Color</span> <span class="token function">Grayscale</span><span class="token punctuation">(</span><span class="token class-name">Color</span> color<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Grayscale(B3.Color)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">color</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The color to grayscale.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="Grayscale(B3.Color)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="b3.color.html">B3.Color</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the resulting grayscaled color.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Grayscale(B3.Color)"></a></div>
+  <h3><span class="toggle-btn"></span>Grayscale(ref Color color)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Creates a grayscale version of the color.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">Color</span> <span class="token function">Grayscale</span><span class="token punctuation">(</span><span class="token keyword">ref</span> <span class="token class-name">Color</span> color<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Grayscale(B3.Color)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">color</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The color to grayscale.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="Grayscale(B3.Color)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="b3.color.html">B3.Color</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the resulting grayscaled color.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Invert(B3.Color)"></a></div>
+  <h3><span class="toggle-btn"></span>Invert(Color color)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Inverts the color.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">Color</span> <span class="token function">Invert</span><span class="token punctuation">(</span><span class="token class-name">Color</span> color<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Invert(B3.Color)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">color</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The color to invert.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="Invert(B3.Color)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="b3.color.html">B3.Color</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the resulting inverted color.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Invert(B3.Color)"></a></div>
+  <h3><span class="toggle-btn"></span>Invert(ref Color color)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Inverts the color.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">Color</span> <span class="token function">Invert</span><span class="token punctuation">(</span><span class="token keyword">ref</span> <span class="token class-name">Color</span> color<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Invert(B3.Color)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">color</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The color to invert.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="Invert(B3.Color)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="b3.color.html">B3.Color</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the resulting inverted color.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Invert(B3.Color,B3.Color)"></a></div>
+  <h3><span class="toggle-btn"></span>Invert(ref Color color, out Color result)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Inverts the color.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Invert</span><span class="token punctuation">(</span><span class="token keyword">ref</span> <span class="token class-name">Color</span> color<span class="token punctuation">,</span> <span class="token keyword">out</span> <span class="token class-name">Color</span> result<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Invert(B3.Color,B3.Color)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">color</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The color to invert.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">result</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The resulting inverted color.</p>
+
+          </div>
+        
+      </div>
+    
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Invert(B3.Color,B3.Color)"></a></div>
+  <h3><span class="toggle-btn"></span>Invert(Color color, out Color result)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Inverts the color.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Invert</span><span class="token punctuation">(</span><span class="token class-name">Color</span> color<span class="token punctuation">,</span> <span class="token keyword">out</span> <span class="token class-name">Color</span> result<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Invert(B3.Color,B3.Color)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">color</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The color to invert.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">result</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The resulting inverted color.</p>
+
+          </div>
+        
+      </div>
+    
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="LerpClamped(B3.Color,B3.Color,System.Single)"></a></div>
+  <h3><span class="toggle-btn"></span>LerpClamped(Color a, Color b, float t)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Linearly interpolates between the two colors together.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">Color</span> <span class="token function">LerpClamped</span><span class="token punctuation">(</span><span class="token class-name">Color</span> a<span class="token punctuation">,</span> <span class="token class-name">Color</span> b<span class="token punctuation">,</span> <span class="token keyword">float</span> t<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="LerpClamped(B3.Color,B3.Color,System.Single)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">a</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The first color to linearly interpolate with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">b</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The second color to linearly interpolate with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">t</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The floating point number to give weight which color being a stronger linearly interpolate (goes from 0 to 1).</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="LerpClamped(B3.Color,B3.Color,System.Single)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="b3.color.html">B3.Color</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the resulting linearly interpolated color.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="LerpClamped(B3.Color,B3.Color,System.Single)"></a></div>
+  <h3><span class="toggle-btn"></span>LerpClamped(ref Color a, ref Color b, float t)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Linearly interpolates between the two colors together.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">Color</span> <span class="token function">LerpClamped</span><span class="token punctuation">(</span><span class="token keyword">ref</span> <span class="token class-name">Color</span> a<span class="token punctuation">,</span> <span class="token keyword">ref</span> <span class="token class-name">Color</span> b<span class="token punctuation">,</span> <span class="token keyword">float</span> t<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="LerpClamped(B3.Color,B3.Color,System.Single)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">a</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The first color to linearly interpolate with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">b</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The second color to linearly interpolate with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">t</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The floating point number to give weight which color being a stronger linearly interpolate (goes from 0 to 1).</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="LerpClamped(B3.Color,B3.Color,System.Single)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="b3.color.html">B3.Color</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the resulting linearly interpolated color.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="LerpClamped(B3.Color,B3.Color,System.Single,B3.Color)"></a></div>
+  <h3><span class="toggle-btn"></span>LerpClamped(Color a, Color b, float t, out Color result)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Linearly interpolates between the two colors together.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">LerpClamped</span><span class="token punctuation">(</span><span class="token class-name">Color</span> a<span class="token punctuation">,</span> <span class="token class-name">Color</span> b<span class="token punctuation">,</span> <span class="token keyword">float</span> t<span class="token punctuation">,</span> <span class="token keyword">out</span> <span class="token class-name">Color</span> result<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="LerpClamped(B3.Color,B3.Color,System.Single,B3.Color)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">a</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The first color to linearly interpolate with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">b</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The second color to linearly interpolate with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">t</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The floating point number to give weight which color being a stronger linearly interpolate (goes from 0 to 1).</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">result</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The resulting linearly interpolated color.</p>
+
+          </div>
+        
+      </div>
+    
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="LerpClamped(B3.Color,B3.Color,System.Single,B3.Color)"></a></div>
+  <h3><span class="toggle-btn"></span>LerpClamped(ref Color a, ref Color b, float t, out Color result)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Linearly interpolates between the two colors together.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">LerpClamped</span><span class="token punctuation">(</span><span class="token keyword">ref</span> <span class="token class-name">Color</span> a<span class="token punctuation">,</span> <span class="token keyword">ref</span> <span class="token class-name">Color</span> b<span class="token punctuation">,</span> <span class="token keyword">float</span> t<span class="token punctuation">,</span> <span class="token keyword">out</span> <span class="token class-name">Color</span> result<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="LerpClamped(B3.Color,B3.Color,System.Single,B3.Color)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">a</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The first color to linearly interpolate with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">b</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The second color to linearly interpolate with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">t</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The floating point number to give weight which color being a stronger linearly interpolate (goes from 0 to 1).</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">result</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The resulting linearly interpolated color.</p>
+
+          </div>
+        
+      </div>
+    
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Multiply(System.Single,B3.Color,B3.Color)"></a></div>
+  <h3><span class="toggle-btn"></span>Multiply(float scalar, ref Color color, out Color result)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Multiplies the color with the scalar.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Multiply</span><span class="token punctuation">(</span><span class="token keyword">float</span> scalar<span class="token punctuation">,</span> <span class="token keyword">ref</span> <span class="token class-name">Color</span> color<span class="token punctuation">,</span> <span class="token keyword">out</span> <span class="token class-name">Color</span> result<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Multiply(System.Single,B3.Color,B3.Color)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">scalar</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The floating point number to multiply the color with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">color</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The color to multiply with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">result</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The resulting scaled color.</p>
+
+          </div>
+        
+      </div>
+    
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Multiply(System.Single,B3.Color,B3.Color)"></a></div>
+  <h3><span class="toggle-btn"></span>Multiply(float scalar, Color color, out Color result)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Multiplies the color with the scalar.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Multiply</span><span class="token punctuation">(</span><span class="token keyword">float</span> scalar<span class="token punctuation">,</span> <span class="token class-name">Color</span> color<span class="token punctuation">,</span> <span class="token keyword">out</span> <span class="token class-name">Color</span> result<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Multiply(System.Single,B3.Color,B3.Color)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">scalar</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The floating point number to multiply the color with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">color</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The color to multiply with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">result</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The resulting scaled color.</p>
+
+          </div>
+        
+      </div>
+    
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Multiply(System.Single,B3.Color)"></a></div>
+  <h3><span class="toggle-btn"></span>Multiply(float scalar, ref Color color)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Multiplies the color with the scalar.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">Color</span> <span class="token function">Multiply</span><span class="token punctuation">(</span><span class="token keyword">float</span> scalar<span class="token punctuation">,</span> <span class="token keyword">ref</span> <span class="token class-name">Color</span> color<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Multiply(System.Single,B3.Color)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">scalar</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The floating point number to multiply the color with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">color</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The color to multiply with.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="Multiply(System.Single,B3.Color)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="b3.color.html">B3.Color</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the resulting scaled color.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Multiply(System.Single,B3.Color)"></a></div>
+  <h3><span class="toggle-btn"></span>Multiply(float scalar, Color color)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Multiplies the color with the scalar.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">Color</span> <span class="token function">Multiply</span><span class="token punctuation">(</span><span class="token keyword">float</span> scalar<span class="token punctuation">,</span> <span class="token class-name">Color</span> color<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Multiply(System.Single,B3.Color)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">scalar</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The floating point number to multiply the color with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">color</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The color to multiply with.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="Multiply(System.Single,B3.Color)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="b3.color.html">B3.Color</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the resulting scaled color.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Subtract(B3.Color,B3.Color)"></a></div>
+  <h3><span class="toggle-btn"></span>Subtract(Color a, Color b)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Subtracts the first color with the second color.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">Color</span> <span class="token function">Subtract</span><span class="token punctuation">(</span><span class="token class-name">Color</span> a<span class="token punctuation">,</span> <span class="token class-name">Color</span> b<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Subtract(B3.Color,B3.Color)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">a</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The first color to subtract with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">b</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The second color to subtract with.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="Subtract(B3.Color,B3.Color)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="b3.color.html">B3.Color</a>
+        </span>
+        <div class="doc-desc return">
+          <p>The resulting subtracted color.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Subtract(B3.Color,B3.Color,B3.Color)"></a></div>
+  <h3><span class="toggle-btn"></span>Subtract(Color a, Color b, out Color result)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Subtracts the first color with the second color.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Subtract</span><span class="token punctuation">(</span><span class="token class-name">Color</span> a<span class="token punctuation">,</span> <span class="token class-name">Color</span> b<span class="token punctuation">,</span> <span class="token keyword">out</span> <span class="token class-name">Color</span> result<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Subtract(B3.Color,B3.Color,B3.Color)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">a</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The first color to subtract with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">b</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The second color to subtract with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">result</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The resulting subtracted color.</p>
+
+          </div>
+        
+      </div>
+    
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Subtract(B3.Color,B3.Color,B3.Color)"></a></div>
+  <h3><span class="toggle-btn"></span>Subtract(ref Color a, ref Color b, out Color result)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Subtracts the first color with the second color.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Subtract</span><span class="token punctuation">(</span><span class="token keyword">ref</span> <span class="token class-name">Color</span> a<span class="token punctuation">,</span> <span class="token keyword">ref</span> <span class="token class-name">Color</span> b<span class="token punctuation">,</span> <span class="token keyword">out</span> <span class="token class-name">Color</span> result<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Subtract(B3.Color,B3.Color,B3.Color)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">a</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The first color to subtract with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">b</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The second color to subtract with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">result</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The resulting subtracted color.</p>
+
+          </div>
+        
+      </div>
+    
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Subtract(B3.Color,B3.Color)"></a></div>
+  <h3><span class="toggle-btn"></span>Subtract(ref Color a, ref Color b)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Subtracts the first color with the second color.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">Color</span> <span class="token function">Subtract</span><span class="token punctuation">(</span><span class="token keyword">ref</span> <span class="token class-name">Color</span> a<span class="token punctuation">,</span> <span class="token keyword">ref</span> <span class="token class-name">Color</span> b<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Subtract(B3.Color,B3.Color)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">a</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The first color to subtract with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">b</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The second color to subtract with.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="Subtract(B3.Color,B3.Color)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="b3.color.html">B3.Color</a>
+        </span>
+        <div class="doc-desc return">
+          <p>The resulting subtracted color.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+    </div>
+  
+    <div class="relative"><a id="operators"></a></div>
+    <h2><span class="toggle-btn"></span>Operators</h2>
+    <div class="toggle-content">
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Addition(B3.Color,B3.Color)"></a></div>
+  <h3><span class="toggle-btn"></span>Addition(Color left, Color right)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Adds the two colors together using the operator.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">operator</span> <span class="token class-name">Color</span> <span class="token function">Addition</span><span class="token punctuation">(</span><span class="token class-name">Color</span> left<span class="token punctuation">,</span> <span class="token class-name">Color</span> right<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Addition(B3.Color,B3.Color)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">left</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The left color to add with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">right</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The right color to add with.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="Addition(B3.Color,B3.Color)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="b3.color.html">B3.Color</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returrns the resulting added color.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Division(B3.Color,System.Single)"></a></div>
+  <h3><span class="toggle-btn"></span>Division(Color left, float right)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Divides the color with the scalar.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">operator</span> <span class="token class-name">Color</span> <span class="token function">Division</span><span class="token punctuation">(</span><span class="token class-name">Color</span> left<span class="token punctuation">,</span> <span class="token keyword">float</span> right<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Division(B3.Color,System.Single)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">left</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The color to divide with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">right</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The floating point number to divide the color with.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="Division(B3.Color,System.Single)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="b3.color.html">B3.Color</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the resulting scaled color.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Equality(B3.Color,B3.Color)"></a></div>
+  <h3><span class="toggle-btn"></span>Equality(Color left, Color right)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Finds if the two colors are equal to each other.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">operator</span> <span class="token keyword">bool</span> <span class="token function">Equality</span><span class="token punctuation">(</span><span class="token class-name">Color</span> left<span class="token punctuation">,</span> <span class="token class-name">Color</span> right<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Equality(B3.Color,B3.Color)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">left</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The first color.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">right</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The second color.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="Equality(B3.Color,B3.Color)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="https://docs.microsoft.com/en-us/dotnet/api/system.boolean">System.Boolean</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns true if the colors are equal to each other.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Inequality(B3.Color,B3.Color)"></a></div>
+  <h3><span class="toggle-btn"></span>Inequality(Color left, Color right)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Finds if the two colors are not equal to each other.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">operator</span> <span class="token keyword">bool</span> <span class="token function">Inequality</span><span class="token punctuation">(</span><span class="token class-name">Color</span> left<span class="token punctuation">,</span> <span class="token class-name">Color</span> right<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Inequality(B3.Color,B3.Color)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">left</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The first color.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">right</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The second color.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="Inequality(B3.Color,B3.Color)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="https://docs.microsoft.com/en-us/dotnet/api/system.boolean">System.Boolean</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns true if the colors are not equal to each other.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Multiply(System.Single,B3.Color)"></a></div>
+  <h3><span class="toggle-btn"></span>Multiply(float left, Color right)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Multiplies the color with the scalar.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">operator</span> <span class="token class-name">Color</span> <span class="token function">Multiply</span><span class="token punctuation">(</span><span class="token keyword">float</span> left<span class="token punctuation">,</span> <span class="token class-name">Color</span> right<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Multiply(System.Single,B3.Color)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">left</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The floating point number to multiply the color with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">right</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The color to multiply with.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="Multiply(System.Single,B3.Color)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="b3.color.html">B3.Color</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the resulting scaled color.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Multiply(B3.Color,System.Single)"></a></div>
+  <h3><span class="toggle-btn"></span>Multiply(Color left, float right)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Multiplies the color with the scalar.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">operator</span> <span class="token class-name">Color</span> <span class="token function">Multiply</span><span class="token punctuation">(</span><span class="token class-name">Color</span> left<span class="token punctuation">,</span> <span class="token keyword">float</span> right<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Multiply(B3.Color,System.Single)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">left</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The color to multiply with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="https://docs.microsoft.com/en-us/dotnet/api/system.single">float</a>
+            </span>
+            <span class="param-name">right</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The floating point number to multiply the color with.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="Multiply(B3.Color,System.Single)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="b3.color.html">B3.Color</a>
+        </span>
+        <div class="doc-desc return">
+          <p>Returns the resulting scaled color.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+        <div class="member-details member-method">
+  <div class="relative"><a id="Subtraction(B3.Color,B3.Color)"></a></div>
+  <h3><span class="toggle-btn"></span>Subtraction(Color left, Color right)</h3>
+  <div class="padded-content toggle-content">
+    <div class="doc-desc member">
+      <p>Subtracts the first color with the second color.</p>
+
+    </div>
+    <div class="declaration">
+      <pre class="language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">operator</span> <span class="token class-name">Color</span> <span class="token function">Subtraction</span><span class="token punctuation">(</span><span class="token class-name">Color</span> left<span class="token punctuation">,</span> <span class="token class-name">Color</span> right<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+    </div>
+    
+    
+      <div class="relative"><a id="Subtraction(B3.Color,B3.Color)-parameters"></a></div>
+      <h4><span class="toggle-btn"></span>Parameters</h4>
+      <div class="padded-content toggle-content">
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">left</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The first color to subtract with.</p>
+
+          </div>
+        
+          <div class="param-id">
+            <span class="param-type">
+              <a href="b3.color.html">Color</a>
+            </span>
+            <span class="param-name">right</span>
+          </div>
+          <div class="doc-desc parameter">
+            <p>The second color to subtract with.</p>
+
+          </div>
+        
+      </div>
+    
+    
+      <div class="relative"><a id="Subtraction(B3.Color,B3.Color)-returns"></a></div>
+      <h4><span class="toggle-btn"></span>Returns</h4>
+      <div class="padded-content toggle-content">
+        <span class="return-type">
+          <a href="b3.color.html">B3.Color</a>
+        </span>
+        <div class="doc-desc return">
+          <p>The resulting subtracted color.</p>
+
+        </div>
+      </div>
+    
+    
+    
+    
+  </div>
+</div>
+      
+    </div>
+  
+</div>
+<script>
+  SearchHelper.setCurrent(
+    "B3",
+    "Color"
+  );
+</script>
+			
+		</main>
+		
+		<footer class="site-footer">
+			
+<div class="center-text">
+	
+		&copy; Paul Gonzalez-Becerra 2019 - 2020. All Rights Reserved.<br/>
+	
+</div>
+
+		</footer>
+		
+	</body>
+</html>
