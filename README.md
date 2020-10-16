@@ -21,7 +21,26 @@ This action generates a static html documentation for C# projects. It will creat
 
 ## Getting Started
 
-To get started with the basic set up, create a new file in your repository. Name the file anything you want, with the extension `.yml`. Place the file in the `.github/workflows` folder (if there isn't one create one) in order for GitHub Actions to detect it. Copy and paste the code below into that new file:
+To get started with the basic set up, go to each `.csproj` file that will compile the code and add the following to the `PropertyGroup`:
+
+```xml
+<GenerateDocumentationFile>true</GenerateDocumentationFile>
+```
+
+This will ensure that documentation will be generated for the action to use for generating the webpages. The `.csproj` file should look something like below:
+
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+</Project>
+```
+
+Next, create a new file in your repository. Name the file anything you want, with the extension `.yml`. Place the file in the `.github/workflows` folder (if there isn't one create one) in order for GitHub Actions to detect it. Copy and paste the code below into that new file:
 
 ### Sample Build YAML
 
