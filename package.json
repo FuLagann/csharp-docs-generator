@@ -47,6 +47,6 @@
     "prettier": "^2.1.2",
     "punycode": "^2.1.1",
     "sync-request": "^6.1.0",
-    "xmldom": "^0.3.0"
+    "xmldom": "^0.5.0"
   }
 }
